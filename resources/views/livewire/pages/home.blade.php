@@ -25,9 +25,9 @@
 
             </h2>
             <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-0">
-                @isset($products)
+                @if ($products && $products->count() > 0)
 
-                    @forelse ($products as $item)
+                    @foreach ($products as $item)
                         {{-- @dump($item) --}}
                         @livewire(
                             'components.product.product-card',
@@ -36,22 +36,15 @@
                                 'title' => $item->name,
                                 'price' => $item->price,
                                 'slug' => $item->slug,
-
                             ],
                             key($item->id)
                         )
-
-
-                    @empty
-                        @livewire('components.product.product-card', [
-                            'images' => ['https://example.com/image1.jpg'],
-                            'title' => 'Les Chuchotements du Cœur',
-                            'price' => 45.99,
-                            'slug' => 'les-chuchotements-du-coeur',
-                        ])
-                    @endforelse
-
-                @endisset
+                    @endforeach
+                @else
+                    <div class="col-span-2 md:col-span-3 lg:col-span-4">
+                        <p class="text-gray-500">Aucun produit trouvé.</p>
+                    </div>
+                @endif
 
 
 
