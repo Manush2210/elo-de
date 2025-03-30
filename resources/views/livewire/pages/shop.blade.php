@@ -6,7 +6,7 @@
             <h2 class="text-4xl mb-10 text-gray-600  text-left font-semibold  font-['Dancing_Script']">Boutique
             </h2>
             <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-0">
-                @forelse ($products as $item)
+                @foreach ($products as $item)
                     {{-- @dump($item) --}}
                     @livewire(
                         'components.product.product-card',
@@ -18,21 +18,15 @@
                         ],
                         key($item->id)
                     )
-
-
-                @empty
-                <div class="text-center">
-                    <h3 class="text-2xl text-gray-600">Aucun produit trouvé</h3>
-                    <p class="text-gray-500">Nous n'avons pas trouvé de produits correspondant à votre recherche.</p>
-                </div>
-                @endforelse
-
-
-
+                @endforeach
             </div>
 
-
-
+            @if ($products->isEmpty())
+                <div class="text-center py-8">
+                    <h3 class="text-sm text-gray-600">Aucun produit</h3>
+                    <p class="text-gray-500">Nous n'avons pas trouvé de produits correspondant à votre recherche.</p>
+                </div>
+            @endif
         </div>
 
     </section>
@@ -60,7 +54,8 @@
                     {{-- No product found --}}
                     <div class="text-center">
                         <h3 class="text-2xl text-gray-600">Aucun produit trouvé</h3>
-                        <p class="text-gray-500">Nous n'avons pas trouvé de produits correspondant à votre recherche.</p>
+                        <p class="text-gray-500">Nous n'avons pas trouvé de produits correspondant à votre recherche.
+                        </p>
                     </div>
                 @endforelse
 
