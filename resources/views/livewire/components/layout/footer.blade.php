@@ -4,7 +4,7 @@
 
         <div class="text-red-600">
 
-         <span> ©2020-2025 <span> BIENVEILLANCE ET AMOUR</span>  </span>
+         <span> ©2020-2025 <span class="uppercase"> Voyance et  Bienveillance</span>  </span>
         </div>
      </div>
 </footer>

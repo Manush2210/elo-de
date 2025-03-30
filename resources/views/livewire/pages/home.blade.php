@@ -96,14 +96,14 @@
             <h2 class="text-4xl mb-3 text-gray-600  font-semibold  ">Qui suis-je?</h2>
             <p class="text-gray-400 text-lg">
 
-                Je suis Caroline, cartomancienne depuis des années. BIENVEILLANCE ET AMOUR est né de la passion que j'
+                Je suis Caroline, cartomancienne depuis des années. Voyance et  Bienveillance est né de la passion que j'
                 ai pour la cartomancie .Mon ambition avec cette boutique est de vous fournir des trésors spirituels –
                 oracles, porte-bonheur et pierres de lithothérapie – pour vous accompagner vers un quotidien plus apaisé
                 et lumineux.
 
                 Explorez ma boutique et laissez-vous inspirer par la magie de
 
-                BIENVEILLANCE ET AMOUR ❤️.
+                Voyance et  Bienveillance ❤️.
 
 
             </p>

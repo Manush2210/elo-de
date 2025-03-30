@@ -19,7 +19,7 @@
                     <img src="{{ asset('assets/images/layout/logo.webp') }}" alt="logo"
                         class="mx-auto rounded-full h-20 w-20">
                     <div class="text-center space-y-4">
-                        <h4 class="text-lg text-gray-400 font-bold">Bienveillance et Amour</h4>
+                        <h4 class="text-lg text-gray-400 font-bold">Voyance et  Bienveillance</h4>
                         <h1 class="font-bold text-3xl text-slate-700">Consultation privée</h1>
                         <div class="flex justify-center space-x-4 my-3 gap-4 text-gray-400">
                             <div class="flex items-center text-gray-400 gap-2">

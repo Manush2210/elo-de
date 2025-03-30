@@ -15,5 +15,5 @@ Vous recevrez un appel au numéro que vous avez fourni: {{ $appointment->client_
 
 Merci pour votre confiance,
 
-Bienveillance et Amour
+Voyance et  Bienveillance
 @endcomponent
