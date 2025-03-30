@@ -49,25 +49,25 @@ class Carousel extends Component
         ];
 
         $actions = [
-            ['text' => 'En savoir plus', 'url' => route('home')],
-            ['text' => 'Découvrir', 'url' => route('home')],
-            ['text' => 'Voir la boutique', 'url' => route('home')],
-            ['text' => 'Prendre rendez-vous', 'url' => route('home')]
+            ['text' => 'En savoir plus', 'url' => route('shop')],
+            ['text' => 'Découvrir', 'url' => route('shop')],
+            ['text' => 'Voir la boutique', 'url' => route('shop')],
+            ['text' => 'Prendre rendez-vous', 'url' => route('meeting')]
         ];
 
         $randomSlides = [];
 
         // Generate 3-5 random slides
-        $numSlides = rand(3, 5);
+        $numSlide = 4;
 
-        for ($i = 0; $i < $numSlides; $i++) {
+        for ($i = 1; $i < $numSlide; $i++) {
             // Using Picsum Photos for random placeholder images
-            $width = 1200;
-            $height = 600;
-            $randomId = rand(1, 1000);
+            // $width = 1200;
+            // $height = 600;
+            //$randomId = rand(1, 1000);
 
             $randomSlides[] = [
-                'image' => "https://picsum.photos/id/{$randomId}/{$width}/{$height}",
+                'image' => asset('assets/images/slides/slide-'.$i.'.jpeg'),
                 'title' => $titles[array_rand($titles)],
                 'action' => $actions[array_rand($actions)]
             ];

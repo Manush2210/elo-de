@@ -24,6 +24,8 @@
             <h2 class="text-4xl mb-10 text-gray-600  font-semibold  font-['Dancing_Script']">Meilleures ventes
 
             </h2>
+            @if ($products->isNotEmpty())
+
             <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-0">
 
 
@@ -41,6 +43,8 @@
                     )
                 @endforeach
             </div>
+            @endif
+
 
             @if ($products->isEmpty())
                 <div class="text-center py-8">

@@ -44,7 +44,7 @@
     <nav class="bg-white ">
         <div class="max-w-screen-xl mx-auto px-4 py-3">
             <!-- Mobile Navigation (justify-between with 3 elements) -->
-            <div class="md:hidden flex items-center justify-between ">
+            <div class="md:hidden flex items-center justify-between">
                 <!-- Burger Menu (left) -->
                 <button wire:click="toggleMenu" class="text-gray-600 hover:text-white hover:bg-red-700 p-2">
                     <x-heroicon-o-bars-3 class="h-6 w-6" />
@@ -54,9 +54,82 @@
                 <img src="{{ asset('assets/images/layout/logo.webp') }}" alt="Logo" class="h-16 w-auto" />
 
                 <!-- Shopping Cart (right) -->
-                <button class="text-gray-600 hover:text-white hover:bg-red-700 p-2">
-                    <x-heroicon-o-shopping-cart class="h-6 w-6" />
-                </button>
+                <div x-data="{ mobileCartOpen: false }" class="relative">
+                    <button @click="mobileCartOpen = !mobileCartOpen" class="text-gray-600 hover:text-white hover:bg-red-700 p-2 relative">
+                        <x-heroicon-o-shopping-cart class="h-6 w-6" />
+                        <span class="absolute -top-1 -right-1 bg-red-600 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center">{{ $cartItemCount }}</span>
+                    </button>
+
+                    <!-- Mobile Cart Dropdown -->
+                    <div x-show="mobileCartOpen" @click.away="mobileCartOpen = false"
+                        x-transition:enter="transition ease-out duration-200"
+                        x-transition:enter-start="opacity-0 scale-95"
+                        x-transition:enter-end="opacity-100 scale-100"
+                        x-transition:leave="transition ease-in duration-150"
+                        x-transition:leave-start="opacity-100 scale-100"
+                        x-transition:leave-end="opacity-0 scale-95"
+                        wire:poll.visible
+                        class="absolute right-0 mt-2 w-72 bg-slate-100 rounded-lg shadow-xl z-50">
+                        <div class="p-4 max-h-96">
+                            <h3 class="text-lg font-bold border-b pb-2 mb-2">Votre Panier ({{$cartItemCount}})</h3>
+
+                            <!-- Cart Items -->
+                            <div class="space-y-3 max-h-36 overflow-y-auto">
+                                @if (!empty($cartItems))
+                                    @forelse ($cartItems as $item)
+                                        <div class="flex items-center space-x-3 py-2 border-b">
+                                            <img src="{{ asset('storage/'.($item['product']['images'][0] ?? '')) }}"
+                                                 alt="{{ $item['product']['name'] ?? 'Produit' }}"
+                                                 class="w-12 h-12 object-cover rounded">
+                                            <div class="flex-1">
+                                                <h4 class="text-sm font-medium">{{ $item['product']['name'] }}</h4>
+                                                <p class="text-xs text-gray-500">Quantité: {{ $item['quantity'] }}</p>
+                                            </div>
+                                            <div class="text-red-700 font-medium">{{ $item['product']['price'] }}€</div>
+                                        </div>
+                                    @empty
+                                        <div class="text-center text-gray-400">
+                                            <p class="text-center text-gray-500">Votre panier est vide.</p>
+                                        </div>
+                                    @endforelse
+                                @else
+                                    <div class="text-center text-gray-400">
+                                        <p class="text-center text-gray-500">Votre panier est vide.</p>
+                                    </div>
+                                @endif
+                            </div>
+
+                            <!-- Cart Total -->
+                            <div class="mt-4 pt-2 border-t">
+                                <div class="flex justify-between font-bold">
+                                    <span>Total:</span>
+                                    <span>
+                                        @php
+                                            $total = 0;
+                                            if (!empty($cartItems)) {
+                                                foreach ($cartItems as $item) {
+                                                    $total += $item['product']['price'] * $item['quantity'];
+                                                }
+                                            }
+                                            echo number_format($total, 2, ',', ' ');
+                                        @endphp €
+                                    </span>
+                                </div>
+
+                                <div class="mt-4 space-y-2">
+                                    <a href="{{ route('cart') }}"
+                                        class="block w-full bg-gray-200 text-center py-2 rounded hover:bg-gray-300 text-sm font-medium">
+                                        Voir le panier
+                                    </a>
+                                    <a href="#" wire:click="removeCart()"
+                                        class="block w-full bg-red-700 text-white text-center py-2 rounded hover:bg-red-800 text-sm font-medium">
+                                        Effacer
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <!-- Desktop Menu (remains unchanged) -->
