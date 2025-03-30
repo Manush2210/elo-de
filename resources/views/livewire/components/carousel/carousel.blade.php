@@ -14,7 +14,7 @@
                         class="absolute bottom-0 left-0 right-0 top-0 flex justify-center items-center bg-gradient-to-t from-black/70 to-transparent p-4 text-white">
                         <h3 class="text-xl font-bold">{{ $slide['title'] }}</h3>
                         @if (isset($slide['action']))
-                            <div class="absolute {{ $slide['action']['position'] ?? 'left-0 right-0 bottom-20 flex justify-center' }} z-20">
+                            <div class="absolute {{ $slide['action']['position'] ?? 'left-0 right-0 bottom-10 flex justify-center' }} z-20">
                                 <a href="{{ $slide['action']['url'] }}"
                                     class="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg shadow-lg transition">
                                     {{ $slide['action']['text'] }}
