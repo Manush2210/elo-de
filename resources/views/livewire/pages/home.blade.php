@@ -24,7 +24,8 @@
             <a href="{{ route('contact') }}"
                 class="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 transition duration-300">Contactez-moi</a>
             <a href="{{ route('meeting') }}"
-                class="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 transition duration-300">Prendre rendez-vous</a>
+                class="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 transition duration-300">Prendre
+                rendez-vous</a>
         </div>
     </header>
 
@@ -38,23 +39,30 @@
             </h2>
             @if ($products->isNotEmpty())
 
-            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-0">
+                <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-0">
 
 
-                @foreach ($products as $item)
-                    {{-- @dump($item) --}}
-                    @livewire(
-                        'components.product.product-card',
-                        [
-                            'images' => $item->images,
-                            'title' => $item->name,
-                            'price' => $item->price,
-                            'slug' => $item->slug,
-                        ],
-                        key($item->id)
-                    )
-                @endforeach
-            </div>
+                    @foreach ($products as $item)
+                        {{-- @dump($item) --}}
+                        @livewire(
+                            'components.product.product-card',
+                            [
+                                'images' => $item->images,
+                                'title' => $item->name,
+                                'price' => $item->price,
+                                'slug' => $item->slug,
+                            ],
+                            key($item->id)
+                        )
+                    @endforeach
+                </div>
+                <div class="flex justify-center mt-6">
+
+                    <a href="{{ route('shop') }}"
+                        class="bg-red-500 inline-block  my-8 text-white px-4 py-2 rounded-md hover:bg-red-600 transition duration-300">Voir
+                        la Boutique</a>
+
+                </div>
             @endif
 
 
