@@ -81,7 +81,7 @@
                         Vider le panier
                     </button>
                 </div>
-                <a href="{{ route('checkout') }}" class="bg-red-600 text-white px-6 py-2 rounded-lg text-lg hover:bg-red-700">
+                <a href="{{ route('order') }}" class="bg-red-600 text-white px-6 py-2 rounded-lg text-lg hover:bg-red-700">
                     Commander
                 </a>
             </div>
