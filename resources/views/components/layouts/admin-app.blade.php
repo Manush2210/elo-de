@@ -19,7 +19,7 @@
                         @livewire('components.admin.navbar')
 
                         <!-- Main Content -->
-                        <div class="flex-1 p-4">
+                        <div class="flex-1 p-4 pt-12">
                             {{ $slot }}
                         </div>
                     </div>
