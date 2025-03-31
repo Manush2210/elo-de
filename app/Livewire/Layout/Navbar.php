@@ -60,19 +60,39 @@ class Navbar extends Component
 
     public function removeCart()
     {
-        if (session()->has('cart')) {
-            session()->forget('cart');
-            $this->dispatch('showToast', [
-                'message' => 'Panier vidé',
-                'type' => 'success'
-            ]);
-            $this->updateCartData();
+        if (auth()->check()) {
+            // Utilisateur connecté : vider le panier lié au modèle
+            $user = auth()->user();
+            if ($user->cart) {
+                $user->cart->items()->delete();
+                $user->cart->delete();
+                $this->dispatch('showToast', [
+                    'message' => 'Panier vidé',
+                    'type' => 'success'
+                ]);
+            } else {
+                $this->dispatch('showToast', [
+                    'message' => 'Le panier est déjà vide',
+                    'type' => 'error'
+                ]);
+            }
         } else {
-            $this->dispatch('showToast', [
-                'message' => 'Le panier est déjà vide',
-                'type' => 'error'
-            ]);
+            // Visiteur : vider le panier en session
+            if (session()->has('cart')) {
+                session()->forget('cart');
+                $this->dispatch('showToast', [
+                    'message' => 'Panier vidé',
+                    'type' => 'success'
+                ]);
+            } else {
+                $this->dispatch('showToast', [
+                    'message' => 'Le panier est déjà vide',
+                    'type' => 'error'
+                ]);
+            }
         }
+
+        $this->updateCartData();
     }
 
     public function startTopBarCarousel()
