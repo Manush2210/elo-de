@@ -48,7 +48,7 @@
                         <label class="block text-gray-700">Mot de passe</label>
                         <input type="password" wire:model="password" class="w-full border rounded px-3 py-2 bg-gray-100">
                         @error('password') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
-                        <a href="{{ route('password.request') }}" class="text-sm text-red-600 hover:underline mt-1 inline-block">Mot de passe oublié ?</a>
+                        {{-- <a href="{{ route('password.request') }}" class="text-sm text-red-600 hover:underline mt-1 inline-block">Mot de passe oublié ?</a> --}}
                     </div>
                     <button type="submit" class="bg-red-600 text-white px-6 py-2 rounded hover:bg-red-700">Se connecter</button>
                 </form>
