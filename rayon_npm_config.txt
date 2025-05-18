@@ -1,0 +1,3 @@
+# Add this to your ~/.bashrc to automatically set RAYON_NUM_THREADS=1 for all npm commands
+export RAYON_NUM_THREADS=1
+alias npm="RAYON_NUM_THREADS=1 npm"
