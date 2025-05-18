@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\OrderCustomerConfirmation;
+use App\Models\PaymentMethod;
 
 class Order extends Component
 {
@@ -51,6 +52,7 @@ class Order extends Component
     public $payment_proof; // Pour le justificatif
     public $has_proof = false; // Indicateur si preuve téléchargée
     public $account; // Pour les coordonnées bancaires
+    public $paymentMethods = [];
 
     // Résumé commande
     public $cartItems = [];
@@ -115,6 +117,8 @@ class Order extends Component
         } else {
             $this->accountOption = 'register';
         }
+
+        $this->loadPaymentMethods();
     }
 
     private function updateOrderSummary()
@@ -299,7 +303,7 @@ class Order extends Component
                 $orderWithItems = OrderModel::with('items')->find($order->id);
 
                 // Email à l'administrateur
-                Mail::to('support@voyanceetbienveillance.com')
+                Mail::to('contact@guidance-spirituelle.com')
                     ->send(new OrderAdminNotification($orderWithItems));
 
                 // Email au client
@@ -325,10 +329,20 @@ class Order extends Component
             ]);
 
             // Rediriger vers la confirmation with success message new-order
-            return redirect()->route('order-history')->with('new-order', 'Votre commande a été créée avec succès. Un mail de confirmation vous a été envoyé.');
+            return redirect()->route('order-history')->with('new-order', 'Votre commande a été créée avec succès. Les détails de votre commande sont disponibles dans votre espace client.');
         });
     }
 
+    public function loadPaymentMethods()
+    {
+        $this->paymentMethods = PaymentMethod::where('is_active', true)->get();
+        // Si au moins une méthode est active, sélectionner la première par défaut
+        if ($this->paymentMethods->count() > 0) {
+            $this->payment_method = $this->paymentMethods->first()->code;
+        } else {
+            $this->payment_method = null;
+        }
+    }
 
     public function render()
     {

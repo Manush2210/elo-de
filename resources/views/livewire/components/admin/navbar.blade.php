@@ -1,10 +1,12 @@
 <div>
     <!-- Menu Toggle Button -->
     <button id="menu-toggle" class="fixed top-4 left-4 z-50 text-white bg-gray-900 p-2 rounded-md hover:bg-gray-800">
-        <svg id="menu-icon" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <svg id="menu-icon" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+            stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
         </svg>
-        <svg id="close-icon" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <svg id="close-icon" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 hidden" fill="none"
+            viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
         </svg>
     </button>
@@ -41,6 +43,16 @@
                         d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
                 </svg>
                 <span class="ml-3">Produits</span>
+            </a>
+
+            <a class="text-white/50 p-4 inline-flex items-center rounded-md hover:bg-gray-800 hover:text-white smooth-hover w-full {{ request()->routeIs('admin.payment-methods') ? 'bg-gray-800 text-white' : '' }}"
+                href="{{ route('admin.payment-methods') }}">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 sm:h-6 sm:w-6" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
+                </svg>
+                <span class="ml-3">Moyens de Paiement</span>
             </a>
 
             <a class="text-white/50 p-4 inline-flex items-center rounded-md hover:bg-gray-800 hover:text-white smooth-hover w-full {{ request()->routeIs('admin.accounts.add') ? 'bg-gray-800 text-white' : '' }}"

@@ -22,7 +22,7 @@ class ContactFormMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Nouveau message de contact - BVoyance',
+            subject: 'Nouveau message de contact ',
         );
     }
 

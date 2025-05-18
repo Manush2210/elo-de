@@ -1,0 +1,11 @@
+# Configuration correcte pour Hostinger SMTP
+# Copiez ces paramètres dans votre fichier .env
+
+MAIL_MAILER=smtp
+MAIL_HOST=smtp.hostinger.com
+MAIL_PORT=465
+MAIL_USERNAME=contact@guidance-spirituelle.com
+MAIL_PASSWORD=Gvoyance@2025
+MAIL_ENCRYPTION=ssl
+MAIL_FROM_ADDRESS=contact@guidance-spirituelle.com
+MAIL_FROM_NAME="Guidance Spirituelle"

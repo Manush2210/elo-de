@@ -1,6 +1,7 @@
 <div>
     @if ($isOpen)
-        <div class="fixed inset-0 backdrop-blur-sm overflow-y-auto h-full w-full z-50" style="background-color: rgba(0, 0, 0, 0.265)">
+        <div class="fixed inset-0 backdrop-blur-sm overflow-y-auto h-full w-full z-50"
+            style="background-color: rgba(0, 0, 0, 0.265)">
             <div class="relative top-5 mx-auto p-5 border w-full max-w-xl shadow-lg rounded-md bg-gray-800">
 
                 <div class="flex justify-between items-center mb-4">
@@ -17,7 +18,7 @@
 
                 <form wire:submit="save" class="space-y-4">
                     @if (session()->has('message'))
-                        <div class="bg-green-500 text-white p-4 rounded-md">
+                        <div class="bg-lime-300 text-white p-4 rounded-md">
                             {{ session('message') }}
                         </div>
                     @endif
@@ -26,7 +27,7 @@
                         <label class="block text-white/50 mb-2">Nom</label>
                         <input type="text" wire:model="name" class="w-full bg-gray-900 text-white rounded-md p-2">
                         @error('name')
-                            <span class="text-red-500 text-sm">{{ $message }}</span>
+                            <span class="text-lime-500 text-sm">{{ $message }}</span>
                         @enderror
                     </div>
 
@@ -34,7 +35,7 @@
                         <label class="block text-white/50 mb-2">Description</label>
                         <textarea wire:model="description" class="w-full bg-gray-900 text-white rounded-md p-2" rows="4"></textarea>
                         @error('description')
-                            <span class="text-red-500 text-sm">{{ $message }}</span>
+                            <span class="text-lime-500 text-sm">{{ $message }}</span>
                         @enderror
                     </div>
 
@@ -44,7 +45,7 @@
                             <input type="number" wire:model="price" step="0.01"
                                 class="w-full bg-gray-900 text-white rounded-md p-2">
                             @error('price')
-                                <span class="text-red-500 text-sm">{{ $message }}</span>
+                                <span class="text-lime-500 text-sm">{{ $message }}</span>
                             @enderror
                         </div>
 
@@ -53,7 +54,7 @@
                             <input type="number" wire:model="stock"
                                 class="w-full bg-gray-900 text-white rounded-md p-2">
                             @error('stock')
-                                <span class="text-red-500 text-sm">{{ $message }}</span>
+                                <span class="text-lime-500 text-sm">{{ $message }}</span>
                             @enderror
                         </div>
                     </div>
@@ -76,7 +77,7 @@
                             @endif
                         </div>
                         @error('image')
-                            <span class="text-red-500 text-sm">{{ $message }}</span>
+                            <span class="text-lime-500 text-sm">{{ $message }}</span>
                         @enderror
                     </div>
 
@@ -87,7 +88,7 @@
                                     <img src="{{ is_string($image) ? Storage::url($image) : $image->temporaryUrl() }}"
                                         class="h-24 w-24 object-cover rounded-lg">
                                     <button type="button" wire:click="removeImage({{ $index }})"
-                                        class="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1">
+                                        class="absolute -top-2 -right-2 bg-lime-500 text-white rounded-full p-1">
                                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                 d="M6 18L18 6M6 6l12 12" />

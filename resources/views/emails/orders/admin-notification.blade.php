@@ -1,20 +1,63 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="utf-8">
     <title>Nouvelle commande</title>
     <style>
-        body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
-        .container { width: 100%; max-width: 600px; margin: 0 auto; }
-        .header { background-color: #c41c1c; color: white; padding: 15px; text-align: center; }
-        .content { padding: 20px; }
-        .footer { text-align: center; padding: 15px; font-size: 12px; color: #777; }
-        table { width: 100%; border-collapse: collapse; }
-        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
-        th { background-color: #f2f2f2; }
-        .total-row { font-weight: bold; background-color: #f9f9f9; }
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .header {
+            background-color: #c41c1c;
+            color: white;
+            padding: 15px;
+            text-align: center;
+        }
+
+        .content {
+            padding: 20px;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 15px;
+            font-size: 12px;
+            color: #777;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        .total-row {
+            font-weight: bold;
+            background-color: #f9f9f9;
+        }
     </style>
 </head>
+
 <body>
     <div class="container">
         <div class="header">
@@ -38,14 +81,14 @@
                 {{ $order->billing_country }}
             </p>
 
-            @if(!$order->billing_same_as_shipping)
-            <h2>Adresse de livraison</h2>
-            <p>
-                {{ $order->shipping_first_name }} {{ $order->shipping_last_name }}<br>
-                {{ $order->shipping_address }}<br>
-                {{ $order->shipping_postal_code }} {{ $order->shipping_city }}<br>
-                {{ $order->shipping_country }}
-            </p>
+            @if (!$order->billing_same_as_shipping)
+                <h2>Adresse de livraison</h2>
+                <p>
+                    {{ $order->shipping_first_name }} {{ $order->shipping_last_name }}<br>
+                    {{ $order->shipping_address }}<br>
+                    {{ $order->shipping_postal_code }} {{ $order->shipping_city }}<br>
+                    {{ $order->shipping_country }}
+                </p>
             @endif
 
             <h2>Détails de la commande</h2>
@@ -59,13 +102,13 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach($order->items as $item)
-                    <tr>
-                        <td>{{ $item->product_name }}</td>
-                        <td>{{ number_format($item->price, 2, ',', ' ') }}€</td>
-                        <td>{{ $item->quantity }}</td>
-                        <td>{{ number_format($item->price * $item->quantity, 2, ',', ' ') }}€</td>
-                    </tr>
+                    @foreach ($order->items as $item)
+                        <tr>
+                            <td>{{ $item->product_name }}</td>
+                            <td>{{ number_format($item->price, 2, ',', ' ') }}€</td>
+                            <td>{{ $item->quantity }}</td>
+                            <td>{{ number_format($item->price * $item->quantity, 2, ',', ' ') }}€</td>
+                        </tr>
                     @endforeach
                     <tr>
                         <td colspan="3">Sous-total</td>
@@ -83,20 +126,37 @@
             </table>
 
             <h2>Informations de paiement</h2>
+            @php
+                $paymentMethod = \App\Models\PaymentMethod::where('code', $order->payment_method)->first();
+            @endphp
             <p>
-                <strong>Méthode :</strong> Virement bancaire<br>
+                <strong>Méthode :</strong> {{ $paymentMethod ? $paymentMethod->name : $order->payment_method }}<br>
                 <strong>Statut :</strong> {{ $order->status == 'pending' ? 'En attente' : $order->status }}<br>
                 <strong>Preuve de paiement :</strong>
-                @if($order->payment_proof)
+                @if ($order->payment_proof)
                     <a href="{{ asset('storage/' . $order->payment_proof) }}">Voir le justificatif</a>
                 @else
                     Non fournie
                 @endif
             </p>
 
-            @if($order->notes)
-            <h2>Notes du client</h2>
-            <p>{{ $order->notes }}</p>
+            @if (
+                $paymentMethod &&
+                    ($paymentMethod->receiver_firstname || $paymentMethod->receiver_lastname || $paymentMethod->receiver_country))
+                <p><strong>Informations du destinataire :</strong></p>
+                <ul>
+                    @if ($paymentMethod->receiver_firstname || $paymentMethod->receiver_lastname)
+                        <li>Nom: {{ $paymentMethod->receiver_firstname }} {{ $paymentMethod->receiver_lastname }}</li>
+                    @endif
+                    @if ($paymentMethod->receiver_country)
+                        <li>Pays: {{ $paymentMethod->receiver_country }}</li>
+                    @endif
+                </ul>
+            @endif
+
+            @if ($order->notes)
+                <h2>Notes du client</h2>
+                <p>{{ $order->notes }}</p>
             @endif
 
             <p>Vous pouvez gérer cette commande depuis le panel d'administration.</p>
@@ -106,4 +166,5 @@
         </div>
     </div>
 </body>
+
 </html>

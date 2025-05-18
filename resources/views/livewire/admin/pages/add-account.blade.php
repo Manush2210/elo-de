@@ -5,13 +5,13 @@
     </div>
 
     @if (session()->has('message'))
-        <div class="bg-green-500 text-white p-4 rounded-md mb-6">
+        <div class="bg-lime-300 text-white p-4 rounded-md mb-6">
             {{ session('message') }}
         </div>
     @endif
 
     <div class="bg-gray-800 rounded-lg shadow-lg overflow-hidden">
-        @if($account)
+        @if ($account)
             <div class="p-4 sm:p-6">
                 <div class="space-y-4">
                     <!-- Status -->
@@ -22,7 +22,7 @@
                                 Actif
                             </span>
                         @else
-                            <span class="px-3 py-1 bg-red-100 text-red-800 rounded-full text-sm font-medium">
+                            <span class="px-3 py-1 bg-lime-100 text-lime-800 rounded-full text-sm font-medium">
                                 Inactif
                             </span>
                         @endif
@@ -56,34 +56,34 @@
                         </div>
                         <div class="p-4 bg-gray-700/50 rounded-lg">
                             <div class="text-sm text-white/60 mb-1">Prix de RDV</div>
-                            <div>{{ $account->appointment_pricing }}</div>
-                    </div>
+                            <div>{{ $account->appointment_pricing ?? 0 }}</div>
+                        </div>
 
-                    <!-- Action Button -->
-                    <div class="mt-6">
-                        <button
-                            wire:click="$dispatch('openModal', { accountId: {{ $account->id }} })"
-                            class="w-full bg-blue-500 hover:bg-blue-600 text-white font-medium py-3 px-4 rounded-lg transition flex items-center justify-center gap-2">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                            </svg>
-                            Modifier les informations
-                        </button>
+                        <!-- Action Button -->
+                        <div class="mt-6">
+                            <button wire:click="$dispatch('openModal', { accountId: {{ $account->id }} })"
+                                class="w-full bg-blue-500 hover:bg-blue-600 text-white font-medium py-3 px-4 rounded-lg transition flex items-center justify-center gap-2">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                                </svg>
+                                Modifier les informations
+                            </button>
+                        </div>
                     </div>
                 </div>
-            </div>
-        @else
-            <div class="p-6 text-center">
-                <div class="text-white/60 mb-4">Aucun compte bancaire n'est configuré</div>
-                <button
-                    wire:click="$dispatch('openModal')"
-                    class="bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-4 rounded-lg transition inline-flex items-center gap-2">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                    </svg>
-                    Configurer le compte bancaire
-                </button>
-            </div>
+            @else
+                <div class="p-6 text-center">
+                    <div class="text-white/60 mb-4">Aucun compte bancaire n'est configuré</div>
+                    <button wire:click="$dispatch('openModal')"
+                        class="bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-4 rounded-lg transition inline-flex items-center gap-2">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                        </svg>
+                        Configurer le compte bancaire
+                    </button>
+                </div>
         @endif
     </div>
 

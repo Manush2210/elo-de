@@ -11,6 +11,8 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Mail;
 use Livewire\Component;
 use Livewire\WithFileUploads;
+use App\Models\PaymentMethod;
+use App\Models\ConsultationType;
 
 class Meeting extends Component
 {
@@ -22,6 +24,7 @@ class Meeting extends Component
     public $selectedDate = null;
     public $availableTimeSlots = [];
     public $selectedTimeSlot = null;
+    public $selectedConsultationType = null; // Ajout du type de consultation sélectionné
 
     // Informations client
     public $clientName = '';
@@ -30,18 +33,32 @@ class Meeting extends Component
     public $notes = '';
     public $paymentProof; // Nouveau champ pour le fichier
     public $contactMethod = ''; // Nouveau champ pour la méthode de contact
+    public $phone_confirm = ''; // Improved honeypot field - should remain empty
 
     public $calendarDays = [];
     public $bookedDates = [];
 
+    public $paymentMethods;
+    public $selectedPaymentMethod = null;
+
+    public $consultationTypes; // Types de consultation disponibles
+
     public function mount()
     {
+        $this->paymentMethods = collect();
+        $this->consultationTypes = collect();
+
         $now = Carbon::now();
         $this->currentMonth = $now->month;
         $this->currentYear = $now->year;
         $this->generateCalendar();
         $this->loadBookedDates();
         $this->account = Account::where('is_active', true)->latest()->first();
+        $this->loadPaymentMethods();
+        $this->loadConsultationTypes();
+
+        // Store the timestamp when the form is loaded
+        session(['meeting_form_time' => time()]);
     }
 
     public function generateCalendar()
@@ -195,6 +212,26 @@ class Meeting extends Component
 
     public function bookAppointment()
     {
+        // More effective honeypot check - if filled, silently fail
+        if (!empty($this->phone_confirm)) {
+            // Log the bot attempt (optional)
+            \Illuminate\Support\Facades\Log::info('Bot submission detected in meeting form - Honeypot field was filled');
+
+            // Pretend success but don't process anything
+            session()->flash('message', 'Rendez-vous réservé avec succès! Un email de confirmation vous a été envoyé.');
+            return;
+        }
+
+        // Add a timing check (bots usually submit forms too quickly)
+        $timestamp = session('meeting_form_time');
+        $now = time();
+
+        // If the form was submitted less than 3 seconds after page load, likely a bot
+        if (!$timestamp || ($now - $timestamp < 3)) {
+            session()->flash('message', 'Rendez-vous réservé avec succès! Un email de confirmation vous a été envoyé.');
+            return;
+        }
+
         $this->validate([
             'clientName' => 'required|min:3',
             'clientEmail' => 'required|email',
@@ -202,7 +239,9 @@ class Meeting extends Component
             'selectedDate' => 'required|date',
             'selectedTimeSlot' => 'required',
             'paymentProof' => 'required|file|max:10240', // 10MB max
-            'contactMethod' => 'required|in:email,whatsapp',
+            'contactMethod' => 'required|in:email,whatsapp,telephone',
+            'selectedPaymentMethod' => 'required|string',
+            'selectedConsultationType' => 'required|exists:consultation_types,id',
         ], [
             'clientName.required' => 'Veuillez saisir votre nom',
             'clientName.min' => 'Votre nom doit contenir au moins 3 caractères',
@@ -217,6 +256,9 @@ class Meeting extends Component
             'paymentProof.max' => 'La taille du fichier ne doit pas dépasser 10Mo',
             'contactMethod.required' => 'Veuillez sélectionner une méthode de contact',
             'contactMethod.in' => 'Méthode de contact invalide',
+            'selectedPaymentMethod.required' => 'Veuillez sélectionner un moyen de paiement',
+            'selectedConsultationType.required' => 'Veuillez sélectionner un type de consultation',
+            'selectedConsultationType.exists' => 'Le type de consultation sélectionné n\'est pas valide',
         ]);
 
         $slot = TimeSlot::find($this->selectedTimeSlot);
@@ -237,8 +279,10 @@ class Meeting extends Component
             'end_time' => Carbon::parse($this->selectedDate . ' ' . $slot->end_time),
             'notes' => $this->notes,
             'payment_proof' => $paymentProofPath,
+            'payment_method' => $this->selectedPaymentMethod,
             'status' => 'booked',
             'contact_method' => $this->contactMethod,
+            'consultation_type_id' => $this->selectedConsultationType,
         ]);
 
         // Envoyer un email de confirmation au client
@@ -246,18 +290,46 @@ class Meeting extends Component
             ->send(new AppointmentConfirmation($appointment, $slot));
 
         // Envoyer un email de notification à l'admin
-        Mail::to('support@voyanceetbienveillance.com')
+        Mail::to('contact@guidance-spirituelle.com')
             ->send(new AdminAppointmentNotification($appointment, $slot));
         $this->dispatch('showToast', [
             'message' => 'Rendez-vous réservé avec succès! Un email de confirmation vous a été envoyé.',
-            'type' => 'success'
         ]);
-        // Réinitialiser les champs
-        $this->reset(['clientName', 'clientEmail', 'clientPhone', 'notes', 'selectedTimeSlot', 'paymentProof']);
-        $this->loadBookedDates();
-        $this->loadAvailableTimeSlots();
 
         session()->flash('message', 'Rendez-vous réservé avec succès! Un email de confirmation vous a été envoyé.');
+        $this->loadBookedDates();
+        $this->loadAvailableTimeSlots();
+    }
+
+    public function loadPaymentMethods()
+    {
+        $this->paymentMethods = PaymentMethod::where('is_active', true)->get();
+
+        // Si au moins une méthode est active, sélectionner la première par défaut
+        if ($this->paymentMethods->isNotEmpty()) {
+            $this->selectedPaymentMethod = $this->paymentMethods->first()->code;
+        }
+    }
+
+    /**
+     * Charger les types de consultation disponibles
+     */
+    public function loadConsultationTypes()
+    {
+        $this->consultationTypes = ConsultationType::active()->get();
+
+        // Sélectionner le premier type par défaut s'il y en a
+        if ($this->consultationTypes->isNotEmpty() && empty($this->selectedConsultationType)) {
+            $this->selectedConsultationType = $this->consultationTypes->first()->id;
+        }
+    }
+
+    /**
+     * Sélectionner manuellement un type de consultation
+     */
+    public function selectConsultationType($typeId)
+    {
+        $this->selectedConsultationType = $typeId;
     }
 
     public function render()

@@ -4,13 +4,13 @@ namespace App\Livewire\Pages;
 
 use Livewire\Component;
 use Illuminate\Support\Facades\Mail;
-use App\Mail\ContactFormMail;
 
 class Contact extends Component
 {
     public $name = '';
     public $email = '';
     public $message = '';
+    public $email_confirm = ''; // Improved honeypot field - should remain empty
 
     protected $rules = [
         'name' => 'required|min:2',
@@ -29,16 +29,46 @@ class Contact extends Component
 
     public function submit()
     {
+        // More effective honeypot check - if filled, silently fail
+        if (!empty($this->email_confirm)) {
+            // Log the bot attempt (optional)
+            \Illuminate\Support\Facades\Log::info('Bot submission detected - Honeypot field was filled');
+
+            // Pretend success but don't process anything
+            session()->flash('success', 'Votre message a été envoyé avec succès !');
+            return;
+        }
+
+        // Add a timing check (bots usually submit forms too quickly)
+        $timestamp = session('form_time');
+        $now = time();
+
+        // If the form was submitted less than 2 seconds after page load, likely a bot
+        if (!$timestamp || ($now - $timestamp < 2)) {
+            session()->flash('success', 'Votre message a été envoyé avec succès !');
+            return;
+        }
+
         $this->validate();
 
         try {
-            Mail::to('support@voyanceetbienveillance.com')->send(new ContactFormMail([
+            // Envoi du mail directement sans utiliser de Mailable
+            Mail::send('emails.contact-form', [
                 'name' => $this->name,
                 'email' => $this->email,
-                'message' => $this->message
-            ]));
+                'messageContent' => $this->message
+            ], function ($m) {
+                $m->from(config('mail.from.address'), config('mail.from.name'));
+                $m->to('contact@guidance-spirituelle.com', 'Contact Form');
+                $m->subject('Nouveau message de contact');
+            });
 
-            $this->reset(['name', 'email', 'message']);
+            // Reset form fields
+            $this->name = '';
+            $this->email = '';
+            $this->message = '';
+            $this->email_confirm = '';
+
             session()->flash('success', 'Votre message a été envoyé avec succès !');
         } catch (\Exception $e) {
             session()->flash('error', 'Une erreur est survenue lors de l\'envoi du message.');
@@ -47,6 +77,9 @@ class Contact extends Component
 
     public function render()
     {
+        // Store the timestamp when the form is loaded
+        session(['form_time' => time()]);
+
         return view('livewire.pages.contact');
     }
 }

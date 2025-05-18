@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Livewire\Admin\Pages\AddAccount;
 use App\Livewire\Admin\Pages\AddProduct;
+use App\Livewire\Admin\Pages\PaymentMethods;
 use App\Livewire\Admin\Pages\Home as AdminHome;
 
 // Routes d'authentification
@@ -59,6 +60,7 @@ Route::prefix('admin')->middleware(['auth', 'admin'])->group(function () {
     Route::get('/orders', \App\Livewire\Admin\Pages\Orders::class)->name('admin.orders');
     Route::get('/orders/{order}', \App\Livewire\Admin\Pages\OrderDetail::class)->name('admin.orders.detail');
     Route::get('/users', \App\Livewire\Admin\Pages\Users::class)->name('admin.users');
+    Route::get('/payment-methods', PaymentMethods::class)->name('admin.payment-methods');
 });
 
 // Routes publiques
@@ -72,3 +74,6 @@ Route::get('/panier', \App\Livewire\Pages\Cart::class)->name('cart');
 
 // Order routes
 Route::get('/order', \App\Livewire\Pages\Order::class)->name('order');
+
+// Route de test pour l'envoi d'emails
+Route::get('/test-email', [\App\Http\Controllers\MailTestController::class, 'testEmail'])->name('test-email');

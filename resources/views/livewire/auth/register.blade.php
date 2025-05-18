@@ -16,50 +16,68 @@
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
                 <label for="first_name" class="block text-gray-700 font-medium mb-1">Prénom</label>
-                <input type="text" id="first_name" wire:model="first_name" class="w-full px-4 py-2 border rounded-lg">
-                @error('first_name') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+                <input type="text" id="first_name" wire:model="first_name"
+                    class="w-full px-4 py-2 border rounded-lg">
+                @error('first_name')
+                    <span class="text-lime-500 text-sm">{{ $message }}</span>
+                @enderror
             </div>
             <div>
                 <label for="last_name" class="block text-gray-700 font-medium mb-1">Nom</label>
                 <input type="text" id="last_name" wire:model="last_name" class="w-full px-4 py-2 border rounded-lg">
-                @error('last_name') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+                @error('last_name')
+                    <span class="text-lime-500 text-sm">{{ $message }}</span>
+                @enderror
             </div>
         </div>
 
         <div>
             <label for="name" class="block text-gray-700 font-medium mb-1">Nom d'utilisateur</label>
             <input type="text" id="name" wire:model="name" class="w-full px-4 py-2 border rounded-lg">
-            @error('name') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+            @error('name')
+                <span class="text-lime-500 text-sm">{{ $message }}</span>
+            @enderror
         </div>
 
         <div>
             <label for="email" class="block text-gray-700 font-medium mb-1">Email</label>
             <input type="email" id="email" wire:model="email" class="w-full px-4 py-2 border rounded-lg">
-            @error('email') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+            @error('email')
+                <span class="text-lime-500 text-sm">{{ $message }}</span>
+            @enderror
         </div>
 
         <div>
             <label for="phone" class="block text-gray-700 font-medium mb-1">Téléphone</label>
             <input type="text" id="phone" wire:model="phone" class="w-full px-4 py-2 border rounded-lg">
-            @error('phone') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+            @error('phone')
+                <span class="text-lime-500 text-sm">{{ $message }}</span>
+            @enderror
         </div>
 
         <div>
             <label for="address" class="block text-gray-700 font-medium mb-1">Adresse</label>
             <input type="text" id="address" wire:model="address" class="w-full px-4 py-2 border rounded-lg">
-            @error('address') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+            @error('address')
+                <span class="text-lime-500 text-sm">{{ $message }}</span>
+            @enderror
         </div>
 
         <div class="grid grid-cols-2 gap-4">
             <div>
                 <label for="postal_code" class="block text-gray-700 font-medium mb-1">Code postal</label>
-                <input type="text" id="postal_code" wire:model="postal_code" class="w-full px-4 py-2 border rounded-lg">
-                @error('postal_code') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+                <input type="text" id="postal_code" wire:model="postal_code"
+                    class="w-full px-4 py-2 border rounded-lg">
+                @error('postal_code')
+                    <span class="text-lime-500 text-sm">{{ $message }}</span>
+                @enderror
             </div>
             <div>
                 <label for="city" class="block text-gray-700 font-medium mb-1">Ville</label>
                 <input type="text" id="city" wire:model="city" class="w-full px-4 py-2 border rounded-lg">
-                @error('city') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+                @error('city')
+                    <span class="text-lime-500 text-sm">{{ $message }}</span>
+                @enderror
             </div>
         </div>
 
@@ -76,15 +94,20 @@
         <div>
             <label for="password" class="block text-gray-700 font-medium mb-1">Mot de passe</label>
             <input type="password" id="password" wire:model="password" class="w-full px-4 py-2 border rounded-lg">
-            @error('password') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+            @error('password')
+                <span class="text-lime-500 text-sm">{{ $message }}</span>
+            @enderror
         </div>
 
         <div>
-            <label for="password_confirmation" class="block text-gray-700 font-medium mb-1">Confirmer le mot de passe</label>
-            <input type="password" id="password_confirmation" wire:model="password_confirmation" class="w-full px-4 py-2 border rounded-lg">
+            <label for="password_confirmation" class="block text-gray-700 font-medium mb-1">Confirmer le mot de
+                passe</label>
+            <input type="password" id="password_confirmation" wire:model="password_confirmation"
+                class="w-full px-4 py-2 border rounded-lg">
         </div>
 
-        <button type="submit" class="w-full bg-red-600 text-white py-2 px-4 rounded-lg hover:bg-red-700 transition duration-200">
+        <button type="submit"
+            class="w-full bg-lime-600 text-white py-2 px-4 rounded-lg hover:bg-lime-300 transition duration-200">
             S'inscrire
         </button>
     </form>
@@ -92,7 +115,7 @@
     <div class="mt-6 text-center">
         <p class="text-gray-600">
             Déjà inscrit?
-            <a href="{{ route('login') }}" class="text-red-600 hover:underline">Se connecter</a>
+            <a href="{{ route('login') }}" class="text-lime-600 hover:underline">Se connecter</a>
         </p>
     </div>
 </div>

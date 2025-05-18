@@ -17,13 +17,13 @@ class AppointmentConfirmation extends Mailable
 
     public function __construct(Appointment $appointment, TimeSlot $timeSlot)
     {
-        $this->appointment = $appointment;
+        $this->appointment = $appointment->load('consultationType');
         $this->timeSlot = $timeSlot;
     }
 
     public function build()
     {
         return $this->markdown('emails.appointment-confirmation')
-                    ->subject('Confirmation de votre rendez-vous');
+                    ->subject('Confirmation de votre rendez-vous - Guidance Spirituelle');
     }
 }

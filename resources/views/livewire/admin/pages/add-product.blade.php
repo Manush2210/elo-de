@@ -23,7 +23,7 @@
     </div>
 
     @if (session()->has('message'))
-        <div class="bg-green-500 text-white p-4 rounded-md mb-6">
+        <div class="bg-lime-300 text-white p-4 rounded-md mb-6">
             {{ session('message') }}
         </div>
     @endif
@@ -70,7 +70,7 @@
                                 </span>
                             @else
                                 <span
-                                    class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
+                                    class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-lime-100 text-lime-800">
                                     Inactif
                                 </span>
                             @endif
@@ -86,7 +86,7 @@
                                 </button>
                                 <button wire:click="deleteProduct({{ $product->id }})"
                                     onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce produit ?')"
-                                    class="text-red-400 hover:text-red-600">
+                                    class="text-lime-400 hover:text-lime-600">
                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                             d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
@@ -117,7 +117,7 @@
                                 Actif
                             </span>
                         @else
-                            <span class="px-2 py-1 bg-red-50 text-red-700 rounded-full text-xs font-medium">
+                            <span class="px-2 py-1 bg-lime-50 text-lime-700 rounded-full text-xs font-medium">
                                 Inactif
                             </span>
                         @endif
@@ -160,7 +160,7 @@
                         </button>
                         <button wire:click="deleteProduct({{ $product->id }})"
                             onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce produit ?')"
-                            class="inline-flex items-center px-3 py-1.5 border border-red-600 text-red-600 rounded-md hover:bg-red-50 text-sm font-medium">
+                            class="inline-flex items-center px-3 py-1.5 border border-lime-600 text-lime-600 rounded-md hover:bg-lime-50 text-sm font-medium">
                             <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />

@@ -2,10 +2,10 @@
     <h1 class="text-2xl font-bold mb-6">Panier</h1>
 
     <div class="border border-gray-200 rounded-lg p-4 bg-white shadow-sm">
-        @if(empty($cartItems))
+        @if (empty($cartItems))
             <div class="text-center py-8">
                 <p class="text-gray-500 mb-4">Votre panier est vide</p>
-                <a href="{{ route('shop') }}" class="text-red-600 hover:underline">Poursuivre les achats</a>
+                <a href="{{ route('shop') }}" class="text-lime-600 hover:underline">Poursuivre les achats</a>
             </div>
         @else
             <div class="overflow-x-auto">
@@ -20,23 +20,23 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach($cartItems as $productId => $item)
+                        @foreach ($cartItems as $productId => $item)
                             <tr class="border-b hover:bg-gray-50 flex-row gap-4 items-baseline">
                                 <td class="py-4">
                                     <div class="flex items-center space-x-4">
                                         <img src="{{ asset('storage/' . ($item['product']['images'][0] ?? '')) }}"
-                                             alt="{{ $item['product']['name'] }}"
-                                             class="w-16 h-16 rounded-lg object-cover">
+                                            alt="{{ $item['product']['name'] }}"
+                                            class="w-16 h-16 rounded-lg object-cover">
                                         <a href="{{ route('single-product', ['slug' => $item['product']['slug'] ?? $productId]) }}"
-                                           class="text-red-600 font-semibold hover:underline">
+                                            class="text-lime-600 font-semibold hover:underline">
                                             {{ $item['product']['name'] }}
                                         </a>
                                     </div>
                                 </td>
                                 <td class="py-4 text-center ">
                                     <select wire:model="cartItems.{{ $productId }}.quantity"
-                                            wire:change="updateQuantity({{ $productId }}, $event.target.value)"
-                                            class="border-gray-300 rounded-md p-2 min-w-[50px] md:min-w-[80px]">
+                                        wire:change="updateQuantity({{ $productId }}, $event.target.value)"
+                                        class="border-gray-300 rounded-md p-2 min-w-[50px] md:min-w-[80px]">
                                         @for ($i = 1; $i <= 10; $i++)
                                             <option value="{{ $i }}">{{ $i }}</option>
                                         @endfor
@@ -50,7 +50,7 @@
                                 </td>
                                 <td class="py-4 text-right">
                                     <button wire:click="removeItem({{ $productId }})"
-                                            class="text-gray-500 hover:text-red-500 p-1">
+                                        class="text-gray-500 hover:text-lime-500 p-1">
                                         <i class="fas fa-trash"></i>
                                     </button>
                                 </td>
@@ -64,7 +64,8 @@
             <div class="mt-6 text-right text-gray-700 space-y-2">
                 <p>Sous-total : <span class="font-semibold">{{ number_format($subtotal, 2, ',', ' ') }} €</span></p>
                 <p>Frais de port : <span class="font-semibold">{{ number_format($shipping, 2, ',', ' ') }} €</span></p>
-                <p class="text-red-500 font-semibold">Livraison gratuite à partir de {{ number_format($free_shipping_threshold, 2, ',', ' ') }} €</p>
+                <p class="text-lime-500 font-semibold">Livraison gratuite à partir de
+                    {{ number_format($free_shipping_threshold, 2, ',', ' ') }} €</p>
 
                 <p class="text-xl font-bold mt-4">Montant total :
                     <span class="text-gray-900">{{ number_format($total, 2, ',', ' ') }} €</span>
@@ -74,14 +75,15 @@
             <!-- Boutons -->
             <div class="mt-6 flex flex-wrap justify-between items-center gap-4">
                 <div class="flex space-x-4">
-                    <a href="{{ route('shop') }}" class="text-red-600 hover:underline">
+                    <a href="{{ route('shop') }}" class="text-lime-600 hover:underline">
                         « Poursuivre les achats
                     </a>
-                    <button wire:click="clearCart" class="text-gray-500 hover:text-red-500">
+                    <button wire:click="clearCart" class="text-gray-500 hover:text-lime-500">
                         Vider le panier
                     </button>
                 </div>
-                <a href="{{ route('order') }}" class="bg-red-600 text-white px-6 py-2 rounded-lg text-lg hover:bg-red-700">
+                <a href="{{ route('order') }}"
+                    class="bg-lime-600 text-white px-6 py-2 rounded-lg text-lg hover:bg-lime-300">
                     Commander
                 </a>
             </div>

@@ -3,11 +3,11 @@
         <!-- Navigation Tabs -->
         <div class="flex border-b mb-6">
             <a href="{{ route('profile') }}"
-                class="px-6 py-2 font-medium {{ request()->routeIs('profile') ? 'text-red-600 border-b-2 border-red-600' : 'text-gray-500 hover:text-red-600' }}">
+                class="px-6 py-2 font-medium {{ request()->routeIs('profile') ? 'text-lime-600 border-b-2 border-lime-600' : 'text-gray-500 hover:text-lime-600' }}">
                 Mon Profil
             </a>
             <a href="{{ route('order-history') }}"
-                class="px-6 py-2 font-medium {{ request()->routeIs('order-history') ? 'text-red-600 border-b-2 border-red-600' : 'text-gray-500 hover:text-red-600' }}">
+                class="px-6 py-2 font-medium {{ request()->routeIs('order-history') ? 'text-lime-600 border-b-2 border-lime-600' : 'text-gray-500 hover:text-lime-600' }}">
                 Historique des commandes
             </a>
         </div>
@@ -19,14 +19,14 @@
                 <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4"
                     role="alert">
                     <strong class="font-bold">Commande passée avec succès !</strong>
-                    <span class="block sm:inline">Merci pour votre achat.</span>
+                    <span class="block sm:inline">{{ session('new-order') }}</span>
                 </div>
             @endif
 
             @if ($orders->isEmpty())
                 <div class="text-center py-8">
                     <div class="text-gray-500 mb-4">Vous n'avez pas encore passé de commande</div>
-                    <a href="{{ route('shop') }}" class="text-red-600 hover:text-red-700">
+                    <a href="{{ route('shop') }}" class="text-lime-600 hover:text-lime-700">
                         Découvrir nos produits
                     </a>
                 </div>
@@ -69,7 +69,7 @@
                                         @elseif($order->status === 'pending')
                                             bg-yellow-100 text-yellow-800
                                         @elseif($order->status === 'cancelled')
-                                            bg-red-100 text-red-800
+                                            bg-lime-100 text-lime-800
                                         @else
                                             bg-gray-100 text-gray-800 @endif">
                                             @switch($order->status)

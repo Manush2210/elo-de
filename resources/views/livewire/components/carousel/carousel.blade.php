@@ -1,66 +1,64 @@
-<!-- filepath: f:\Projets\voyance_seb\resources\views\livewire\components\carousel.blade.php -->
 <div x-data class="relative w-full" x-init="@if ($autoPlay) setInterval(() => { $wire.nextSlide() }, {{ $interval }}) @endif">
     <!-- Carousel wrapper -->
-    <div class="relative overflow-hidden rounded-lg {{ $height }}">
+    <div class="relative overflow-hidden rounded-lg md:rounded-xl {{ $height }}">
         @foreach ($slides as $index => $slide)
-            <div class="absolute inset-0 transition-opacity duration-700 ease-in-out {{ $index === $activeSlide ? 'opacity-100' : 'opacity-0' }}"
+            <div class="absolute inset-0 transition-all duration-700 ease-in-out transform {{ $index === $activeSlide ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-full' }}"
                 wire:key="slide-{{ $index }}">
                 <img src="{{ $slide['image'] }}" class="absolute block w-full h-full object-cover"
                     alt="{{ $slide['title'] ?? 'Slide ' . ($index + 1) }}">
 
-                <!-- Optional title overlay -->
+                <!-- Title and action overlay with improved mobile layout -->
                 @if (isset($slide['title']))
                     <div
-                        class="absolute bottom-0 left-0 right-0 top-0 flex flex-col justify-center items-center bg-gradient-to-t from-black/70 to-transparent p-4 text-white">
-                        <h3 class="text-xl font-bold">{{ $slide['title'] }}</h3>
+                        class="absolute inset-0 flex flex-col justify-end md:justify-center items-center bg-gradient-to-t from-black/80 via-black/40 to-transparent p-4 text-white">
+                        <h3 class="text-2xl md:text-3xl font-bold text-center mb-4 drop-shadow-lg">{{ $slide['title'] }}
+                        </h3>
                         @if (isset($slide['action']))
-                            <div class="mt-4 md:absolute {{ $slide['action']['position'] ?? 'left-0 right-0 bottom-10 flex justify-center' }} z-20">
+                            <div
+                                class="w-full md:w-auto mb-8 md:mb-0 {{ $slide['action']['position'] ?? 'flex justify-center' }} z-20">
                                 <a href="{{ $slide['action']['url'] }}"
-                                    class="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg shadow-lg transition">
+                                    class="inline-block px-6 py-3 bg-lime-600 hover:bg-lime-500 text-white rounded-full shadow-xl transition-all duration-300 transform hover:scale-105 text-lg md:text-base font-medium">
                                     {{ $slide['action']['text'] }}
                                 </a>
                             </div>
                         @endif
                     </div>
                 @endif
-
-                <!-- Optional action button overlay -->
-
             </div>
         @endforeach
     </div>
 
-    <!-- Slider indicators -->
-    <div class="absolute z-30 flex -translate-x-1/2 bottom-5 left-1/2 space-x-3 rtl:space-x-reverse">
+    <!-- Improved slider indicators -->
+    <div
+        class="absolute z-30 flex -translate-x-1/2 bottom-4 md:bottom-6 left-1/2 space-x-2 md:space-x-3 rtl:space-x-reverse">
         @foreach ($slides as $index => $slide)
             <button type="button"
-                class="w-3 h-3 rounded-full {{ $index === $activeSlide ? 'bg-white' : 'bg-white/50' }}"
+                class="w-2.5 h-2.5 md:w-3 md:h-3 rounded-full transition-all duration-300 {{ $index === $activeSlide ? 'bg-white scale-110' : 'bg-white/40 hover:bg-white/60' }}"
                 aria-current="{{ $index === $activeSlide ? 'true' : 'false' }}" aria-label="Slide {{ $index + 1 }}"
-                wire:click="goToSlide({{ $index }})"></button>
+                wire:click="goToSlide({{ $index }})">
+            </button>
         @endforeach
     </div>
 
-    <!-- Slider controls -->
-    <button type="button"
-        class="absolute top-0 start-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none"
+    <!-- Enhanced slider controls -->
+    <button type="button" class="absolute top-1/2 -translate-y-1/2 start-2 md:start-4 z-30 group focus:outline-none"
         wire:click="prevSlide">
         <span
-            class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/30 group-hover:bg-white/50 group-focus:ring-4 group-focus:ring-white group-focus:outline-none">
-            <svg class="w-4 h-4 text-white rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                fill="none" viewBox="0 0 6 10">
+            class="inline-flex items-center justify-center w-8 h-8 md:w-12 md:h-12 rounded-full bg-black/30 backdrop-blur-sm group-hover:bg-black/50 transition-all duration-300 group-focus:ring-4 group-focus:ring-white/50">
+            <svg class="w-4 h-4 md:w-6 md:h-6 text-white rtl:rotate-180" aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                     d="M5 1 1 5l4 4" />
             </svg>
             <span class="sr-only">Previous</span>
         </span>
     </button>
-    <button type="button"
-        class="absolute top-0 end-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none"
+    <button type="button" class="absolute top-1/2 -translate-y-1/2 end-2 md:end-4 z-30 group focus:outline-none"
         wire:click="nextSlide">
         <span
-            class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/30 group-hover:bg-white/50 group-focus:ring-4 group-focus:ring-white group-focus:outline-none">
-            <svg class="w-4 h-4 text-white rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                fill="none" viewBox="0 0 6 10">
+            class="inline-flex items-center justify-center w-8 h-8 md:w-12 md:h-12 rounded-full bg-black/30 backdrop-blur-sm group-hover:bg-black/50 transition-all duration-300 group-focus:ring-4 group-focus:ring-white/50">
+            <svg class="w-4 h-4 md:w-6 md:h-6 text-white rtl:rotate-180" aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                     d="m1 9 4-4-4-4" />
             </svg>

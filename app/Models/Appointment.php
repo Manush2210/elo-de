@@ -18,9 +18,11 @@ class Appointment extends Model
         'end_time',
         'payed_amount',
         'payment_proof',
+        'payment_method',
         'status',
         'notes',
-        'contact_method'
+        'contact_method',
+        'consultation_type_id'
     ];
 
     protected $casts = [
@@ -28,4 +30,12 @@ class Appointment extends Model
         'start_time' => 'datetime',
         'end_time' => 'datetime',
     ];
+
+    /**
+     * Le type de consultation associé à ce rendez-vous
+     */
+    public function consultationType()
+    {
+        return $this->belongsTo(ConsultationType::class);
+    }
 }

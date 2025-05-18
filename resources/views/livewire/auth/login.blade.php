@@ -10,31 +10,38 @@
     <form wire:submit.prevent="login">
         <div class="mb-4">
             <label for="email" class="block text-gray-700 font-medium mb-2">Adresse e-mail</label>
-            <input type="email" id="email" wire:model="email" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500">
-            @error('email') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+            <input type="email" id="email" wire:model="email"
+                class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-lime-500">
+            @error('email')
+                <span class="text-lime-500 text-sm">{{ $message }}</span>
+            @enderror
         </div>
 
         <div class="mb-6">
             <label for="password" class="block text-gray-700 font-medium mb-2">Mot de passe</label>
-            <input type="password" id="password" wire:model="password" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500">
-            @error('password') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+            <input type="password" id="password" wire:model="password"
+                class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-lime-500">
+            @error('password')
+                <span class="text-lime-500 text-sm">{{ $message }}</span>
+            @enderror
         </div>
 
         <div class="flex items-center mb-6">
-            <input type="checkbox" id="remember" wire:model="remember" class="h-4 w-4 text-red-600">
+            <input type="checkbox" id="remember" wire:model="remember" class="h-4 w-4 text-lime-600">
             <label for="remember" class="ml-2 text-gray-700">Se souvenir de moi</label>
         </div>
 
-        <button type="submit" class="w-full bg-red-600 text-white py-2 px-4 rounded-lg hover:bg-red-700 transition duration-200">
+        <button type="submit"
+            class="w-full bg-lime-600 text-white py-2 px-4 rounded-lg hover:bg-lime-300 transition duration-200">
             Se connecter
         </button>
     </form>
 
     <div class="mt-6 text-center">
-        <a href="#" class="text-sm text-red-600 hover:underline">Mot de passe oublié?</a>
+        <a href="#" class="text-sm text-lime-600 hover:underline">Mot de passe oublié?</a>
         <p class="mt-2 text-gray-600">
             Pas encore de compte?
-            <a href="{{ route('register') }}" class="text-red-600 hover:underline">S'inscrire</a>
+            <a href="{{ route('register') }}" class="text-lime-600 hover:underline">S'inscrire</a>
         </p>
     </div>
 </div>
