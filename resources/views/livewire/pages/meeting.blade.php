@@ -293,6 +293,19 @@
                                                         </div>
                                                     </div>
                                                 @endif
+
+                                                @if ($selectedMethod && $selectedMethod->motifs)
+                                                    <div class="mt-2 text-sm text-gray-700">
+                                                        <span class="font-medium">Motifs :</span>
+                                                        {{ $selectedMethod->motifs }}
+                                                    </div>
+                                                @endif
+                                                @if ($selectedMethod && $selectedMethod->address)
+                                                    <div class="mt-2 text-sm text-gray-700">
+                                                        <span class="font-medium">Adresse :</span>
+                                                        {{ $selectedMethod->address }}
+                                                    </div>
+                                                @endif
                                             @else
                                                 <div class="p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
                                                     <p class="text-sm text-yellow-700">Aucun moyen de paiement n'est

@@ -438,13 +438,18 @@
 
                 @if ($selectedMethod)
                     <p class="mb-2">{{ $selectedMethod->name }}</p>
-
-                    {{-- @if ($selectedMethod->instructions)
-                        <div class="bg-yellow-50 border border-yellow-200 p-4 rounded-lg mb-4">
-                            <h4 class="font-semibold text-yellow-800 mb-2">Instructions</h4>
-                            <p class="text-sm">{!! nl2br(e($selectedMethod->instructions)) !!}</p>
+                    @if ($selectedMethod->motifs)
+                        <div class="mb-2">
+                            <span class="font-medium">Motifs :</span>
+                            <span class="text-gray-700">{{ $selectedMethod->motifs }}</span>
                         </div>
-                    @endif --}}
+                    @endif
+                    @if ($selectedMethod->address)
+                        <div class="mb-2">
+                            <span class="font-medium">Adresse :</span>
+                            <span class="text-gray-700">{{ $selectedMethod->address }}</span>
+                        </div>
+                    @endif
 
                     @if ($selectedMethod->code == 'transfer' && $account)
                         <div class="bg-yellow-50 border border-yellow-200 p-4 rounded-lg mb-4">
