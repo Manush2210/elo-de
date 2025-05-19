@@ -61,6 +61,8 @@ Route::prefix('admin')->middleware(['auth', 'admin'])->group(function () {
     Route::get('/orders/{order}', \App\Livewire\Admin\Pages\OrderDetail::class)->name('admin.orders.detail');
     Route::get('/users', \App\Livewire\Admin\Pages\Users::class)->name('admin.users');
     Route::get('/payment-methods', PaymentMethods::class)->name('admin.payment-methods');
+    Route::get('/consultation-types', App\Livewire\Admin\Pages\ConsultationTypes::class)
+        ->name('admin.consultation-types');
 });
 
 // Routes publiques

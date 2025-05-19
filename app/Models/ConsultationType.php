@@ -12,10 +12,16 @@ class ConsultationType extends Model
     protected $fillable = [
         'name',
         'description',
-        'image',
         'price',
+        'image',
         'is_active',
-        'sort_order'
+        'sort_order',
+    ];
+
+    protected $casts = [
+        'price' => 'decimal:2',
+        'is_active' => 'boolean',
+        'sort_order' => 'integer',
     ];
 
     /**

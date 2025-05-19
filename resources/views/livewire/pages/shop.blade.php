@@ -42,8 +42,9 @@
             </div>
 
             <!-- Grille de produits -->
-            @if ($viewMode === 'grid')
-                <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+            <div x-data="{ viewMode: @entangle('viewMode') }" x-cloak>
+                <div id="grid-view" x-show="viewMode === 'grid'"
+                    class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                     @forelse ($products as $item)
                         @livewire(
                             'components.product.product-card',
@@ -52,8 +53,9 @@
                                 'title' => $item->name,
                                 'price' => $item->price,
                                 'slug' => $item->slug,
+                                'product' => $item,
                             ],
-                            key($item->id)
+                            key('grid-' . $item->id)
                         )
                     @empty
                         <div class="col-span-full text-center py-8">
@@ -63,9 +65,9 @@
                         </div>
                     @endforelse
                 </div>
-            @else
+
                 <!-- Vue liste -->
-                <div class="flex flex-col gap-4">
+                <div id="list-view" x-show="viewMode === 'list'" class="flex flex-col gap-4">
                     @forelse ($products as $item)
                         @livewire(
                             'components.product.product-list-view',
@@ -75,8 +77,9 @@
                                 'price' => $item->price,
                                 'slug' => $item->slug,
                                 'description' => $item->description,
+                                'product' => $item,
                             ],
-                            key($item->id)
+                            key('list-' . $item->id)
                         )
                     @empty
                         <div class="text-center py-8">
@@ -86,7 +89,7 @@
                         </div>
                     @endforelse
                 </div>
-            @endif
+            </div>
         </div>
     </section>
 </div>

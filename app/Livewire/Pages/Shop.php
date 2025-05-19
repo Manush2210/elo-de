@@ -40,6 +40,7 @@ class Shop extends Component
     public function toggleViewMode()
     {
         $this->viewMode = $this->viewMode === 'grid' ? 'list' : 'grid';
+        $this->loadProducts(); // Recharger les produits après le changement de vue
     }
 
     public function render()
