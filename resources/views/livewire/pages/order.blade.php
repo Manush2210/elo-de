@@ -316,7 +316,7 @@
                     @foreach ($paymentMethods as $method)
                         <label
                             class="flex items-center p-4 border rounded-lg {{ $payment_method == $method->code ? 'border-lime-500 bg-lime-50' : 'border-gray-200' }}">
-                            <input type="radio" wire:model="payment_method" value="{{ $method->code }}"
+                            <input type="radio" wire:model.live="payment_method" value="{{ $method->code }}"
                                 class="mr-3">
                             <div>
                                 @if ($method->logo)
