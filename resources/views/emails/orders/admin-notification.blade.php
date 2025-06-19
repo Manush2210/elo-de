@@ -55,6 +55,13 @@
             font-weight: bold;
             background-color: #f9f9f9;
         }
+
+        .bank-details {
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
     </style>
 </head>
 
@@ -126,11 +133,8 @@
             </table>
 
             <h2>Informations de paiement</h2>
-            @php
-                $paymentMethod = \App\Models\PaymentMethod::where('code', $order->payment_method)->first();
-            @endphp
             <p>
-                <strong>Méthode :</strong> {{ $paymentMethod ? $paymentMethod->name : $order->payment_method }}<br>
+                <strong>Méthode :</strong> Virement bancaire<br>
                 <strong>Statut :</strong> {{ $order->status == 'pending' ? 'En attente' : $order->status }}<br>
                 <strong>Preuve de paiement :</strong>
                 @if ($order->payment_proof)
@@ -140,18 +144,16 @@
                 @endif
             </p>
 
-            @if (
-                $paymentMethod &&
-                    ($paymentMethod->receiver_firstname || $paymentMethod->receiver_lastname || $paymentMethod->receiver_country))
-                <p><strong>Informations du destinataire :</strong></p>
-                <ul>
-                    @if ($paymentMethod->receiver_firstname || $paymentMethod->receiver_lastname)
-                        <li>Nom: {{ $paymentMethod->receiver_firstname }} {{ $paymentMethod->receiver_lastname }}</li>
-                    @endif
-                    @if ($paymentMethod->receiver_country)
-                        <li>Pays: {{ $paymentMethod->receiver_country }}</li>
-                    @endif
-                </ul>
+            @if ($bankAccount)
+                <div class="bank-details">
+                    <h4>Coordonnées bancaires utilisées</h4>
+                    <p><strong>Banque:</strong> {{ $bankAccount->bank }}</p>
+                    <p><strong>Bénéficiaire:</strong> {{ $bankAccount->owner }}</p>
+                    <p><strong>IBAN:</strong> {{ $bankAccount->iban }}</p>
+                    <p><strong>BIC/SWIFT:</strong> {{ $bankAccount->swift }}</p>
+                    <p><strong>Adresse:</strong> {{ $bankAccount->address }}</p>
+                    <p><strong>Pays:</strong> {{ $bankAccount->country }}</p>
+                </div>
             @endif
 
             @if ($order->notes)

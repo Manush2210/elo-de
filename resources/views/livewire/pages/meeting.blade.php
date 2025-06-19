@@ -1,3 +1,7 @@
+@php
+    use App\Models\Account;
+@endphp
+
 <div>
     <section>
         <div class=" container">
@@ -210,112 +214,90 @@
                                     <div class="border rounded-lg p-6">
 
                                         <div class="mb-6 p-4 bg-gray-50 border border-gray-200 rounded-lg">
-                                            <h4 class="font-semibold text-lg mb-3 text-gray-700">Moyens de paiement
-                                                disponibles</h4>
+                                            <h4 class="font-semibold text-lg mb-3 text-gray-700">Informations bancaires
+                                                pour le virement</h4>
 
-                                            @if (count($paymentMethods) > 0)
-                                                <div class="space-y-3 mb-4">
-                                                    @foreach ($paymentMethods as $method)
-                                                        <label
-                                                            class="flex items-center p-3 border rounded-lg {{ $selectedPaymentMethod == $method->code ? 'border-purple-500 bg-purple-50' : 'border-gray-200' }}">
-                                                            <input type="radio"
-                                                                wire:model.live="selectedPaymentMethod"
-                                                                value="{{ $method->code }}" class="mr-3">
-                                                            <div>
+                                            @php
+                                                $account = Account::where('is_active', true)->first();
+                                            @endphp
 
-
-                                                                @if ($method->logo)
-                                                                    <img src="{{ asset('storage/' . $method->logo) }}"
-                                                                        alt="{{ $method->name }}" class="h-5 mb-1">
-                                                                @endif
-                                                                <span class="font-medium">{{ $method->name }}</span>
-                                                                <p class="text-xs text-gray-500">
-                                                                    {{ $method->description }}</p>
+                                            @if ($account)
+                                                <div class="space-y-4 mb-6">
+                                                    <div
+                                                        class="bg-white border border-gray-200 rounded-lg p-4 shadow-sm">
+                                                        <div class="space-y-4">
+                                                            <!-- Informations bancaires -->
+                                                            <div class="space-y-3">
+                                                                <h5
+                                                                    class="font-semibold text-gray-800 text-sm border-b border-gray-200 pb-2">
+                                                                    Informations bancaires</h5>
+                                                                <div class="space-y-2">
+                                                                    <div
+                                                                        class="flex flex-col sm:flex-row sm:items-center">
+                                                                        <span
+                                                                            class="w-full sm:w-24 font-semibold text-gray-700 text-sm mb-1 sm:mb-0">Banque:</span>
+                                                                        <span
+                                                                            class="text-gray-900 font-medium text-sm break-all">{{ $account->bank ?? 'Non renseigné' }}</span>
+                                                                    </div>
+                                                                    <div
+                                                                        class="flex flex-col sm:flex-row sm:items-center">
+                                                                        <span
+                                                                            class="w-full sm:w-24 font-semibold text-gray-700 text-sm mb-1 sm:mb-0">IBAN:</span>
+                                                                        <span
+                                                                            class="text-gray-900 font-mono text-sm break-all">{{ $account->iban ?? 'Non renseigné' }}</span>
+                                                                    </div>
+                                                                    <div
+                                                                        class="flex flex-col sm:flex-row sm:items-center">
+                                                                        <span
+                                                                            class="w-full sm:w-24 font-semibold text-gray-700 text-sm mb-1 sm:mb-0">BIC/SWIFT:</span>
+                                                                        <span
+                                                                            class="text-gray-900 font-mono text-sm break-all">{{ $account->swift ?? 'Non renseigné' }}</span>
+                                                                    </div>
+                                                                </div>
                                                             </div>
-                                                        </label>
-                                                    @endforeach
+
+                                                            <!-- Informations bénéficiaire -->
+                                                            {{-- <div class="space-y-3 pt-3 border-t border-gray-200">
+                                                                <h5
+                                                                    class="font-semibold text-gray-800 text-sm border-b border-gray-200 pb-2">
+                                                                    Informations bénéficiaire</h5>
+                                                                <div class="space-y-2">
+                                                                    <div
+                                                                        class="flex flex-col sm:flex-row sm:items-center">
+                                                                        <span
+                                                                            class="w-full sm:w-24 font-semibold text-gray-700 text-sm mb-1 sm:mb-0">Bénéficiaire:</span>
+                                                                        <span
+                                                                            class="text-gray-900 font-medium text-sm break-all uppercase">{{ $account->owner ?? 'Non renseigné' }}</span>
+                                                                    </div>
+                                                                    <div
+                                                                        class="flex flex-col sm:flex-row sm:items-center">
+                                                                        <span
+                                                                            class="w-full sm:w-24 font-semibold text-gray-700 text-sm mb-1 sm:mb-0">Adresse:</span>
+                                                                        <span
+                                                                            class="text-gray-900 text-sm break-all">{{ $account->address ?? 'Non renseigné' }}</span>
+                                                                    </div>
+                                                                    <div
+                                                                        class="flex flex-col sm:flex-row sm:items-center">
+                                                                        <span
+                                                                            class="w-full sm:w-24 font-semibold text-gray-700 text-sm mb-1 sm:mb-0">Pays:</span>
+                                                                        <span
+                                                                            class="text-gray-900 text-sm break-all">{{ $account->country ?? 'Non renseigné' }}</span>
+                                                                    </div>
+                                                                </div>
+                                                            </div> --}}
+                                                        </div>
+                                                    </div>
                                                 </div>
-
-                                                @php
-                                                    $selectedMethod = $paymentMethods->firstWhere(
-                                                        'code',
-                                                        $selectedPaymentMethod,
-                                                    );
-                                                @endphp
-
-                                                @if ($selectedMethod && $selectedMethod->code == 'transfer' && $account)
-                                                    <div class="space-y-2">
-                                                        <div class="flex">
-                                                            <span class="w-20 font-medium text-gray-500">Nom:</span>
-                                                            <span
-                                                                class="text-slate-700 uppercase">{{ $account->owner }}</span>
-                                                        </div>
-                                                        <div class="flex">
-                                                            <span class="w-20 font-medium text-gray-500">IBAN:</span>
-                                                            <span
-                                                                class="text-slate-700 font-mono uppercase">{{ $account->iban }}</span>
-                                                        </div>
-                                                        <div class="flex">
-                                                            <span class="w-20 font-medium text-gray-500">SWIFT:</span>
-                                                            <span
-                                                                class="text-slate-700 font-mono uppercase">{{ $account->swift }}</span>
-                                                        </div>
-                                                    </div>
-                                                @endif
-
-                                                @if (
-                                                    $selectedMethod &&
-                                                        ($selectedMethod->receiver_firstname ||
-                                                            $selectedMethod->receiver_lastname ||
-                                                            $selectedMethod->receiver_country))
-                                                    <div class="mt-4 p-3 bg-blue-50 border border-blue-200 rounded-lg">
-                                                        <h5 class="font-medium mb-2 text-blue-800">Informations du
-                                                            destinataire:</h5>
-                                                        <div class="space-y-1">
-                                                            @if ($selectedMethod->receiver_firstname || $selectedMethod->receiver_lastname)
-                                                                <div class="flex">
-                                                                    <span
-                                                                        class="w-24 font-medium text-gray-600">Nom:</span>
-                                                                    <span class="text-slate-700">
-                                                                        {{ $selectedMethod->receiver_firstname }}
-                                                                        {{ $selectedMethod->receiver_lastname }}
-                                                                    </span>
-                                                                </div>
-                                                            @endif
-
-                                                            @if ($selectedMethod->receiver_country)
-                                                                <div class="flex">
-                                                                    <span
-                                                                        class="w-24 font-medium text-gray-600">Pays:</span>
-                                                                    <span
-                                                                        class="text-slate-700">{{ $selectedMethod->receiver_country }}</span>
-                                                                </div>
-                                                            @endif
-                                                        </div>
-                                                    </div>
-                                                @endif
-
-                                                @if ($selectedMethod && $selectedMethod->motifs)
-                                                    <div class="mt-2 text-sm text-gray-700">
-                                                        <span class="font-medium">Motifs :</span>
-                                                        {{ $selectedMethod->motifs }}
-                                                    </div>
-                                                @endif
-                                                @if ($selectedMethod && $selectedMethod->address)
-                                                    <div class="mt-2 text-sm text-gray-700">
-                                                        <span class="font-medium">Adresse :</span>
-                                                        {{ $selectedMethod->address }}
-                                                    </div>
-                                                @endif
                                             @else
                                                 <div class="p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
-                                                    <p class="text-sm text-yellow-700">Aucun moyen de paiement n'est
+                                                    <p class="text-sm text-yellow-700">Aucun compte bancaire n'est
                                                         disponible pour le moment. Veuillez nous contacter pour plus
                                                         d'informations.</p>
                                                 </div>
                                             @endif
 
-                                            <p class="mt-3 text-sm text-gray-500">Veuillez effectuer votre paiement et
+                                            <p class="mt-3 text-sm text-gray-500">Veuillez effectuer votre virement
+                                                bancaire et
                                                 télécharger la preuve de paiement ci-dessous.</p>
                                         </div>
                                         <h3 class="text-xl font-semibold mb-4">Vos informations</h3>
@@ -386,16 +368,12 @@
 
                                             <div>
                                                 <label for="payment_proof"
-                                                    class="block text-gray-700 font-semibold">Preuve de paiement <span
-                                                        class="text-red-500">*</span></label>
+                                                    class="block text-gray-700 font-semibold">Preuve de
+                                                    paiement <span class="text-red-500">*</span></label>
                                                 <p class="text-sm text-gray-500 mb-2">
-                                                    @if ($selectedMethod)
-                                                        Veuillez télécharger une preuve de votre paiement
-                                                        {{ $selectedMethod->name }}.
-                                                    @else
-                                                        Vous devez télécharger une preuve de paiement pour valider votre
-                                                        rendez-vous.
-                                                    @endif
+                                                    Vous devez télécharger une preuve de votre virement bancaire pour
+                                                    valider votre
+                                                    rendez-vous.
                                                 </p>
                                                 <div x-data="{ fileName: '' }" class="mt-1 flex items-center">
                                                     <input type="file" id="payment_proof"

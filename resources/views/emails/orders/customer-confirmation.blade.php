@@ -52,6 +52,13 @@
             font-weight: bold;
             background-color: #f9f9f9;
         }
+
+        .bank-details {
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
     </style>
 </head>
 
@@ -80,25 +87,19 @@
                 </tbody>
             </table>
 
-            @php
-                $paymentMethod = \App\Models\PaymentMethod::where('code', $order->payment_method)->first();
-            @endphp
-
             <h3>Détails du paiement</h3>
-            <p>Méthode de paiement: {{ $paymentMethod ? $paymentMethod->name : $order->payment_method }}</p>
+            <p>Méthode de paiement: Virement bancaire</p>
 
-            @if (
-                $paymentMethod &&
-                    ($paymentMethod->receiver_firstname || $paymentMethod->receiver_lastname || $paymentMethod->receiver_country))
-                <p><strong>Informations du destinataire:</strong></p>
-                <ul>
-                    @if ($paymentMethod->receiver_firstname || $paymentMethod->receiver_lastname)
-                        <li>Nom: {{ $paymentMethod->receiver_firstname }} {{ $paymentMethod->receiver_lastname }}</li>
-                    @endif
-                    @if ($paymentMethod->receiver_country)
-                        <li>Pays: {{ $paymentMethod->receiver_country }}</li>
-                    @endif
-                </ul>
+            @if ($bankAccount)
+                <div class="bank-details">
+                    <h4>Coordonnées bancaires</h4>
+                    <p><strong>Banque:</strong> {{ $bankAccount->bank }}</p>
+                    <p><strong>Bénéficiaire:</strong> {{ $bankAccount->owner }}</p>
+                    <p><strong>IBAN:</strong> {{ $bankAccount->iban }}</p>
+                    <p><strong>BIC/SWIFT:</strong> {{ $bankAccount->swift }}</p>
+                    <p><strong>Adresse:</strong> {{ $bankAccount->address }}</p>
+                    <p><strong>Pays:</strong> {{ $bankAccount->country }}</p>
+                </div>
             @endif
 
             <p>Pour toute question: <a

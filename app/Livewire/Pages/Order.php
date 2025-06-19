@@ -14,7 +14,6 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\OrderCustomerConfirmation;
-use App\Models\PaymentMethod;
 
 class Order extends Component
 {
@@ -47,15 +46,15 @@ class Order extends Component
     public $shipping_country = 'France';
 
     // Paiement
-    public $payment_method = 'card';
+    public $payment_method = 'virement_bancaire';
     public $notes;
     public $payment_proof; // Pour le justificatif
     public $has_proof = false; // Indicateur si preuve téléchargée
     public $account; // Pour les coordonnées bancaires
-    public $paymentMethods = [];
 
     // Résumé commande
     public $cartItems = [];
+    public $cartCount = 0;
     public $subTotal = 0;
     public $shippingCost = 0;
     public $total = 0;
@@ -64,17 +63,16 @@ class Order extends Component
     {
         // Récupérer les coordonnées bancaires
         $this->account = Account::getLastActive();
-        $this->payment_method = 'transfer'; // Forcer le virement comme méthode par défaut
 
-        if (auth()->check()) {
+        if (Auth::check()) {
             // Utilisateur connecté : obtenir depuis la BD
-            $user = auth()->user();
+            $user = Auth::user();
             if ($user->cart) {
                 $this->cartItems = $user->cart->items()->with('product')->get()->toArray();
-                $this->cartItemCount = $user->cart->items()->sum('quantity');
+                $this->cartCount = $user->cart->items()->sum('quantity');
             } else {
                 $this->cartItems = [];
-                $this->cartItemCount = 0;
+                $this->cartCount = 0;
             }
         } else {
             // Visiteur : obtenir depuis la session et normaliser le format
@@ -87,7 +85,7 @@ class Order extends Component
             }
 
             $this->cartItems = $normalizedItems;
-            $this->cartItemCount = array_sum(array_column($normalizedItems, 'quantity'));
+            $this->cartCount = array_sum(array_column($normalizedItems, 'quantity'));
         }
         // Vérifier si le panier est vide
         $cart = $this->cartItems;
@@ -117,8 +115,6 @@ class Order extends Component
         } else {
             $this->accountOption = 'register';
         }
-
-        $this->loadPaymentMethods();
     }
 
     private function updateOrderSummary()
@@ -127,7 +123,7 @@ class Order extends Component
         $this->subTotal = 0;
 
         // La structure diffère selon que l'utilisateur est connecté ou non
-        if (auth()->check()) {
+        if (Auth::check()) {
             // Pour un utilisateur connecté, la structure est celle d'Eloquent
             foreach ($this->cartItems as $item) {
                 $this->subTotal += $item['product']['price'] * $item['quantity'];
@@ -174,9 +170,14 @@ class Order extends Component
                 ]);
             }
         } else if ($this->step === 2) {
-            $this->validate([
-                'payment_method' => 'required',
-            ]);
+            // Vérifier si un compte bancaire est disponible
+            if (!$this->account) {
+                $this->dispatch('showToast', [
+                    'message' => 'Aucun compte bancaire disponible pour le paiement',
+                    'type' => 'error'
+                ]);
+                return;
+            }
         }
 
         $this->step++;
@@ -231,7 +232,7 @@ class Order extends Component
     public function createOrder()
     {
         // Wrap the entire operation in a database transaction
-        return \DB::transaction(function () {
+        return \Illuminate\Support\Facades\DB::transaction(function () {
             // Si l'utilisateur a choisi de s'inscrire
             if ($this->accountOption === 'register' && !Auth::check()) {
                 $user = User::create([
@@ -260,7 +261,7 @@ class Order extends Component
                 'subtotal' => $this->subTotal,
                 'shipping' => $this->shippingCost,
                 'total' => $this->total,
-                'payment_method' => $this->payment_method,
+                'payment_method' => 'virement_bancaire',
                 'shipping_first_name' => $this->use_different_shipping ? $this->shipping_first_name : $this->first_name,
                 'shipping_last_name' => $this->use_different_shipping ? $this->shipping_last_name : $this->last_name,
                 'shipping_email' => $this->email,
@@ -297,6 +298,10 @@ class Order extends Component
                 $proofPath = $this->payment_proof->store('payment_proofs', 'public');
                 $order->update(['payment_proof' => $proofPath]);
             }
+
+            // Récupérer le compte bancaire actif
+            $bankAccount = Account::getLastActive();
+
             // Envoyer les emails de notification
             try {
                 // Récupérer l'order avec ses items pour les emails
@@ -304,11 +309,11 @@ class Order extends Component
 
                 // Email à l'administrateur
                 Mail::to('contact@voyance-spirituelle-expert.com')
-                    ->send(new OrderAdminNotification($orderWithItems));
+                    ->send(new OrderAdminNotification($orderWithItems, $bankAccount));
 
                 // Email au client
                 Mail::to($orderWithItems->billing_email)
-                    ->send(new OrderCustomerConfirmation($orderWithItems));
+                    ->send(new OrderCustomerConfirmation($orderWithItems, $bankAccount));
             } catch (\Exception $e) {
                 // Log l'erreur mais continue le process
                 logger()->error('Erreur lors de l\'envoi des emails de commande: ' . $e->getMessage());
@@ -331,17 +336,6 @@ class Order extends Component
             // Rediriger vers la confirmation with success message new-order
             return redirect()->route('order-history')->with('new-order', 'Votre commande a été créée avec succès. Les détails de votre commande sont disponibles dans votre espace client.');
         });
-    }
-
-    public function loadPaymentMethods()
-    {
-        $this->paymentMethods = PaymentMethod::where('is_active', true)->get();
-        // Si au moins une méthode est active, sélectionner la première par défaut
-        if ($this->paymentMethods->count() > 0) {
-            $this->payment_method = $this->paymentMethods->first()->code;
-        } else {
-            $this->payment_method = null;
-        }
     }
 
     public function render()

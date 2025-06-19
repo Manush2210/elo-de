@@ -45,7 +45,7 @@
                 <span class="ml-3">Produits</span>
             </a>
 
-            <a class="text-white/50 p-4 inline-flex items-center rounded-md hover:bg-gray-800 hover:text-white smooth-hover w-full {{ request()->routeIs('admin.payment-methods') ? 'bg-gray-800 text-white' : '' }}"
+            {{-- <a class="text-white/50 p-4 inline-flex items-center rounded-md hover:bg-gray-800 hover:text-white smooth-hover w-full {{ request()->routeIs('admin.payment-methods') ? 'bg-gray-800 text-white' : '' }}"
                 href="{{ route('admin.payment-methods') }}">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 sm:h-6 sm:w-6" fill="none" viewBox="0 0 24 24"
                     stroke="currentColor">
@@ -53,7 +53,7 @@
                         d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
                 </svg>
                 <span class="ml-3">Moyens de Paiement</span>
-            </a>
+            </a> --}}
 
             <a class="text-white/50 p-4 inline-flex items-center rounded-md hover:bg-gray-800 hover:text-white smooth-hover w-full {{ request()->routeIs('admin.consultation-types') ? 'bg-gray-800 text-white' : '' }}"
                 href="{{ route('admin.consultation-types') }}">

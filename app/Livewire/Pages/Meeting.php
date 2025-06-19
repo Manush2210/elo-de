@@ -11,7 +11,6 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Mail;
 use Livewire\Component;
 use Livewire\WithFileUploads;
-use App\Models\PaymentMethod;
 use App\Models\ConsultationType;
 
 class Meeting extends Component
@@ -38,14 +37,10 @@ class Meeting extends Component
     public $calendarDays = [];
     public $bookedDates = [];
 
-    public $paymentMethods;
-    public $selectedPaymentMethod = null;
-
     public $consultationTypes; // Types de consultation disponibles
 
     public function mount()
     {
-        $this->paymentMethods = collect();
         $this->consultationTypes = collect();
 
         $now = Carbon::now();
@@ -54,7 +49,6 @@ class Meeting extends Component
         $this->generateCalendar();
         $this->loadBookedDates();
         $this->account = Account::where('is_active', true)->latest()->first();
-        $this->loadPaymentMethods();
         $this->loadConsultationTypes();
 
         // Store the timestamp when the form is loaded
@@ -149,7 +143,7 @@ class Meeting extends Component
 
         $this->selectedDate = $date;
         $this->loadAvailableTimeSlots();
-       // dd($this->availableTimeSlots);
+        // dd($this->availableTimeSlots);
     }
 
     public function loadAvailableTimeSlots()
@@ -240,7 +234,6 @@ class Meeting extends Component
             'selectedTimeSlot' => 'required',
             'paymentProof' => 'required|file|max:10240', // 10MB max
             'contactMethod' => 'required|in:email,whatsapp,telephone',
-            'selectedPaymentMethod' => 'required|string',
             'selectedConsultationType' => 'required|exists:consultation_types,id',
         ], [
             'clientName.required' => 'Veuillez saisir votre nom',
@@ -256,7 +249,6 @@ class Meeting extends Component
             'paymentProof.max' => 'La taille du fichier ne doit pas dépasser 10Mo',
             'contactMethod.required' => 'Veuillez sélectionner une méthode de contact',
             'contactMethod.in' => 'Méthode de contact invalide',
-            'selectedPaymentMethod.required' => 'Veuillez sélectionner un moyen de paiement',
             'selectedConsultationType.required' => 'Veuillez sélectionner un type de consultation',
             'selectedConsultationType.exists' => 'Le type de consultation sélectionné n\'est pas valide',
         ]);
@@ -269,6 +261,9 @@ class Meeting extends Component
             $paymentProofPath = $this->paymentProof->store('payment_proofs', 'public');
         }
 
+        // Récupération du compte bancaire actif
+        $bankAccount = Account::getLastActive();
+
         // Création du rendez-vous
         $appointment = Appointment::create([
             'client_name' => $this->clientName,
@@ -279,7 +274,7 @@ class Meeting extends Component
             'end_time' => Carbon::parse($this->selectedDate . ' ' . $slot->end_time),
             'notes' => $this->notes,
             'payment_proof' => $paymentProofPath,
-            'payment_method' => $this->selectedPaymentMethod,
+            'payment_method' => 'virement_bancaire', // Méthode fixée à virement bancaire
             'status' => 'booked',
             'contact_method' => $this->contactMethod,
             'consultation_type_id' => $this->selectedConsultationType,
@@ -287,11 +282,11 @@ class Meeting extends Component
 
         // Envoyer un email de confirmation au client
         Mail::to($this->clientEmail)
-            ->send(new AppointmentConfirmation($appointment, $slot));
+            ->send(new AppointmentConfirmation($appointment, $slot, $bankAccount));
 
         // Envoyer un email de notification à l'admin
         Mail::to('contact@voyance-spirituelle-expert.com')
-            ->send(new AdminAppointmentNotification($appointment, $slot));
+            ->send(new AdminAppointmentNotification($appointment, $slot, $bankAccount));
         $this->dispatch('showToast', [
             'message' => 'Rendez-vous réservé avec succès! Un email de confirmation vous a été envoyé.',
         ]);
@@ -299,16 +294,6 @@ class Meeting extends Component
         session()->flash('message', 'Rendez-vous réservé avec succès! Un email de confirmation vous a été envoyé.');
         $this->loadBookedDates();
         $this->loadAvailableTimeSlots();
-    }
-
-    public function loadPaymentMethods()
-    {
-        $this->paymentMethods = PaymentMethod::where('is_active', true)->get();
-
-        // Si au moins une méthode est active, sélectionner la première par défaut
-        if ($this->paymentMethods->isNotEmpty()) {
-            $this->selectedPaymentMethod = $this->paymentMethods->first()->code;
-        }
     }
 
     /**

@@ -16,6 +16,14 @@
         - Prix: {{ number_format($appointment->consultationType->price, 2) }} €
     @endif
 
+    ## Informations bancaires utilisées:
+    @if ($bankAccount)
+        - Banque: {{ $bankAccount->bank }}
+        - Bénéficiaire: {{ $bankAccount->owner }}
+        - IBAN: {{ $bankAccount->iban }}
+        - BIC/SWIFT: {{ $bankAccount->swift }}
+    @endif
+
     ## Méthode de contact:
     @if ($appointment->contact_method === 'email')
         Le client souhaite être contacté par **email** à: {{ $appointment->client_email }}
@@ -28,7 +36,7 @@
     @endif
 
     ## Méthode de paiement:
-    - {{ $appointment->payment_method }}
+    - Virement bancaire
 
     @if ($appointment->notes)
         ## Notes du client:
