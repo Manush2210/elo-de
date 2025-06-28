@@ -2,20 +2,24 @@
 
 namespace App\Livewire\Pages;
 
-use App\Models\Account;
-use App\Models\Appointment;
-use App\Models\TimeSlot;
-use App\Mail\AppointmentConfirmation;
-use App\Mail\AdminAppointmentNotification;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\Mail;
+use App\Models\Account;
 use Livewire\Component;
+use App\Models\TimeSlot;
+use App\Models\Appointment;
 use Livewire\WithFileUploads;
 use App\Models\ConsultationType;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\AppointmentConfirmation;
+use App\Mail\AdminAppointmentNotification;
 
 class Meeting extends Component
 {
     use WithFileUploads; // Ajouter cette ligne pour gérer l'upload de fichiers
+
+    public $turnstileToken;
+
 
     public $account = null;
     public $currentMonth;
@@ -53,6 +57,20 @@ class Meeting extends Component
 
         // Store the timestamp when the form is loaded
         session(['meeting_form_time' => time()]);
+    }
+
+    protected function verifyTurnstile()
+    {
+        $response = Http::asForm()->post('https://challenges.cloudflare.com/turnstile/v0/siteverify', [
+            'secret' => config('services.cloudflare.secret_key'),
+            'response' => $this->turnstileToken,
+            'remoteip' => request()->ip(),
+        ]);
+
+        $result = $response->json();
+        // dd($result);
+
+        return $result['success'] ?? false;
     }
 
     public function generateCalendar()
@@ -206,6 +224,20 @@ class Meeting extends Component
 
     public function bookAppointment()
     {
+
+        $turnstileToken = $this->turnstileToken;
+        // dd($turnstileToken);
+
+        if (!$turnstileToken) {
+            session()->flash('error', 'La vérification de sécurité a échoué. Veuillez réessayer.');
+            return;
+        }
+
+        // Vérifier le token Turnstile
+        if (!$this->verifyTurnstile()) {
+            session()->flash('error', 'La vérification de sécurité a échoué. Veuillez réessayer.');
+            return;
+        }
         // More effective honeypot check - if filled, silently fail
         if (!empty($this->phone_confirm)) {
             // Log the bot attempt (optional)
@@ -227,6 +259,7 @@ class Meeting extends Component
         }
 
         $this->validate([
+            'turnstileToken' => 'required',
             'clientName' => 'required|min:3',
             'clientEmail' => 'required|email',
             'clientPhone' => 'required',
@@ -236,6 +269,7 @@ class Meeting extends Component
             'contactMethod' => 'required|in:email,whatsapp,telephone',
             'selectedConsultationType' => 'required|exists:consultation_types,id',
         ], [
+            'turnstileToken.required' => 'La vérification de sécurité a échoué. Veuillez réessayer.',
             'clientName.required' => 'Veuillez saisir votre nom',
             'clientName.min' => 'Votre nom doit contenir au moins 3 caractères',
             'clientEmail.required' => 'Veuillez saisir votre email',
@@ -258,6 +292,7 @@ class Meeting extends Component
         // Chemin de stockage du fichier
         $paymentProofPath = null;
         if ($this->paymentProof) {
+
             $paymentProofPath = $this->paymentProof->store('payment_proofs', 'public');
         }
 

@@ -4,16 +4,26 @@
 
 <div>
     <section>
-        <div class=" container">
-            <div class="my-4 font-[Poly] ">
-                <h1 class="text-4xl font-bold text-gray-500">Rendez-vous</h1>
+        <div class=" container md:max-w-4xl">
+            <div class="my-6 md:my-8 font-[Poly] px-4 md:px-0">
+                <h1
+                    class="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-500 text-center md:text-left leading-tight">
+                    Rendez-vous
+                </h1>
             </div>
-            <p class="text-xl mb-6 font-bold text-gray-400">
-                Je vous souhaite la bienvenue, j'aurai le plaisir de répondre à toutes vos questions concernant l'amour,
-                le travail, l'argent ... lors de votre consultation privée que vous pouvez réserver via le calendrier
-                ci-dessous. Grâce à la guidance réalisée avec des cartes divinatoires (oracle), je vous apporte mon aide
-                afin d'orienter votre vie vers la meilleure direction en vous apportant des réponses à vos questions.
-            </p>
+            <div class="px-4 md:px-0 mb-8 md:mb-10">
+                <p
+                    class="text-lg md:text-lg lg:text-xl font-bold text-gray-400 leading-relaxed text-center md:text-left max-w-4xl mx-auto">
+                    Je vous souhaite la bienvenue, j'aurai le plaisir de répondre à toutes vos questions concernant
+                    l'amour,
+                    le travail, l'argent ... lors de votre consultation privée que vous pouvez réserver via le
+                    calendrier
+                    ci-dessous. Grâce à la guidance réalisée avec des cartes divinatoires (oracle), je vous apporte mon
+                    aide
+                    afin d'orienter votre vie vers la meilleure direction en vous apportant des réponses à vos
+                    questions.
+                </p>
+            </div>
 
             <div class="meeting-form  mx-auto border-2 rounded-lg border-gray-300 ">
                 {{-- <div class="flex border-b-2 p-6 border-b-gray-200 flex-col gap-4 w-full">
@@ -55,6 +65,14 @@
                                     €</span>
                             </div>
                         </div> --}}
+                    </div>
+                </div>
+                <!-- Turnstile -->
+                <div class="flex flex-col justify-center p-8">
+                    <p class="text-xl text-slate-700">Vérification de sécurité</p>
+                    <div class="cf-turnstile mx-auto w-full" wire:ignore
+                        data-sitekey="{{ config('services.cloudflare.site_key') }}" data-callback="onTurnstileSuccess"
+                        data-expired-callback="onTurnstileExpired" data-size="flexible">
                     </div>
                 </div>
                 <div class="meeting-scheduler">
@@ -456,3 +474,25 @@
     </section>
 
 </div>
+@push('scripts')
+    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('DOMContentLoaded');
+        });
+        // Callback quand Turnstile est validé avec succès
+        function onTurnstileSuccess(token) {
+            // Le token est automatiquement ajouté au formulaire dans un champ caché cf-turnstile-response
+            if (token) {
+                @this.set('turnstileToken', token);
+
+
+            }
+        }
+
+        // Callback quand le token Turnstile expire
+        function onTurnstileExpired() {
+            console.log('Le token Turnstile a expiré, veuillez recharger la page');
+        }
+    </script>
+@endpush
