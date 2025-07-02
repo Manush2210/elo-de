@@ -47,7 +47,7 @@ class ContactMailable extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            from: 'contact@voyance-spirituelle-expert.com',
+            from: 'noreply@voyance-spirituelle-expert.com',
             replyTo: $this->email,
             // to: ['contact@voyance-spirituelle-expert.com', 'emmanueladenidji@gmail.com'],
             subject: 'Formulaire de contact - Voyance Spirituelle Expert',
