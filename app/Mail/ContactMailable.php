@@ -61,7 +61,7 @@ class ContactMailable extends Mailable
     {
         return new Content(
             view: 'emails.contact-form',
-            text: 'emails.text.contact-form-text',
+            text: 'emails.text.contact-form',
             with: [
                 'name' => $this->name,
                 'email' => $this->email,
