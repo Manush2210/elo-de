@@ -239,14 +239,14 @@ class Meeting extends Component
             return;
         }
         // More effective honeypot check - if filled, silently fail
-        if (!empty($this->phone_confirm)) {
-            // Log the bot attempt (optional)
-            \Illuminate\Support\Facades\Log::info('Bot submission detected in meeting form - Honeypot field was filled');
+        // if (!empty($this->phone_confirm)) {
+        //     // Log the bot attempt (optional)
+        //     \Illuminate\Support\Facades\Log::info('Bot submission detected in meeting form - Honeypot field was filled');
 
-            // Pretend success but don't process anything
-            session()->flash('message', 'Rendez-vous réservé avec succès! Un email de confirmation vous a été envoyé.');
-            return;
-        }
+        //     // Pretend success but don't process anything
+        //     session()->flash('message', 'Rendez-vous réservé avec succès! Un email de confirmation vous a été envoyé.');
+        //     return;
+        // }
 
         // Add a timing check (bots usually submit forms too quickly)
         $timestamp = session('meeting_form_time');

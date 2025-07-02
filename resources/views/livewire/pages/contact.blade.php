@@ -104,6 +104,15 @@
                             <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
                         @enderror
                     </div>
+                    <!-- Turnstile -->
+                    <div class="flex flex-col justify-center p-8">
+                        {{-- <p class="text-xl text-slate-700">Vérification de sécurité</p> --}}
+                        <div class="cf-turnstile mx-auto w-full" wire:ignore
+                            data-sitekey="{{ config('services.cloudflare.site_key') }}"
+                            data-callback="onTurnstileSuccess" data-expired-callback="onTurnstileExpired"
+                            data-size="flexible">
+                        </div>
+                    </div>
 
                     <div class="flex justify-end">
                         <button type="submit"
@@ -127,3 +136,25 @@
         </div>
     </section>
 </div>
+@push('scripts')
+    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('DOMContentLoaded');
+        });
+        // Callback quand Turnstile est validé avec succès
+        function onTurnstileSuccess(token) {
+            // Le token est automatiquement ajouté au formulaire dans un champ caché cf-turnstile-response
+            if (token) {
+                @this.set('turnstileToken', token);
+
+
+            }
+        }
+
+        // Callback quand le token Turnstile expire
+        function onTurnstileExpired() {
+            console.log('Le token Turnstile a expiré, veuillez recharger la page');
+        }
+    </script>
+@endpush

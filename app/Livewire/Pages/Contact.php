@@ -3,10 +3,12 @@
 namespace App\Livewire\Pages;
 
 use Livewire\Component;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Mail;
 
 class Contact extends Component
 {
+    public $turnstileToken = '';
     public $name = '';
     public $email = '';
     public $message = '';
@@ -27,18 +29,36 @@ class Contact extends Component
         'message.min' => 'Le message doit contenir au moins 10 caractères',
     ];
 
+    protected function verifyTurnstile()
+    {
+        $response = Http::asForm()->post('https://challenges.cloudflare.com/turnstile/v0/siteverify', [
+            'secret' => config('services.cloudflare.secret_key'),
+            'response' => $this->turnstileToken,
+            'remoteip' => request()->ip(),
+        ]);
+
+        $result = $response->json();
+        // dd($result);
+
+        return $result['success'] ?? false;
+    }
+
     public function submit()
     {
         // More effective honeypot check - if filled, silently fail
-        if (!empty($this->email_confirm)) {
-            // Log the bot attempt (optional)
-            \Illuminate\Support\Facades\Log::info('Bot submission detected - Honeypot field was filled');
+        $turnstileToken = $this->turnstileToken;
+        // dd($turnstileToken);
 
-            // Pretend success but don't process anything
-            session()->flash('success', 'Votre message a été envoyé avec succès !');
+        if (!$turnstileToken) {
+            session()->flash('error', 'La vérification de sécurité a échoué. Veuillez réessayer.');
             return;
         }
 
+        // Vérifier le token Turnstile
+        if (!$this->verifyTurnstile()) {
+            session()->flash('error', 'La vérification de sécurité a échoué. Veuillez réessayer.');
+            return;
+        }
         // Add a timing check (bots usually submit forms too quickly)
         $timestamp = session('form_time');
         $now = time();
@@ -71,6 +91,7 @@ class Contact extends Component
 
             session()->flash('success', 'Votre message a été envoyé avec succès !');
         } catch (\Exception $e) {
+            dd($e);
             session()->flash('error', 'Une erreur est survenue lors de l\'envoi du message.');
         }
     }
