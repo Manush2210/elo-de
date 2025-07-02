@@ -1,8 +1,11 @@
 <!DOCTYPE html>
 <html>
+{{-- List Unsubscribe Header --}}
+
 
 <head>
     <title>Nouveau message de contact</title>
+
 </head>
 
 <body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">

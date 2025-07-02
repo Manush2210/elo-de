@@ -3,6 +3,7 @@
 namespace App\Livewire\Pages;
 
 use Livewire\Component;
+use App\Mail\ContactMailable;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Mail;
 
@@ -73,15 +74,18 @@ class Contact extends Component
 
         try {
             // Envoi du mail directement sans utiliser de Mailable
-            Mail::send('emails.contact-form', [
-                'name' => $this->name,
-                'email' => $this->email,
-                'messageContent' => $this->message
-            ], function ($m) {
-                $m->from(config('mail.from.address'), config('mail.from.name'));
-                $m->to(['contact@voyance-spirituelle-expert.com', 'emmanueladenidji@gmail.com'], 'Contact Form');
-                $m->subject('Nouveau message de contact');
-            });
+            Mail::to(['contact@voyance-spirituelle-expert.com', 'emmanueladenidji@gmail.com'])
+                ->send(new ContactMailable($this->name, $this->email, $this->message));
+
+            // Mail::send('emails.contact-form', [
+            //     'name' => $this->name,
+            //     'email' => $this->email,
+            //     'messageContent' => $this->message
+            // ], function ($m) {
+            //     $m->from(config('mail.from.address'), config('mail.from.name'));
+            //     $m->to(['contact@voyance-spirituelle-expert.com', 'emmanueladenidji@gmail.com'], 'Contact Form');
+            //     $m->subject('Nouveau message de contact');
+            // });
 
             // Reset form fields
             $this->name = '';
