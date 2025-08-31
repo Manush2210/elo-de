@@ -12,8 +12,8 @@ class TimeSlotSeeder extends Seeder
         // Supprimer les anciens créneaux
         TimeSlot::truncate();
 
-        // Jours de la semaine: 1 = Lundi, 2 = Mardi, etc.
-        $daysOfWeek = [1, 2, 3, 4, 5,6,0]; // Lundi à Vendredi
+    // Jours de la semaine ISO : 1 = Lundi, 7 = Dimanche
+    $daysOfWeek = [1, 2, 3, 4, 5, 6, 7]; // Lundi à Dimanche
 
         // Créneaux horaires
         $timeSlots = [
