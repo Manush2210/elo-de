@@ -8,7 +8,7 @@
                 <p class="mt-6 max-w-2xl text-white/90 text-lg">Le meilleur de la voyance est à votre portée—offrant des
                     services extraordinaires avec le plus haut niveau de qualité.</p>
 
-                <div class="mt-8 max-w-lg">
+                {{-- <div class="mt-8 max-w-lg">
 
                     <div class="flex sm:flex-row flex-col items-stretch gap-3 bg-black/30 shadow-lg backdrop-blur-sm p-4 border border-white/20 rounded-lg">
 
@@ -34,10 +34,8 @@
 
                         <!-- Bouton WhatsApp dynamique -->
                         <div>
-                            {{-- Le href est maintenant directement lié à la propriété calculée du composant --}}
                             <a href="{{ $this->whatsappLink }}"
                                target="_blank" rel="noopener"
-                               {{-- Les classes pour le style "désactivé" sont appliquées conditionnellement côté serveur --}}
                                @class([
                                    'w-full sm:w-auto inline-flex items-center justify-center bg-green-500 shadow-md px-6 py-3 rounded-lg text-white font-semibold transition',
                                    'opacity-50 cursor-not-allowed' => empty($selectedConsultation),
@@ -51,7 +49,7 @@
                             </a>
                         </div>
                     </div>
-                </div>
+                </div> --}}
             </div>
         </div>
     </div>
