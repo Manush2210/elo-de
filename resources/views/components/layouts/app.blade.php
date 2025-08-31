@@ -8,15 +8,15 @@
     <link rel="icon" type="image/x-icon" href="{{ asset('assets/images/layout/logo.png') }}">
 
     <!-- Open Graph / Social Media Meta Tags -->
-    <meta property="og:site_name" content="Voyance Spirituelle Expert">
-    <meta property="og:title" content="{{ $title ?? 'Voyance Spirituelle Expert' }}">
+    <meta property="og:site_name" content="Coaching Voyance">
+    <meta property="og:title" content="{{ $title ?? 'Coaching Voyance' }}">
     <meta property="og:description"
-        content="{{ $description ?? 'Voyance Spirituelle Expert - Services de voyance en ligne et de lithothérapie ' }}">
+        content="{{ $description ?? 'Coaching Voyance - Services de voyance en ligne et de lithothérapie ' }}">
     <meta property="og:type" content="website">
     <meta property="og:url" content="{{ url()->current() }}">
     <meta property="og:image" content="{{ $ogImage ?? asset('assets/images/layout/logo.png') }}">
 
-    <title>{{ $title ?? 'Voyance Spirituelle Expert' }}</title>
+    <title>{{ $title ?? 'Coaching Voyance' }}</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @livewireStyles()
 </head>

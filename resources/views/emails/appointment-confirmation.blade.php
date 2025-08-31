@@ -44,5 +44,5 @@
 
     Merci pour votre confiance,
 
-    L'équipe de Voyance Spirituelle Expert
+    L'équipe de Coaching Voyance
 @endcomponent

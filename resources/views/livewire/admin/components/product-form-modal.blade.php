@@ -1,11 +1,11 @@
 <div>
     @if ($isOpen)
-        <div class="fixed inset-0 backdrop-blur-sm overflow-y-auto h-full w-full z-50"
+        <div class="z-50 fixed inset-0 backdrop-blur-sm w-full h-full overflow-y-auto"
             style="background-color: rgba(0, 0, 0, 0.265)">
-            <div class="relative top-5 mx-auto p-5 border w-full max-w-xl shadow-lg rounded-md bg-gray-800">
+            <div class="top-5 relative bg-gray-800 shadow-lg mx-auto p-5 border rounded-md w-full max-w-xl">
 
                 <div class="flex justify-between items-center mb-4">
-                    <h3 class="text-xl font-semibold text-white/90">
+                    <h3 class="font-semibold text-white/90 text-xl">
                         {{ $editMode ? 'Modifier le Produit' : 'Ajouter un Produit' }}
                     </h3>
                     <button wire:click="closeModal" class="text-white/50 hover:text-white">
@@ -18,77 +18,72 @@
 
                 <form wire:submit="save" class="space-y-4">
                     @if (session()->has('message'))
-                        <div class="bg-purple-300 text-white p-4 rounded-md">
+                        <div class="bg-indigo-300 p-4 rounded-md text-white">
                             {{ session('message') }}
                         </div>
                     @endif
 
                     <div>
-                        <label class="block text-white/50 mb-2">Nom</label>
-                        <input type="text" wire:model="name" class="w-full bg-gray-900 text-white rounded-md p-2">
+                        <label class="block mb-2 text-white/50">Nom</label>
+                        <input type="text" wire:model="name" class="bg-gray-900 p-2 rounded-md w-full text-white">
                         @error('name')
-                            <span class="text-purple-500 text-sm">{{ $message }}</span>
+                            <span class="text-indigo-500 text-sm">{{ $message }}</span>
                         @enderror
                     </div>
 
                     <div>
-                        <label class="block text-white/50 mb-2">Description</label>
-                        <textarea wire:model="description" class="w-full bg-gray-900 text-white rounded-md p-2" rows="4"></textarea>
+                        <label class="block mb-2 text-white/50">Description</label>
+                        <textarea wire:model="description" class="bg-gray-900 p-2 rounded-md w-full text-white" rows="4"></textarea>
                         @error('description')
-                            <span class="text-purple-500 text-sm">{{ $message }}</span>
+                            <span class="text-indigo-500 text-sm">{{ $message }}</span>
                         @enderror
                     </div>
 
-                    <div class="grid grid-cols-2 gap-4">
+                    <div class="gap-4 grid grid-cols-2">
                         <div>
-                            <label class="block text-white/50 mb-2">Prix</label>
+                            <label class="block mb-2 text-white/50">Prix</label>
                             <input type="number" wire:model="price" step="0.01"
-                                class="w-full bg-gray-900 text-white rounded-md p-2">
+                                class="bg-gray-900 p-2 rounded-md w-full text-white">
                             @error('price')
-                                <span class="text-purple-500 text-sm">{{ $message }}</span>
+                                <span class="text-indigo-500 text-sm">{{ $message }}</span>
                             @enderror
                         </div>
 
                         <div>
-                            <label class="block text-white/50 mb-2">Stock</label>
+                            <label class="block mb-2 text-white/50">Stock</label>
                             <input type="number" wire:model="stock"
-                                class="w-full bg-gray-900 text-white rounded-md p-2">
+                                class="bg-gray-900 p-2 rounded-md w-full text-white">
                             @error('stock')
-                                <span class="text-purple-500 text-sm">{{ $message }}</span>
+                                <span class="text-indigo-500 text-sm">{{ $message }}</span>
                             @enderror
                         </div>
                     </div>
 
                     <div class="space-y-2">
-                        <label class="block text-sm font-medium text-white">
+                        <label class="block font-medium text-white text-sm">
                             Images (Maximum 5)
                         </label>
-                        <div class="flex gap-4 flex-wrap items-center">
+                        <div class="flex flex-wrap items-center gap-4">
                             <input type="file" wire:model="image"
-                                class="block w-full text-sm text-gray-400
-                            file:mr-4 file:py-2 file:px-4
-                            file:rounded-md file:border-0
-                            file:text-sm file:font-semibold
-                            file:bg-gray-700 file:text-white
-                            hover:file:bg-gray-600"
+                                class="block hover:file:bg-gray-600 file:bg-gray-700 file:mr-4 file:px-4 file:py-2 file:border-0 file:rounded-md w-full file:font-semibold text-gray-400 file:text-white text-sm file:text-sm"
                                 accept="image/*" {{ count($tempImages) >= 5 ? 'disabled' : '' }} />
                             @if (count($tempImages) >= 5)
                                 <span class="text-yellow-500 text-sm">Nombre maximum d'images atteint</span>
                             @endif
                         </div>
                         @error('image')
-                            <span class="text-purple-500 text-sm">{{ $message }}</span>
+                            <span class="text-indigo-500 text-sm">{{ $message }}</span>
                         @enderror
                     </div>
 
-                    <div class="flex gap-4 flex-wrap">
+                    <div class="flex flex-wrap gap-4">
                         @if ($tempImages)
                             @foreach ($tempImages as $index => $image)
                                 <div class="relative">
                                     <img src="{{ is_string($image) ? Storage::url($image) : $image->temporaryUrl() }}"
-                                        class="h-24 w-24 object-cover rounded-lg">
+                                        class="rounded-lg w-24 h-24 object-cover">
                                     <button type="button" wire:click="removeImage({{ $index }})"
-                                        class="absolute -top-2 -right-2 bg-purple-500 text-white rounded-full p-1">
+                                        class="-top-2 -right-2 absolute bg-indigo-500 p-1 rounded-full text-white">
                                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                 d="M6 18L18 6M6 6l12 12" />
@@ -106,10 +101,10 @@
 
                     <div class="flex justify-end gap-4">
                         <button type="button" wire:click="closeModal"
-                            class="px-4 py-2 bg-gray-600 text-white rounded-md hover:bg-gray-700">
+                            class="bg-gray-600 hover:bg-gray-700 px-4 py-2 rounded-md text-white">
                             Annuler
                         </button>
-                        <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600">
+                        <button type="submit" class="bg-blue-500 hover:bg-blue-600 px-4 py-2 rounded-md text-white">
                             {{ $editMode ? 'Mettre à jour' : 'Créer' }}
                         </button>
                     </div>

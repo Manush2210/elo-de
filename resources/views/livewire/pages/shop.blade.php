@@ -1,17 +1,17 @@
 <div>
     <section class="bg-gray-50 py-8">
-        <div class="container mx-auto px-4">
+        <div class="mx-auto px-4 container">
             <!-- En-tête avec barre de recherche -->
-            <div class="flex flex-col md:flex-row justify-between items-center mb-8 gap-4">
-                <h2 class="text-4xl text-gray-600 font-['Dancing_Script']">Boutique</h2>
+            <div class="flex md:flex-row flex-col justify-between items-center gap-4 mb-8">
+                <h2 class="font-['Dancing_Script'] text-gray-600 text-4xl">Boutique</h2>
 
                 <div class="flex items-center gap-4 w-full md:w-auto">
                     <!-- Barre de recherche -->
                     <div class="relative flex-1 md:w-96">
                         <input type="text" wire:model.live="search" placeholder="Rechercher un produit..."
-                            class="w-full px-4 py-2 rounded-lg border border-gray-200 focus:border-purple-500 focus:ring-1 focus:ring-purple-500 outline-none transition">
-                        <div class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+                            class="px-4 py-2 border border-gray-200 focus:border-indigo-500 rounded-lg outline-none focus:ring-1 focus:ring-indigo-500 w-full transition">
+                        <div class="top-1/2 right-3 absolute text-gray-400 -translate-y-1/2">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24"
                                 stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
@@ -23,7 +23,7 @@
                     <div class="flex items-center gap-2">
                         <button wire:click="toggleViewMode"
                             class="p-2 rounded-lg hover:bg-gray-100 transition {{ $viewMode === 'grid' ? 'bg-gray-100' : '' }}">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-600" fill="none"
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-gray-600" fill="none"
                                 viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
@@ -31,7 +31,7 @@
                         </button>
                         <button wire:click="toggleViewMode"
                             class="p-2 rounded-lg hover:bg-gray-100 transition {{ $viewMode === 'list' ? 'bg-gray-100' : '' }}">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-600" fill="none"
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-gray-600" fill="none"
                                 viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M4 6h16M4 12h16M4 18h16" />
@@ -44,7 +44,7 @@
             <!-- Grille de produits -->
             <div x-data="{ viewMode: @entangle('viewMode') }" x-cloak>
                 <div id="grid-view" x-show="viewMode === 'grid'"
-                    class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                    class="gap-4 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
                     @forelse ($products as $item)
                         @livewire(
                             'components.product.product-card',
@@ -58,9 +58,9 @@
                             key('grid-' . $item->id)
                         )
                     @empty
-                        <div class="col-span-full text-center py-8">
-                            <h3 class="text-xl text-gray-600">Aucun produit trouvé</h3>
-                            <p class="text-gray-500 mt-2">Nous n'avons pas trouvé de produits correspondant à votre
+                        <div class="col-span-full py-8 text-center">
+                            <h3 class="text-gray-600 text-xl">Aucun produit trouvé</h3>
+                            <p class="mt-2 text-gray-500">Nous n'avons pas trouvé de produits correspondant à votre
                                 recherche.</p>
                         </div>
                     @endforelse
@@ -82,9 +82,9 @@
                             key('list-' . $item->id)
                         )
                     @empty
-                        <div class="text-center py-8">
-                            <h3 class="text-xl text-gray-600">Aucun produit trouvé</h3>
-                            <p class="text-gray-500 mt-2">Nous n'avons pas trouvé de produits correspondant à votre
+                        <div class="py-8 text-center">
+                            <h3 class="text-gray-600 text-xl">Aucun produit trouvé</h3>
+                            <p class="mt-2 text-gray-500">Nous n'avons pas trouvé de produits correspondant à votre
                                 recherche.</p>
                         </div>
                     @endforelse

@@ -1,25 +1,25 @@
-<div class="border border-gray-200 bg-white flex flex-col h-full p-2 sm:p-4">
+<div class="flex flex-col bg-white p-2 sm:p-4 border border-gray-200 h-full">
 
     <div class="relative aspect-square">
         <img src="{{ asset('storage/' . $images[0]) ?? 'https://via.placeholder.com/300' }}" alt="{{ $title }}"
-            class="w-full h-full object-cover rounded-lg">
+            class="rounded-lg w-full h-full object-cover">
     </div>
 
-    <div class="mt-2 sm:mt-4 text-center flex-grow">
+    <div class="flex-grow mt-2 sm:mt-4 text-center">
         <a href="{{ route('single-product', ['slug' => $slug]) }}">
-            <h3 class="text-sm sm:text-base font-semibold text-gray-800 line-clamp-2">{{ $title }}</h3>
+            <h3 class="font-semibold text-gray-800 text-sm sm:text-base line-clamp-2">{{ $title }}</h3>
         </a>
 
-        <p class="text-gray-400 text-base sm:text-lg font-semibold mt-1">{{ number_format($price, 2, ',', ' ') }} €</p>
+        <p class="mt-1 font-semibold text-gray-400 text-base sm:text-lg">{{ number_format($price, 2, ',', ' ') }} €</p>
     </div>
 
-    <div class="mt-auto pt-2 sm:pt-4 flex justify-center items-center gap-2">
+    <div class="flex justify-center items-center gap-2 mt-auto pt-2 sm:pt-4">
         <button wire:click="addToCart({{ $product->id }})"
-            class="bg-purple-600 text-white text-sm sm:text-base px-3 py-1.5 sm:px-6 sm:py-3 rounded-lg hover:bg-purple-500 active:bg-purple-700 transition">
+            class="bg-indigo-600 hover:bg-indigo-500 active:bg-indigo-700 px-3 sm:px-6 py-1.5 sm:py-3 rounded-lg text-white text-sm sm:text-base transition">
             Ajouter au panier
         </button>
         {{-- <button
-            class="border border-purple-600 text-purple-600 px-2 py-1.5 sm:px-4 sm:py-3 rounded-lg hover:bg-purple-50 active:bg-purple-100 transition">
+            class="hover:bg-indigo-50 active:bg-indigo-100 px-2 sm:px-4 py-1.5 sm:py-3 border border-indigo-600 rounded-lg text-indigo-600 transition">
             ❤️
         </button> --}}
     </div>

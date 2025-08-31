@@ -1,141 +1,137 @@
-<div class="min-h-screen bg-gray-50">
-    <!-- Hero Section with Video -->
-    <section class="py-12 bg-white">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center">
-                <h1 class="text-4xl font-bold text-gray-900 font-[Poly] sm:text-5xl">Contact</h1>
-            </div>
-            <div class="mt-8 relative w-full" style="padding-top: 56.25%;">
-                <iframe class="absolute inset-0 w-full h-full rounded-xl shadow-lg"
-                    src="https://www.youtube.com/embed/b7gAzEIPm-w" title="YouTube video player" frameborder="0"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowfullscreen>
-                </iframe>
-            </div>
-        </div>
-    </section>
+<div class="bg-gray-50">
+    <div class="py-16 sm:py-24">
+        <div class="mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
+            <!-- Conteneur principal avec effet de carte -->
+            <div class="relative grid grid-cols-1 lg:grid-cols-2 bg-white shadow-2xl rounded-2xl overflow-hidden">
 
-    <!-- Contact Form Section -->
-    <section class="py-16 bg-white">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="max-w-lg mx-auto">
-                <div class="text-center mb-12">
-                    <h2 class="text-3xl font-bold text-gray-900 sm:text-4xl">
-                        Contactez-nous
-                    </h2>
-                    <p class="mt-4 text-lg text-gray-600">
-                        Pour toute question ou assistance, n'hésitez pas à nous contacter via ce formulaire.
+                <!-- Section Gauche : Informations de contact et Vidéo -->
+                <div class="relative px-8 sm:px-12 py-12">
+                    <h1 class="font-extrabold text-gray-900 text-3xl sm:text-4xl tracking-tight">Entrons en contact</h1>
+                    <p class="mt-4 text-gray-500 text-lg">
+                        Remplissez le formulaire ou utilisez l'une des méthodes ci-dessous pour nous joindre. Nous sommes impatients d'échanger avec vous.
                     </p>
+
+                    <!-- Coordonnées -->
+                    <dl class="space-y-6 mt-10 text-gray-500 text-base">
+                        <div class="flex gap-3">
+                            <dt class="flex-shrink-0">
+                                <span class="sr-only">Adresse e-mail</span>
+                                <svg class="w-6 h-6 text-gray-400" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
+                                </svg>
+                            </dt>
+                            <dd><a class="text-indigo-600 hover:text-indigo-800" href="mailto:{{ App\Models\Setting::get('email') ?? 'contact@votresite.com' }}">{{ App\Models\Setting::get('email') ?? 'contact@votresite.com' }}</a></dd>
+                        </div>
+                        <div class="flex gap-3">
+                            <dt class="flex-shrink-0">
+                                <span class="sr-only">Numéro de téléphone</span>
+                                 <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-gray-400" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M16.6 14c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1-.2.2-.6.7-.8.9-.1.1-.3.2-.5.1-.2-.1-.9-.3-1.8-1.1-.7-.6-1.1-1.4-1.3-1.6-.1-.2 0-.4.1-.5.1-.1.2-.2.4-.4.1-.1.2-.2.2-.4.1-.1.1-.3 0-.4-.1-.1-.6-1.5-.8-2-.2-.5-.4-.4-.5-.4h-.5c-.2 0-.4.1-.6.3-.2.2-.8.8-.8 1.9s.8 2.2 1 2.4c.1.1 1.5 2.3 3.7 3.2.5.2.9.4 1.2.5.5.2 1 .1 1.3-.1.4-.2 1.5-1.2 1.7-1.6.2-.4.2-.8.1-.9l-.3-.1zM12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm0 18c-4.4 0-8-3.6-8-8s3.6-8 8-8 8 3.6 8 8-3.6 8-8 8z"/>
+                                </svg>
+                            </dt>
+                            <dd><a class="text-indigo-600 hover:text-indigo-800" href="https://wa.me/{{ App\Models\Setting::get('contact_phone') ?? '33612345678' }}" target="_blank" rel="noopener">{{ App\Models\Setting::get('contact_phone') ?? '+33 6 12 34 56 78' }} (WhatsApp)</a></dd>
+                        </div>
+                    </dl>
+
+                    <!-- Vidéo intégrée (plus petite et mieux placée) -->
+                    <div class="mt-10 w-full aspect-video">
+                        <iframe class="shadow-lg rounded-xl w-full h-full" src="https://www.youtube.com/embed/b7gAzEIPm-w" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    </div>
                 </div>
 
-                @if (session()->has('success'))
-                    <div class="rounded-md bg-purple-50 p-4 mb-6">
-                        <div class="flex">
-                            <div class="flex-shrink-0">
-                                <svg class="h-5 w-5 text-purple-400" viewBox="0 0 20 20" fill="currentColor">
-                                    <path fill-rule="evenodd"
-                                        d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                                        clip-rule="evenodd" />
-                                </svg>
+                <!-- Section Droite : Formulaire -->
+                <div class="px-8 sm:px-12 py-12 lg:border-gray-200 lg:border-l">
+                    <h2 class="font-bold text-gray-900 text-2xl sm:text-3xl tracking-tight">Envoyez-nous un message</h2>
+
+                    <form wire:submit="submit" class="space-y-6 mt-8">
+                        <!-- Messages de session (Succès / Erreur) -->
+                        @if (session()->has('success'))
+                            <div class="bg-green-50 p-4 rounded-md">
+                                <div class="flex">
+                                    <div class="flex-shrink-0">
+                                        <svg class="w-5 h-5 text-green-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" /></svg>
+                                    </div>
+                                    <div class="ml-3"><p class="font-medium text-green-800 text-sm">{{ session('success') }}</p></div>
+                                </div>
                             </div>
-                            <div class="ml-3">
-                                <p class="text-sm font-medium text-purple-800">{{ session('success') }}</p>
+                        @endif
+                         @if (session()->has('error'))
+                             <div class="bg-red-50 p-4 rounded-md">
+                                <div class="flex">
+                                    <div class="flex-shrink-0"><svg class="w-5 h-5 text-red-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.28 7.22a.75.75 0 00-1.06 1.06L8.94 10l-1.72 1.72a.75.75 0 101.06 1.06L10 11.06l1.72 1.72a.75.75 0 101.06-1.06L11.06 10l1.72-1.72a.75.75 0 00-1.06-1.06L10 8.94 8.28 7.22z" clip-rule="evenodd" /></svg></div>
+                                    <div class="ml-3"><p class="font-medium text-red-800 text-sm">{{ session('error') }}</p></div>
+                                </div>
+                            </div>
+                        @endif
+
+                        <!-- Champ Nom -->
+                        <div>
+                            <label for="name" class="sr-only">Nom complet</label>
+                            <div class="relative">
+                                <input type="text" id="name" wire:model="name" class="block shadow-sm px-4 py-3 border-gray-300 focus:border-indigo-500 rounded-md focus:ring-indigo-500 w-full placeholder-gray-400" placeholder="Nom complet*" required>
+                                @error('name')<p class="mt-2 text-red-600 text-sm">{{ $message }}</p>@enderror
                             </div>
                         </div>
-                    </div>
-                @endif
 
-                @if (session()->has('error'))
-                    <div class="rounded-md bg-red-50 p-4 mb-6">
-                        <div class="flex">
-                            <div class="flex-shrink-0">
-                                <svg class="h-5 w-5 text-red-400" viewBox="0 0 20 20" fill="currentColor">
-                                    <path fill-rule="evenodd"
-                                        d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
-                                        clip-rule="evenodd" />
-                                </svg>
-                            </div>
-                            <div class="ml-3">
-                                <p class="text-sm font-medium text-red-800">{{ session('error') }}</p>
+                        <!-- Champ Email -->
+                        <div>
+                            <label for="email" class="sr-only">Adresse e-mail</label>
+                            <div class="relative">
+                                <input type="email" id="email" wire:model="email" class="block shadow-sm px-4 py-3 border-gray-300 focus:border-indigo-500 rounded-md focus:ring-indigo-500 w-full placeholder-gray-400" placeholder="Adresse e-mail*" required>
+                                @error('email')<p class="mt-2 text-red-600 text-sm">{{ $message }}</p>@enderror
                             </div>
                         </div>
-                    </div>
-                @endif
 
-                <form wire:submit.prevent="submit" class="space-y-6">
-                    @csrf
-                    <div>
-                        <label for="name" class="block text-sm font-medium text-gray-700">Nom*</label>
-                        <div class="mt-1">
-                            <input type="text" id="name" wire:model="name" required
-                                class="shadow-sm focus:ring-purple-500 focus:border-purple-500 block w-full sm:text-sm border-gray-300 rounded-md">
+                        <!-- Champ Message -->
+                        <div>
+                            <label for="message" class="sr-only">Message</label>
+                            <div class="relative">
+                                <textarea id="message" wire:model="message" rows="4" class="block shadow-sm px-4 py-3 border-gray-300 focus:border-indigo-500 rounded-md focus:ring-indigo-500 w-full placeholder-gray-400" placeholder="Votre message*" required></textarea>
+                                @error('message')<p class="mt-2 text-red-600 text-sm">{{ $message }}</p>@enderror
+                            </div>
                         </div>
-                        @error('name')
-                            <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
-                        @enderror
-                    </div>
 
-                    <div>
-                        <label for="email" class="block text-sm font-medium text-gray-700">Adresse e-mail*</label>
-                        <div class="mt-1">
-                            <input type="email" id="email" wire:model="email" required
-                                class="shadow-sm focus:ring-purple-500 focus:border-purple-500 block w-full sm:text-sm border-gray-300 rounded-md">
+                        <!-- Honeypot (sécurité anti-spam) -->
+                        <div class="sr-only">
+                            <label for="email_confirm">Ne pas remplir ce champ</label>
+                            <input type="text" id="email_confirm" wire:model.defer="email_confirm" tabindex="-1" autocomplete="off">
                         </div>
-                        @error('email')
-                            <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
-                        @enderror
-                    </div>
 
-                    <!-- Honeypot field -->
-                    <div class="hp-field"
-                        style="opacity: 0; position: absolute; top: 0; left: 0; height: 0; width: 0; z-index: -1; overflow: hidden; pointer-events: none;">
-                        <label for="email_confirm">Please leave this field empty</label>
-                        <input type="text" name="email_confirm" id="email_confirm" wire:model.defer="email_confirm"
-                            tabindex="-1" autocomplete="off">
-                    </div>
-
-                    <div>
-                        <label for="message" class="block text-sm font-medium text-gray-700">Message*</label>
-                        <div class="mt-1">
-                            <textarea id="message" wire:model="message" rows="4" required
-                                class="shadow-sm focus:ring-purple-500 focus:border-purple-500 block w-full sm:text-sm border-gray-300 rounded-md"></textarea>
+                        <!-- Cloudflare Turnstile (sécurité anti-bot) -->
+                        <div wire:ignore>
+                            <div class="cf-turnstile" data-sitekey="{{ config('services.cloudflare.site_key') }}" data-callback="onTurnstileSuccess" data-size="normal"></div>
                         </div>
-                        @error('message')
-                            <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
-                        @enderror
-                    </div>
-                    <!-- Turnstile -->
-                    <div class="flex flex-col justify-center p-8">
-                        {{-- <p class="text-xl text-slate-700">Vérification de sécurité</p> --}}
-                        <div class="cf-turnstile mx-auto w-full" wire:ignore
-                            data-sitekey="{{ config('services.cloudflare.site_key') }}"
-                            data-callback="onTurnstileSuccess" data-expired-callback="onTurnstileExpired"
-                            data-size="flexible">
-                        </div>
-                    </div>
 
-                    <div class="flex justify-end">
-                        <button type="submit"
-                            class="inline-flex items-center px-4 py-2 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-purple-600 hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500">
-                            <span wire:loading.remove wire:target="submit">Envoyer</span>
-                            <span wire:loading wire:target="submit" class="flex items-center">
-                                <svg class="animate-spin -ml-1 mr-2 h-4 w-4 text-white"
-                                    xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                    <circle class="opacity-25" cx="12" cy="12" r="10"
-                                        stroke="currentColor" stroke-width="4"></circle>
-                                    <path class="opacity-75" fill="currentColor"
-                                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
-                                    </path>
-                                </svg>
-                                Envoi en cours...
-                            </span>
-                        </button>
-                    </div>
-                </form>
+                        <!-- Bouton de soumission -->
+                        <div>
+                            <button type="submit"
+                                class="flex justify-center bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50 shadow-sm px-4 py-3 border border-transparent rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 w-full font-medium text-white text-base">
+                                <span wire:loading.remove wire:target="submit">Envoyer le message</span>
+                                <span wire:loading wire:target="submit" class="flex items-center">
+                                    <svg class="mr-2 w-5 h-5 animate-spin" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                                    Envoi en cours...
+                                </span>
+                            </button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
-    </section>
+    </div>
 </div>
+
+{{-- @push('scripts')
+    <!-- Script pour Cloudflare Turnstile -->
+    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+    <script>
+        // Callback pour envoyer le token Turnstile au composant Livewire
+        function onTurnstileSuccess(token) {
+            if (token) {
+                @this.set('turnstileToken', token);
+            }
+        }
+    </script>
+@endpush --}}
 @push('scripts')
     <script src="https://challenges.cloudflare.com/turnstile/v0/api.js"></script>
     <script>

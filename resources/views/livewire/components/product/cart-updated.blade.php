@@ -5,19 +5,19 @@
     x-transition:leave-end="opacity-0 transform translate-y-2" x-init="if (@js($autoClose)) {
         setTimeout(() => { show = false }, @js($autoCloseDelay));
     }"
-    @closeToastAfterDelay.window="setTimeout(() => { show = false }, $event.detail)" class="fixed bottom-5 right-5 z-50"
+    @closeToastAfterDelay.window="setTimeout(() => { show = false }, $event.detail)" class="right-5 bottom-5 z-50 fixed"
     style="display: none;">
-    <div class="w-full max-w-xs p-4 {{ $type === 'error' ? 'bg-purple-50 text-purple-800' : 'bg-purple-50 text-purple-800' }} rounded-lg shadow-md"
+    <div class="w-full max-w-xs p-4 {{ $type === 'error' ? 'bg-indigo-50 text-indigo-800' : 'bg-indigo-50 text-indigo-800' }} rounded-lg shadow-md"
         role="alert">
         <div class="flex items-center space-x-2 mb-1">
-            {{-- <span class="text-sm font-semibold">
+            {{-- <span class="font-semibold text-sm">
                 {{ $type === 'error' ? 'Erreur' : 'Succès' }}
             </span> --}}
             <div class="flex items-center">
-                <div class="relative inline-block shrink-0">
+                <div class="inline-block relative shrink-0">
                     @if ($type === 'error')
                         <span
-                            class="flex items-center justify-center w-10 h-10 rounded-full {{ $type === 'error' ? 'bg-purple-100 text-purple-500' : 'bg-purple-100 text-purple-500' }}">
+                            class="flex items-center justify-center w-10 h-10 rounded-full {{ $type === 'error' ? 'bg-indigo-100 text-indigo-500' : 'bg-indigo-100 text-indigo-500' }}">
                             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
                                 xmlns="http://www.w3.org/2000/svg">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -26,7 +26,7 @@
                         </span>
                     @else
                         <span
-                            class="flex items-center justify-center w-10 h-10 rounded-full {{ $type === 'error' ? 'bg-purple-100 text-purple-500' : 'bg-purple-100 text-purple-500' }}">
+                            class="flex items-center justify-center w-10 h-10 rounded-full {{ $type === 'error' ? 'bg-indigo-100 text-indigo-500' : 'bg-indigo-100 text-indigo-500' }}">
                             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
                                 xmlns="http://www.w3.org/2000/svg">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -35,12 +35,12 @@
                         </span>
                     @endif
                 </div>
-                <div class="ms-3 text-sm font-normal">
+                <div class="ms-3 font-normal text-sm">
                     {{ $message }}
                 </div>
             </div>
             <button type="button" @click="show = false"
-                class="ms-auto -mx-1.5 -my-1.5 bg-white justify-center items-center shrink-0 {{ $type === 'error' ? 'text-purple-400 hover:text-purple-900' : 'text-purple-400 hover:text-purple-900' }} rounded-lg focus:ring-2 focus:ring-gray-300 p-1.5 hover:bg-gray-100 inline-flex h-8 w-8">
+                class="ms-auto -mx-1.5 -my-1.5 bg-white justify-center items-center shrink-0 {{ $type === 'error' ? 'text-indigo-400 hover:text-indigo-900' : 'text-indigo-400 hover:text-indigo-900' }} rounded-lg focus:ring-2 focus:ring-gray-300 p-1.5 hover:bg-gray-100 inline-flex h-8 w-8">
                 <span class="sr-only">Fermer</span>
                 <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
                     viewBox="0 0 14 14">

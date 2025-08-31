@@ -1,22 +1,22 @@
-<div class="container mx-auto px-4 py-8">
-    <div class="max-w-4xl mx-auto">
+<div class="mx-auto px-4 py-8 container">
+    <div class="mx-auto max-w-4xl">
         <!-- Navigation Tabs -->
-        <div class="flex border-b mb-6">
+        <div class="flex mb-6 border-b">
             <a href="{{ route('profile') }}"
-                class="px-6 py-2 font-medium {{ request()->routeIs('profile') ? 'text-purple-600 border-b-2 border-purple-600' : 'text-gray-500 hover:text-purple-600' }}">
+                class="px-6 py-2 font-medium {{ request()->routeIs('profile') ? 'text-indigo-600 border-b-2 border-indigo-600' : 'text-gray-500 hover:text-indigo-600' }}">
                 Mon Profil
             </a>
             <a href="{{ route('order-history') }}"
-                class="px-6 py-2 font-medium {{ request()->routeIs('order-history') ? 'text-purple-600 border-b-2 border-purple-600' : 'text-gray-500 hover:text-purple-600' }}">
+                class="px-6 py-2 font-medium {{ request()->routeIs('order-history') ? 'text-indigo-600 border-b-2 border-indigo-600' : 'text-gray-500 hover:text-indigo-600' }}">
                 Historique des commandes
             </a>
         </div>
 
-        <div class="bg-white rounded-lg shadow-sm p-6">
-            <h2 class="text-2xl font-semibold mb-6">Mes commandes</h2>
+        <div class="bg-white shadow-sm p-6 rounded-lg">
+            <h2 class="mb-6 font-semibold text-2xl">Mes commandes</h2>
             {{-- Sucess Message if session has new-order --}}
             @if (session('new-order'))
-                <div class="bg-purple-100 border border-purple-400 text-purple-700 px-4 py-3 rounded relative mb-4"
+                <div class="relative bg-indigo-100 mb-4 px-4 py-3 border border-indigo-400 rounded text-indigo-700"
                     role="alert">
                     <strong class="font-bold">Commande passée avec succès !</strong>
                     <span class="block sm:inline">{{ session('new-order') }}</span>
@@ -24,31 +24,31 @@
             @endif
 
             @if ($orders->isEmpty())
-                <div class="text-center py-8">
-                    <div class="text-gray-500 mb-4">Vous n'avez pas encore passé de commande</div>
-                    <a href="{{ route('shop') }}" class="text-purple-600 hover:text-purple-700">
+                <div class="py-8 text-center">
+                    <div class="mb-4 text-gray-500">Vous n'avez pas encore passé de commande</div>
+                    <a href="{{ route('shop') }}" class="text-indigo-600 hover:text-indigo-700">
                         Découvrir nos produits
                     </a>
                 </div>
             @else
                 <div class="overflow-x-auto">
-                    <table class="min-w-full divide-y divide-gray-200">
+                    <table class="divide-y divide-gray-200 min-w-full">
                         <thead class="bg-gray-50">
                             <tr>
                                 <th
-                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    class="px-6 py-3 font-medium text-gray-500 text-xs text-left uppercase tracking-wider">
                                     N° Commande
                                 </th>
                                 <th
-                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    class="px-6 py-3 font-medium text-gray-500 text-xs text-left uppercase tracking-wider">
                                     Date
                                 </th>
                                 <th
-                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    class="px-6 py-3 font-medium text-gray-500 text-xs text-left uppercase tracking-wider">
                                     Statut
                                 </th>
                                 <th
-                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    class="px-6 py-3 font-medium text-gray-500 text-xs text-left uppercase tracking-wider">
                                     Total
                                 </th>
                             </tr>
@@ -65,11 +65,11 @@
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         <span
                                             class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full
-                                        @if ($order->status === 'completed') bg-purple-100 text-purple-800
+                                        @if ($order->status === 'completed') bg-indigo-100 text-indigo-800
                                         @elseif($order->status === 'pending')
                                             bg-yellow-100 text-yellow-800
                                         @elseif($order->status === 'cancelled')
-                                            bg-purple-100 text-purple-800
+                                            bg-indigo-100 text-indigo-800
                                         @else
                                             bg-gray-100 text-gray-800 @endif">
                                             @switch($order->status)
@@ -94,7 +94,7 @@
                                             @endswitch
                                         </span>
                                     </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-right">
+                                    <td class="px-6 py-4 text-right whitespace-nowrap">
                                         {{ number_format($order->total, 2, ',', ' ') }}€
                                     </td>
                                 </tr>

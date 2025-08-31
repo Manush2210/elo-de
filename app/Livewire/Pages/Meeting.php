@@ -8,6 +8,7 @@ use Livewire\Component;
 use App\Models\TimeSlot;
 use App\Models\Appointment;
 use Livewire\WithFileUploads;
+use Livewire\Attributes\Computed;
 use App\Models\ConsultationType;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Mail;
@@ -16,72 +17,186 @@ use App\Mail\AdminAppointmentNotification;
 
 class Meeting extends Component
 {
-    use WithFileUploads; // Ajouter cette ligne pour gérer l'upload de fichiers
+    use WithFileUploads;
 
-    public $turnstileToken;
+    // --- State Management ---
+    public int $currentStep = 1;
 
-
+    // --- Data Properties ---
+    public $consultationTypes;
     public $account = null;
-    public $currentMonth;
-    public $currentYear;
-    public $selectedDate = null;
+    public $calendarDays = [];
+    public $bookedDates = [];
     public $availableTimeSlots = [];
-    public $selectedTimeSlot = null;
-    public $selectedConsultationType = null; // Ajout du type de consultation sélectionné
 
-    // Informations client
+    // --- User Selections ---
+    public $selectedConsultationType = null;
+    public $selectedDate = null;
+    public $selectedTimeSlot = null;
+
+    // --- Form Inputs ---
     public $clientName = '';
     public $clientEmail = '';
     public $clientPhone = '';
+    public $contactMethod = '';
+    public $paymentProof;
     public $notes = '';
-    public $paymentProof; // Nouveau champ pour le fichier
-    public $contactMethod = ''; // Nouveau champ pour la méthode de contact
-    public $phone_confirm = ''; // Improved honeypot field - should remain empty
+    public $turnstileToken;
 
-    public $calendarDays = [];
-    public $bookedDates = [];
-
-    public $consultationTypes; // Types de consultation disponibles
+    // --- Calendar State ---
+    public $currentMonth;
+    public $currentYear;
 
     public function mount()
     {
-        $this->consultationTypes = collect();
-
         $now = Carbon::now();
         $this->currentMonth = $now->month;
         $this->currentYear = $now->year;
-        $this->generateCalendar();
-        $this->loadBookedDates();
-        $this->account = Account::where('is_active', true)->latest()->first();
-        $this->loadConsultationTypes();
 
-        // Store the timestamp when the form is loaded
-        session(['meeting_form_time' => time()]);
+        $this->consultationTypes = ConsultationType::active()->get();
+        $this->account = Account::where('is_active', true)->latest()->first();
+        $this->generateCalendar();
+
+        $this->loadBookedDates();
     }
 
-    protected function verifyTurnstile()
+    // =================================================================
+    // STEP NAVIGATION
+    // =================================================================
+
+    public function goToStep(int $step)
     {
-        $response = Http::asForm()->post('https://challenges.cloudflare.com/turnstile/v0/siteverify', [
-            'secret' => config('services.cloudflare.secret_key'),
-            'response' => $this->turnstileToken,
-            'remoteip' => request()->ip(),
+        // On ne peut pas sauter des étapes en avant
+        if ($step > $this->currentStep && !$this->canProceedToStep($step)) {
+            return;
+        }
+        $this->currentStep = $step;
+    }
+
+    public function nextStep()
+    {
+        if ($this->canProceedToStep($this->currentStep + 1)) {
+            $this->currentStep++;
+        }
+    }
+
+    protected function canProceedToStep(int $targetStep): bool
+    {
+        return match ($targetStep) {
+            2 => !empty($this->selectedConsultationType),
+            3 => !empty($this->selectedDate) && !empty($this->selectedTimeSlot),
+            default => true,
+        };
+    }
+
+    // =================================================================
+    // COMPUTED PROPERTIES (for clean UI)
+    // =================================================================
+
+    #[Computed]
+    public function selectedConsultationDetails()
+    {
+        if (!$this->selectedConsultationType) {
+            return null;
+        }
+        return ConsultationType::find($this->selectedConsultationType);
+    }
+
+    #[Computed]
+    public function selectedSlotDetails()
+    {
+        if (!$this->selectedTimeSlot) {
+            return null;
+        }
+        return TimeSlot::find($this->selectedTimeSlot);
+    }
+
+    // =================================================================
+    // ACTIONS & LOGIC
+    // =================================================================
+
+    public function selectConsultationType($typeId)
+    {
+        $this->selectedConsultationType = $typeId;
+        $this->nextStep();
+    }
+
+    public function selectDate($date)
+    {
+        if (!$date) return;
+        $this->selectedDate = $date;
+        $this->selectedTimeSlot = null; // Réinitialiser le créneau si la date change
+        $this->loadAvailableTimeSlots();
+    }
+
+    public function selectTimeSlot($slotId)
+    {
+        $this->selectedTimeSlot = $slotId;
+        $this->nextStep();
+    }
+
+    public function bookAppointment()
+    {
+        // Validation finale
+        $validated = $this->validate([
+            'clientName' => 'required|min:3',
+            'clientEmail' => 'required|email',
+            'clientPhone' => 'required',
+            'contactMethod' => 'required|in:email,whatsapp,telephone',
+            'paymentProof' => 'nullable|file|max:10240', // 10MB - optional now
+            'turnstileToken' => 'required',
         ]);
 
-        $result = $response->json();
-        // dd($result);
+        if (!$this->verifyTurnstile()) {
+            session()->flash('error', 'La vérification de sécurité a échoué. Veuillez réessayer.');
+            return;
+        }
 
-        return $result['success'] ?? false;
+        // Logique de réservation existante...
+        $slot = $this->selectedSlotDetails();
+        // Stocker la preuve de paiement uniquement si fournie
+        $paymentProofPath = null;
+        if ($this->paymentProof) {
+            $paymentProofPath = $this->paymentProof->store('payment_proofs', 'public');
+        }
+
+        $appointment = Appointment::create([
+            'client_name' => $this->clientName,
+            'client_email' => $this->clientEmail,
+            'client_phone' => $this->clientPhone,
+            'appointment_date' => $this->selectedDate,
+            'start_time' => Carbon::parse($this->selectedDate . ' ' . $slot->start_time),
+            'end_time' => Carbon::parse($this->selectedDate . ' ' . $slot->end_time),
+            'notes' => $this->notes,
+            'payment_proof' => $paymentProofPath,
+            'payment_method' => 'virement_bancaire',
+            'status' => 'booked',
+            'contact_method' => $this->contactMethod,
+            'consultation_type_id' => $this->selectedConsultationType,
+        ]);
+
+        // Envoi des emails...
+        Mail::to($this->clientEmail)->send(new AppointmentConfirmation($appointment, $slot, $this->account));
+        Mail::to(['contact@voyance-spirituelle-expert.com', 'emmanueladenidji@gmail.com'])->send(new AdminAppointmentNotification($appointment, $slot, $this->account));
+
+        // Afficher une page de succès
+        session()->flash('success_message', 'Votre rendez-vous a été confirmé !');
+        $this->currentStep = 4; // Aller à l'étape de confirmation
     }
 
-    public function generateCalendar()
+
+    // --- Fonctions utilitaires du calendrier (inchangées) ---
+
+      public function generateCalendar()
     {
         $this->calendarDays = [];
         $date = Carbon::createFromDate($this->currentYear, $this->currentMonth, 1);
         $daysInMonth = $date->daysInMonth;
 
-        // Ajouter des jours vides pour aligner correctement le premier jour du mois
-        $firstDayOfWeek = $date->dayOfWeek;
-        for ($i = 1; $i < $firstDayOfWeek; $i++) {
+    // Ajouter des jours vides pour aligner correctement le premier jour du mois
+    // Utiliser isoWeekday pour démarrer la grille sur Lundi = 1
+    $firstDayIso = $date->isoWeekday();
+    for ($i = 1; $i < $firstDayIso; $i++) {
             $this->calendarDays[] = [
                 'day' => null,
                 'date' => null,
@@ -107,7 +222,29 @@ class Meeting extends Component
         }
     }
 
-    public function loadBookedDates()
+    public function loadAvailableTimeSlots()
+    {
+        if (!$this->selectedDate) return;
+    $selectedCarbDate = Carbon::parse($this->selectedDate);
+    // Utiliser isoWeekday: 1 (lundi) .. 7 (dimanche) pour correspondre au seeder
+    $dayOfWeek = $selectedCarbDate->isoWeekday();
+    $timeSlots = TimeSlot::where('day_of_week', $dayOfWeek)->where('is_available', true)->get();
+        $bookedAppointments = Appointment::where('appointment_date', $this->selectedDate)->get();
+        $this->availableTimeSlots = $timeSlots->filter(function ($slot) use ($bookedAppointments) {
+            foreach ($bookedAppointments as $appointment) {
+                $slotStart = Carbon::parse($this->selectedDate . ' ' . $slot->start_time);
+                $slotEnd = Carbon::parse($this->selectedDate . ' ' . $slot->end_time);
+                $appointmentStart = Carbon::parse($appointment->start_time);
+                $appointmentEnd = Carbon::parse($appointment->end_time);
+                if ($slotStart < $appointmentEnd && $slotEnd > $appointmentStart) {
+                    return false;
+                }
+            }
+            return true;
+        })->toArray();
+    }
+
+      public function loadBookedDates()
     {
         $startDate = Carbon::createFromDate($this->currentYear, $this->currentMonth, 1);
         $endDate = Carbon::createFromDate($this->currentYear, $this->currentMonth, $startDate->daysInMonth);
@@ -117,7 +254,8 @@ class Meeting extends Component
         // Parcourir chaque jour du mois
         $currentDate = clone $startDate;
         while ($currentDate <= $endDate) {
-            $dayOfWeek = $currentDate->dayOfWeek;
+            // Utiliser isoWeekday pour obtenir 1..7
+            $dayOfWeek = $currentDate->isoWeekday();
 
             // Obtenir tous les créneaux disponibles pour ce jour de semaine
             $allTimeSlots = TimeSlot::where('day_of_week', $dayOfWeek)
@@ -133,9 +271,17 @@ class Meeting extends Component
                     ->get(['start_time', 'end_time']);
 
                 // Compter les créneaux encore disponibles
-                $availableSlots = $allTimeSlots->filter(function ($slot) use ($bookedSlots) {
+                $availableSlots = $allTimeSlots->filter(function ($slot) use ($bookedSlots, $currentDate) {
+                    // construire intervalles pour le créneau (date courante + time)
+                    $slotStart = Carbon::parse($currentDate->format('Y-m-d') . ' ' . $slot->start_time);
+                    $slotEnd = Carbon::parse($currentDate->format('Y-m-d') . ' ' . $slot->end_time);
+
                     foreach ($bookedSlots as $bookedSlot) {
-                        if ($slot->start_time >= $bookedSlot->start_time && $slot->start_time < $bookedSlot->end_time) {
+                        $bookedStart = Carbon::parse($bookedSlot->start_time);
+                        $bookedEnd = Carbon::parse($bookedSlot->end_time);
+
+                        // conflit si les intervalles se chevauchent
+                        if ($slotStart < $bookedEnd && $slotEnd > $bookedStart) {
                             return false;
                         }
                     }
@@ -154,58 +300,6 @@ class Meeting extends Component
         $this->generateCalendar();
     }
 
-    public function selectDate($date)
-    {
-        //dd($date);
-        if (!$date) return;
-
-        $this->selectedDate = $date;
-        $this->loadAvailableTimeSlots();
-        // dd($this->availableTimeSlots);
-    }
-
-    public function loadAvailableTimeSlots()
-    {
-        if (!$this->selectedDate) return;
-
-        $selectedDate = Carbon::parse($this->selectedDate);
-        $dayOfWeek = $selectedDate->dayOfWeek;
-
-        // Chercher les créneaux disponibles pour ce jour de la semaine
-        $timeSlots = TimeSlot::where('day_of_week', $dayOfWeek)
-            ->where('is_available', true)
-            ->get();
-
-        // Vérifier quels créneaux sont déjà réservés
-        // Important: récupérer les rendez-vous pour cette date
-        $bookedAppointments = Appointment::where('appointment_date', $this->selectedDate)
-            ->get();
-
-        // Filtrer les créneaux disponibles
-        $this->availableTimeSlots = $timeSlots->filter(function ($slot) use ($bookedAppointments) {
-            // Pour chaque rendez-vous existant
-            foreach ($bookedAppointments as $appointment) {
-                // Convertir les chaînes d'heures en objets Carbon pour comparaison correcte
-                $slotStart = Carbon::parse($this->selectedDate . ' ' . $slot->start_time);
-                $slotEnd = Carbon::parse($this->selectedDate . ' ' . $slot->end_time);
-
-                $appointmentStart = Carbon::parse($appointment->start_time);
-                $appointmentEnd = Carbon::parse($appointment->end_time);
-
-                // Si le créneau chevauche un rendez-vous existant, il n'est pas disponible
-                if ($slotStart < $appointmentEnd && $slotEnd > $appointmentStart) {
-                    return false;
-                }
-            }
-            return true;
-        })->toArray();
-    }
-
-    public function selectTimeSlot($slotId)
-    {
-        $this->selectedTimeSlot = $slotId;
-    }
-
     public function nextMonth()
     {
         $date = Carbon::createFromDate($this->currentYear, $this->currentMonth, 1)->addMonth();
@@ -221,135 +315,18 @@ class Meeting extends Component
         $this->currentYear = $date->year;
         $this->loadBookedDates();
     }
-
-    public function bookAppointment()
+  protected function verifyTurnstile()
     {
-
-        $turnstileToken = $this->turnstileToken;
-        // dd($turnstileToken);
-
-        if (!$turnstileToken) {
-            session()->flash('error', 'La vérification de sécurité a échoué. Veuillez réessayer.');
-            return;
-        }
-
-        // Vérifier le token Turnstile
-        if (!$this->verifyTurnstile()) {
-            session()->flash('error', 'La vérification de sécurité a échoué. Veuillez réessayer.');
-            return;
-        }
-        // More effective honeypot check - if filled, silently fail
-        // if (!empty($this->phone_confirm)) {
-        //     // Log the bot attempt (optional)
-        //     \Illuminate\Support\Facades\Log::info('Bot submission detected in meeting form - Honeypot field was filled');
-
-        //     // Pretend success but don't process anything
-        //     session()->flash('message', 'Rendez-vous réservé avec succès! Un email de confirmation vous a été envoyé.');
-        //     return;
-        // }
-
-        // Add a timing check (bots usually submit forms too quickly)
-        $timestamp = session('meeting_form_time');
-        $now = time();
-
-        // If the form was submitted less than 3 seconds after page load, likely a bot
-        if (!$timestamp || ($now - $timestamp < 3)) {
-            session()->flash('message', 'Rendez-vous réservé avec succès! Un email de confirmation vous a été envoyé.');
-            return;
-        }
-
-        $this->validate([
-            'turnstileToken' => 'required',
-            'clientName' => 'required|min:3',
-            'clientEmail' => 'required|email',
-            'clientPhone' => 'required',
-            'selectedDate' => 'required|date',
-            'selectedTimeSlot' => 'required',
-            'paymentProof' => 'required|file|max:10240', // 10MB max
-            'contactMethod' => 'required|in:email,whatsapp,telephone',
-            'selectedConsultationType' => 'required|exists:consultation_types,id',
-        ], [
-            'turnstileToken.required' => 'La vérification de sécurité a échoué. Veuillez réessayer.',
-            'clientName.required' => 'Veuillez saisir votre nom',
-            'clientName.min' => 'Votre nom doit contenir au moins 3 caractères',
-            'clientEmail.required' => 'Veuillez saisir votre email',
-            'clientEmail.email' => 'Veuillez saisir une adresse email valide',
-            'clientPhone.required' => 'Veuillez saisir votre numéro de téléphone',
-            'selectedDate.required' => 'Veuillez sélectionner une date',
-            'selectedDate.date' => 'Format de date invalide',
-            'selectedTimeSlot.required' => 'Veuillez sélectionner un créneau horaire',
-            'paymentProof.required' => 'Veuillez joindre une preuve de paiement',
-            'paymentProof.file' => 'Le document doit être un fichier valide',
-            'paymentProof.max' => 'La taille du fichier ne doit pas dépasser 10Mo',
-            'contactMethod.required' => 'Veuillez sélectionner une méthode de contact',
-            'contactMethod.in' => 'Méthode de contact invalide',
-            'selectedConsultationType.required' => 'Veuillez sélectionner un type de consultation',
-            'selectedConsultationType.exists' => 'Le type de consultation sélectionné n\'est pas valide',
+        $response = Http::asForm()->post('https://challenges.cloudflare.com/turnstile/v0/siteverify', [
+            'secret' => config('services.cloudflare.secret_key'),
+            'response' => $this->turnstileToken,
+            'remoteip' => request()->ip(),
         ]);
 
-        $slot = TimeSlot::find($this->selectedTimeSlot);
+        $result = $response->json();
+        // dd($result);
 
-        // Chemin de stockage du fichier
-        $paymentProofPath = null;
-        if ($this->paymentProof) {
-
-            $paymentProofPath = $this->paymentProof->store('payment_proofs', 'public');
-        }
-
-        // Récupération du compte bancaire actif
-        $bankAccount = Account::getLastActive();
-
-        // Création du rendez-vous
-        $appointment = Appointment::create([
-            'client_name' => $this->clientName,
-            'client_email' => $this->clientEmail,
-            'client_phone' => $this->clientPhone,
-            'appointment_date' => $this->selectedDate,
-            'start_time' => Carbon::parse($this->selectedDate . ' ' . $slot->start_time),
-            'end_time' => Carbon::parse($this->selectedDate . ' ' . $slot->end_time),
-            'notes' => $this->notes,
-            'payment_proof' => $paymentProofPath,
-            'payment_method' => 'virement_bancaire', // Méthode fixée à virement bancaire
-            'status' => 'booked',
-            'contact_method' => $this->contactMethod,
-            'consultation_type_id' => $this->selectedConsultationType,
-        ]);
-
-        // Envoyer un email de confirmation au client
-        Mail::to($this->clientEmail)
-            ->send(new AppointmentConfirmation($appointment, $slot, $bankAccount));
-
-        // Envoyer un email de notification à l'admin
-        Mail::to(['contact@voyance-spirituelle-expert.com', 'emmanueladenidji@gmail.com'])
-            ->send(new AdminAppointmentNotification($appointment, $slot, $bankAccount));
-        $this->dispatch('showToast', [
-            'message' => 'Rendez-vous réservé avec succès! Un email de confirmation vous a été envoyé.',
-        ]);
-
-        session()->flash('message', 'Rendez-vous réservé avec succès! Un email de confirmation vous a été envoyé.');
-        $this->loadBookedDates();
-        $this->loadAvailableTimeSlots();
-    }
-
-    /**
-     * Charger les types de consultation disponibles
-     */
-    public function loadConsultationTypes()
-    {
-        $this->consultationTypes = ConsultationType::active()->get();
-
-        // Sélectionner le premier type par défaut s'il y en a
-        if ($this->consultationTypes->isNotEmpty() && empty($this->selectedConsultationType)) {
-            $this->selectedConsultationType = $this->consultationTypes->first()->id;
-        }
-    }
-
-    /**
-     * Sélectionner manuellement un type de consultation
-     */
-    public function selectConsultationType($typeId)
-    {
-        $this->selectedConsultationType = $typeId;
+        return $result['success'] ?? false;
     }
 
     public function render()

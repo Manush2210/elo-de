@@ -1,20 +1,20 @@
 <div class="flex-1 px-2 sm:px-0">
     <div class="flex justify-between items-center mb-6">
-        <h3 class="text-3xl font-extralight text-white/50">Produits</h3>
+        <h3 class="font-extralight text-white/50 text-3xl">Produits</h3>
     </div>
 
     <div class="flex gap-4 my-4">
         <div class="relative">
             <input type="text" wire:model.live="search" placeholder="Rechercher un produit..."
-                class="bg-gray-900 text-white rounded-md pl-10 pr-4 py-2 w-64">
-            <svg class="w-5 h-5 text-gray-400 absolute left-3 top-2.5" fill="none" stroke="currentColor"
+                class="bg-gray-900 py-2 pr-4 pl-10 rounded-md w-64 text-white">
+            <svg class="top-2.5 left-3 absolute w-5 h-5 text-gray-400" fill="none" stroke="currentColor"
                 viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                     d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
             </svg>
         </div>
         <button wire:click="$dispatch('openModal')"
-            class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 flex items-center gap-2">
+            class="flex items-center gap-2 bg-blue-500 hover:bg-blue-600 px-4 py-2 rounded-md text-white">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
             </svg>
@@ -24,18 +24,18 @@
 
     <!-- Vue Desktop -->
     <div class="hidden md:block">
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+        <div class="gap-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             @foreach ($products as $product)
                 <div class="bg-gray-800 rounded-lg overflow-hidden">
-                    <div class="aspect-w-16 aspect-h-9">
+                    <div class="aspect-h-9 aspect-w-16">
                         <img src="{{ Storage::url($product->images[0] ?? '') }}" alt="{{ $product->name }}"
                             class="w-full h-48 object-cover">
                     </div>
                     <div class="p-4">
-                        <h4 class="text-white text-lg font-semibold mb-2">{{ $product->name }}</h4>
-                        <p class="text-gray-400 text-sm mb-2">{{ Str::limit($product->description, 100) }}</p>
+                        <h4 class="mb-2 font-semibold text-white text-lg">{{ $product->name }}</h4>
+                        <p class="mb-2 text-gray-400 text-sm">{{ Str::limit($product->description, 100) }}</p>
                         <div class="flex justify-between items-center">
-                            <span class="text-white font-bold">{{ number_format($product->price, 2) }} €</span>
+                            <span class="font-bold text-white">{{ number_format($product->price, 2) }} €</span>
                             <div class="flex gap-2">
                                 <button wire:click="$dispatch('openModal', { productId: {{ $product->id }} })"
                                     class="text-blue-400 hover:text-blue-600">
@@ -46,7 +46,7 @@
                                 </button>
                                 <button wire:click="deleteProduct({{ $product->id }})"
                                     onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce produit ?')"
-                                    class="text-purple-400 hover:text-purple-600">
+                                    class="text-indigo-400 hover:text-indigo-600">
                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                             d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
@@ -66,24 +66,24 @@
     <!-- Vue Mobile -->
     <div class="md:hidden space-y-4 w-full">
         @foreach ($mobileProducts as $product)
-            <div class="bg-gray-800 w-full rounded-lg overflow-hidden">
+            <div class="bg-gray-800 rounded-lg w-full overflow-hidden">
                 <img src="{{ Storage::url($product->images[0] ?? '') }}" alt="{{ $product->name }}"
                     class="w-full h-48 object-cover">
                 <div class="p-4">
-                    <h4 class="text-white text-lg font-semibold mb-2 break-words">{{ $product->name }}</h4>
-                    <p class="text-gray-400 text-sm mb-4 break-words">{{ Str::limit($product->description, 100) }}</p>
-                    <div class="flex items-center justify-between mb-4">
-                        <span class="text-white font-bold text-xl">{{ number_format($product->price, 2) }} €</span>
+                    <h4 class="mb-2 font-semibold text-white text-lg break-words">{{ $product->name }}</h4>
+                    <p class="mb-4 text-gray-400 text-sm break-words">{{ Str::limit($product->description, 100) }}</p>
+                    <div class="flex justify-between items-center mb-4">
+                        <span class="font-bold text-white text-xl">{{ number_format($product->price, 2) }} €</span>
                         <span class="text-gray-400">Stock: {{ $product->stock }}</span>
                     </div>
-                    <div class="flex gap-2 justify-end">
+                    <div class="flex justify-end gap-2">
                         <button wire:click="$dispatch('openModal', { productId: {{ $product->id }} })"
-                            class="flex-1 bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 text-sm">
+                            class="flex-1 bg-blue-500 hover:bg-blue-600 px-4 py-2 rounded-md text-white text-sm">
                             Modifier
                         </button>
                         <button wire:click="deleteProduct({{ $product->id }})"
                             onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce produit ?')"
-                            class="flex-1 bg-purple-500 text-white px-4 py-2 rounded-md hover:bg-purple-600 text-sm">
+                            class="flex-1 bg-indigo-500 hover:bg-indigo-600 px-4 py-2 rounded-md text-white text-sm">
                             Supprimer
                         </button>
                     </div>
@@ -93,7 +93,7 @@
 
         @if (!$showAll && $products->count() > 3)
             <button wire:click="$set('showAll', true)"
-                class="w-full bg-gray-700 text-white py-3 rounded-lg hover:bg-gray-600 transition">
+                class="bg-gray-700 hover:bg-gray-600 py-3 rounded-lg w-full text-white transition">
                 Voir plus de produits ({{ $products->count() - 3 }} restants)
             </button>
         @endif

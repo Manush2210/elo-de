@@ -1,10 +1,10 @@
 <footer class="container">
     <div class="py-8">
-        <hr class="w-full text-gray-300 py-4">
+        <hr class="py-4 w-full text-gray-300">
 
-        <div class="text-purple-600">
+        <div class="text-indigo-600">
 
-            <span> ©2020-2025 <span class="uppercase"> Voyance Spirituelle Expert</span> </span>
+            <span> ©2020-2025 <span class="uppercase"> Coaching Voyance</span> </span>
         </div>
     </div>
 </footer>

@@ -1,35 +1,35 @@
-<div class="max-w-6xl mx-auto p-6">
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+<div class="mx-auto p-6 max-w-6xl">
+    <div class="gap-8 grid grid-cols-1 md:grid-cols-2">
         <!-- Section Images -->
         <div>
             <div class="relative">
                 <img src="{{ asset('storage/' . $product['images'][0]) ?? 'https://via.placeholder.com/400' }}"
-                    alt="{{ $product['title'] }}" class="w-full h-96 object-cover rounded-lg" id="mainImage">
+                    alt="{{ $product['title'] }}" class="rounded-lg w-full h-96 object-cover" id="mainImage">
             </div>
 
             <!-- Miniatures -->
             <div class="flex space-x-2 mt-4">
                 @foreach ($product['images'] as $index => $image)
                     <img src="{{ asset('storage/' . $image) }}"
-                        class="cursor-pointer w-16 h-16 object-cover rounded-lg border hover:border-purple-500 {{ $index === 0 ? 'border-purple-500' : '' }}"
+                        class="cursor-pointer w-16 h-16 object-cover rounded-lg border hover:border-indigo-500 {{ $index === 0 ? 'border-indigo-500' : '' }}"
                         onclick="document.getElementById('mainImage').src = this.src;
-                      document.querySelectorAll('.flex.space-x-2.mt-4 img').forEach(img => img.classList.remove('border-purple-500'));
-                      this.classList.add('border-purple-500');">
+                      document.querySelectorAll('.flex.space-x-2.mt-4 img').forEach(img => img.classList.remove('border-indigo-500'));
+                      this.classList.add('border-indigo-500');">
                 @endforeach
             </div>
         </div>
 
         <!-- Détails Produit -->
         <div>
-            <h1 class="text-3xl font-bold text-gray-800">{{ $product['name'] }}</h1>
-            <p class="text-xl text-gray-600 mt-2 font-semibold">{{ number_format($product['price'], 2, ',', ' ') }} €
+            <h1 class="font-bold text-gray-800 text-3xl">{{ $product['name'] }}</h1>
+            <p class="mt-2 font-semibold text-gray-600 text-xl">{{ number_format($product['price'], 2, ',', ' ') }} €
             </p>
 
             {{--  five Rating gold star --}}
             <div class="rating">
-                <span class="text-yellow-500 ">
+                <span class="text-yellow-500">
                     @for ($i = 0; $i < 5; $i++)
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline" fill="currentColor"
+                        <svg xmlns="http://www.w3.org/2000/svg" class="inline w-5 h-5" fill="currentColor"
                             viewBox="0 0 24 24" stroke="none">
                             <path
                                 d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
@@ -41,24 +41,24 @@
 
 
             <!-- Boutons -->
-            <div class="mt-6 flex space-x-4 items-center">
+            <div class="flex items-center space-x-4 mt-6">
                 <div class="flex items-center">
                     <input type="number" value="1" wire:model.live='quantity'
-                        class="qty-selector border-gray-300 bg-gray-200 w-10 h-10 text-center [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none">
-                    <div class="flex flex-col ml-1 space-y-3">
+                        class="bg-gray-200 border-gray-300 w-10 h-10 text-center [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none qty-selector [appearance:textfield]">
+                    <div class="flex flex-col space-y-3 ml-1">
                         <button wire:click="increment"
-                            class="bg-gray-300 cursor-pointer hover:bg-gray-400 text-gray-800 px-1 text-xs rounded-t"
+                            class="bg-gray-300 hover:bg-gray-400 px-1 rounded-t text-gray-800 text-xs cursor-pointer"
                             wire:click="$set('quantity', $event.target.previousElementSibling?.value ? parseInt($event.target.previousElementSibling.value) + 1 : 2)">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" fill="none" viewBox="0 0 24 24"
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3" fill="none" viewBox="0 0 24 24"
                                 stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M12 6v6m6-3H6" />
                             </svg>
                         </button>
                         <button wire:click="decrement"
-                            class="bg-gray-300 cursor-pointer hover:bg-gray-400 text-gray-800 px-1 text-xs rounded-b"
+                            class="bg-gray-300 hover:bg-gray-400 px-1 rounded-b text-gray-800 text-xs cursor-pointer"
                             wire:click="$set('quantity', $event.target.previousElementSibling?.previousElementSibling?.previousElementSibling?.value > 1 ? parseInt($event.target.previousElementSibling.previousElementSibling.previousElementSibling.value) - 1 : 1)">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" fill="none" viewBox="0 0 24 24"
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3" fill="none" viewBox="0 0 24 24"
                                 stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 12H6" />
                             </svg>
@@ -66,23 +66,23 @@
                     </div>
                 </div>
                 <button wire:click="addToCart({{ $product['id'] }})"
-                    class="bg-purple-600 text-white px-6 py-3 rounded-lg hover:bg-purple-300 transition">
+                    class="bg-indigo-600 hover:bg-indigo-300 px-6 py-3 rounded-lg text-white transition">
                     Ajouter au panier
                 </button>
                 <button
-                    class="border border-purple-600 text-purple-600 px-6 py-3 rounded-lg hover:bg-purple-100 transition">
+                    class="hover:bg-indigo-100 px-6 py-3 border border-indigo-600 rounded-lg text-indigo-600 transition">
                     ❤️
                 </button>
             </div>
             <div class="mt-6">
-                <hr class="text-gray-300 h-3 block mx-auto text-center py-4">
+                <hr class="block mx-auto py-4 h-3 text-gray-300 text-center">
             </div>
 
 
-            <p class="text-gray-600 mt-4">{{ $product['description'] }}</p>
+            <p class="mt-4 text-gray-600">{{ $product['description'] }}</p>
 
             @if (session()->has('message'))
-                <p class="mt-4 text-purple-600">{{ session('message') }}</p>
+                <p class="mt-4 text-indigo-600">{{ session('message') }}</p>
             @endif
         </div>
     </div>

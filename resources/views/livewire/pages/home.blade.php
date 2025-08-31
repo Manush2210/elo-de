@@ -1,223 +1,308 @@
 <div>
     {{-- A good traveler has no fixed plans and is not intent upon arriving. --}}
 
-    <header class="container">
-        @livewire('components.carousel.carousel')
-        <div class="relative py-20 mx-auto text-center max-w-5xl">
-            <div class="absolute -top-8 left-1/2 transform -translate-x-1/2 flex space-x-2">
-                <div class="w-8 h-1 bg-purple-400 rounded-full animate-pulse"></div>
-                <div class="w-8 h-1 bg-purple-600 rounded-full animate-pulse delay-75"></div>
-                <div class="w-8 h-1 bg-purple-800 rounded-full animate-pulse delay-150"></div>
-            </div>
-
-            <h2 class="font-['Playfair_Display']">
-                <span class="text-3xl font-light tracking-wider text-gray-700">Prenez le contrôle de</span>
-                <span
-                    class="block mt-6 text-6xl md:text-7xl font-bold bg-gradient-to-r from-purple-700 via-purple-500 to-purple-300 bg-clip-text text-transparent drop-shadow-sm transform hover:scale-105 transition-transform duration-500">
-                    Votre Destinée
-                </span>
-            </h2>
-
-            <div class="mt-12 grid gap-8">
-                <div
-                    class="backdrop-blur-sm bg-white/50 p-8 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
-                    <div
-                        class="absolute -left-3 top-0 w-1 h-full bg-gradient-to-b from-purple-600 to-purple-300 rounded-full">
-                    </div>
-                    <p class="text-gray-700 text-xl leading-relaxed mx-auto max-w-3xl">
-                        Explorez un monde de <span class="font-medium text-purple-600">sagesse ancestrale</span> et de
-                        <span class="font-medium text-purple-600">découverte personnelle</span> à travers notre
-                        collection
-                        soigneusement sélectionnée. Nous vous proposons des Oracles authentiques, des Porte-Bonheur
-                        énergétiques et des pierres de lithothérapie aux propriétés exceptionnelles.
-                    </p>
-                </div>
-
-                <div
-                    class="backdrop-blur-sm bg-white/50 p-8 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
-                    <p class="text-gray-700 text-xl leading-relaxed mx-auto max-w-3xl">
-                        Chaque article est choisi pour vous accompagner vers :
-                        <span class="block mt-4 space-y-2">
-                            <span
-                                class="inline-block font-medium text-purple-600 hover:text-purple-700 transition-colors duration-300 mr-2">✧
-                                L'équilibre intérieur</span>
-                            <span
-                                class="inline-block font-medium text-purple-600 hover:text-purple-700 transition-colors duration-300 mr-2">✧
-                                La clarté spirituelle</span>
-                            <span
-                                class="inline-block font-medium text-purple-600 hover:text-purple-700 transition-colors duration-300">✧
-                                L'harmonie quotidienne</span>
-                        </span>
-                    </p>
-                </div>
-            </div>
-        </div>
-
-        {{-- Quick access button to shop, contact and meeting page on mobile --}}
-        <div class="flex flex-wrap justify-center gap-2 mb-8 md:hidden">
-            <a href="{{ route('shop') }}"
-                class="bg-purple-500 text-white px-3 py-2 text-sm rounded-md hover:bg-purple-600 transition duration-300">Boutique</a>
-
-            <a href="{{ route('contact') }}"
-                class="bg-purple-500 text-white px-3 py-2 text-sm rounded-md hover:bg-purple-600 transition duration-300">Contact</a>
-
-            <a href="{{ route('meeting') }}"
-                class="bg-purple-500 text-white px-3 py-2 text-sm rounded-md hover:bg-purple-600 transition duration-300">Rendez-vous</a>
-
-            @auth
-                <a href="{{ route('order-history') }}"
-                    class="bg-purple-500 text-white px-3 py-2 text-sm rounded-md hover:bg-purple-600 transition duration-300">Commandes</a>
-            @endauth
-        </div>
-    </header>
+    @livewire('components.heros')
 
     {{-- @dump(auth()->user()) --}}
 
-    <section class="best-seller bg-gray-100 py-16">
+    <section class="bg-white py-20">
+        <div class="mx-auto container">
 
-        <div class="container text-center mx-auto">
-            <h2 class="text-4xl mb-10 text-gray-600  font-semibold  font-['Dancing_Script']">Meilleures ventes
+            <div class="mb-12 text-center">
+                <h2 class="font-extrabold text-gray-800 text-4xl sm:text-5xl">
+                    Une Expérience de Guidance Intuitive et Personnalisée
+                </h2>
+                <p class="mx-auto mt-4 max-w-2xl text-gray-600 text-xl">
+                    Découvrez une plateforme conçue pour vous accompagner sur votre chemin de vie.
+                </p>
+            </div>
 
-            </h2>
-            @if ($products->isNotEmpty())
+            <div class="items-center gap-12 grid grid-cols-1 md:grid-cols-2">
+                <!-- Colonne de l'image -->
+                <div class="shadow-2xl rounded-lg overflow-hidden">
+                    <img src="{{ asset('assets/images/digi-v.jpg') }}" alt="Coaching et Voyance en ligne"
+                        class="w-full h-auto object-center object-cover hover:scale-105 transition-transform duration-500 ease-in-out transform">
+                </div>
 
-                <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-0">
+                <!-- Colonne des fonctionnalités -->
+                <div class="space-y-8">
+                    <div>
+                        <h3 class="mb-4 font-bold text-indigo-700 text-2xl">Ce que notre plateforme vous réserve :</h3>
+                        <p class="text-gray-700 leading-relaxed">
+                            Nous avons créé un espace sécurisé et bienveillant pour vous offrir des outils de guidance
+                            clairs et des ressources exclusives. Naviguez avec simplicité et trouvez les réponses que
+                            vous cherchez.
+                        </p>
+                    </div>
+
+                    <ul class="space-y-6">
+                        <li class="flex items-start">
+                            <div class="flex-shrink-0">
+                                <span
+                                    class="flex justify-center items-center bg-indigo-100 rounded-full w-12 h-12 text-indigo-600">
+                                    <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                        viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                                    </svg>
+                                </span>
+                            </div>
+                            <div class="ml-4">
+                                <h4 class="font-semibold text-gray-800 text-lg">Guidance Personnalisée</h4>
+                                <p class="mt-1 text-gray-600">Bénéficiez de conseils sur-mesure et de consultations
+                                    adaptées à votre situation unique grâce à nos outils interactifs.</p>
+                            </div>
+                        </li>
+
+                        <li class="flex items-start">
+                            <div class="flex-shrink-0">
+                                <span
+                                    class="flex justify-center items-center bg-indigo-100 rounded-full w-12 h-12 text-indigo-600">
+                                    <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                        viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M4.33 11.162A3.001 3.001 0 016.5 6h11a3.001 3.001 0 012.168 5.162l-6.67 7.623A3 3 0 016.5 18H5a2 2 0 01-2-2v-2.5a3 3 0 01.33-1.338z" />
+                                    </svg>
+                                </span>
+                            </div>
+                            <div class="ml-4">
+                                <h4 class="font-semibold text-gray-800 text-lg">Tirages de Cartes en Ligne</h4>
+                                <p class="mt-1 text-gray-600">Accédez à tout moment à des tirages de cartes interactifs
+                                    pour obtenir des éclaircissements immédiats.</p>
+                            </div>
+                        </li>
 
 
-                    @foreach ($products as $item)
-                        {{-- @dump($item) --}}
-                        @livewire(
-                            'components.product.product-card',
-                            [
-                                'images' => $item->images,
-                                'title' => $item->name,
-                                'price' => $item->price,
-                                'slug' => $item->slug,
-                            ],
-                            key($item->id)
-                        )
+
+                        <li class="flex items-start">
+                            <div class="flex-shrink-0">
+                                <span
+                                    class="flex justify-center items-center bg-indigo-100 rounded-full w-12 h-12 text-indigo-600">
+                                    <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                        viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.523 5.754 19 7.5 19s3.332-.477 4.5-1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.523 18.246 19 16.5 19c-1.746 0-3.332-.477-4.5-1.253" />
+                                    </svg>
+                                </span>
+                            </div>
+                            <div class="ml-4">
+                                <h4 class="font-semibold text-gray-800 text-lg">Ressources et Articles</h4>
+                                <p class="mt-1 text-gray-600">Approfondissez vos connaissances avec notre bibliothèque
+                                    d'articles, de conseils et de ressources exclusives.</p>
+                            </div>
+                        </li>
+                    </ul>
+
+                    <div class="mt-10">
+                        <a href="#about"
+                            class="inline-block inline-flex items-center gap-3 bg-indigo-600 hover:bg-indigo-700 shadow-lg px-8 py-3 rounded-lg font-bold text-white transition-all hover:-translate-y-1 duration-300 transform">
+                            <svg class="w-5 h-5 text-white animate-bounce" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                            </svg>
+                            Vivre l'expérience.
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+    <!-- Section Types de consultation -->
+    <section class="bg-white py-16">
+        <div class="mx-auto container">
+            <div class="mb-8 text-center">
+                <h2 class="font-extrabold text-gray-800 text-3xl">Types de consultation</h2>
+                <p class="mt-2 text-gray-600">Choisissez le type de séance qui vous convient</p>
+            </div>
+
+            @if (!empty($consultationTypes) && $consultationTypes->isNotEmpty())
+                <div class="gap-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+                    @foreach ($consultationTypes as $type)
+                        <div class="shadow hover:shadow-lg p-6 border rounded-lg transition">
+                            @if ($type->image)
+                                <div class="mb-4 rounded w-full h-44 overflow-hidden">
+                                    <img src="{{ asset('storage/' . $type->image) }}" alt="{{ $type->name }}"
+                                        class="w-full h-full object-cover">
+                                </div>
+                            @endif
+                            <h3 class="font-semibold text-gray-800 text-xl">{{ $type->name }}</h3>
+                            <p class="mt-2 text-gray-600">{{ Str::limit($type->description, 120) }}</p>
+                            <div class="flex justify-between items-center mt-4">
+                                <div class="font-bold text-indigo-700 text-lg">
+                                    {{ number_format($type->price, 2, ',', ' ') }} €</div>
+                                <a href="{{ route('meeting') }}?type={{ $type->id }}"
+                                    class="bg-indigo-600 hover:bg-indigo-700 px-4 py-2 rounded text-white">Réserver</a>
+                            </div>
+                        </div>
                     @endforeach
                 </div>
-                <div class="flex justify-center mt-6">
-
-                    <a href="{{ route('shop') }}"
-                        class="bg-purple-500 inline-block  my-8 text-white px-4 py-2 rounded-md hover:bg-purple-600 transition duration-300">Voir
-                        la Boutique</a>
-
-                </div>
-            @endif
-
-
-            @if ($products->isEmpty())
-                <div class="text-center py-8">
-                    <h3 class="text-sm text-gray-600">Aucun produit</h3>
-                    <p class="text-gray-500">Nous n'avons pas trouvé de produits correspondant à votre recherche.</p>
-                </div>
+            @else
+                <p class="text-gray-600 text-center">Aucun type de consultation disponible pour le moment.</p>
             @endif
         </div>
-
-
-
-
     </section>
 
-    {{-- ============================================================== --}}
-    {{-- Section Témoignages                                            --}}
-    {{-- ============================================================== --}}
-    <section class="testimonies bg-gray-100 py-16">
-        <div class="container mx-auto px-4">
-            <h2 class="text-4xl text-center font-semibold text-gray-800 mb-12">Ce que disent nos clients</h2>
-            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-                {{-- Témoignage de Marie --}}
-                <div class="bg-white rounded-lg shadow-lg p-6 transform hover:scale-105 transition duration-300">
-                    <div class="flex justify-center mb-4">
-                        <div class="w-12 h-12 bg-purple-500 rounded-full flex items-center justify-center">
-                            <span class="text-white text-xl font-bold">M</span>
+
+
+
+    <section class="bg-slate-50 py-16 sm:py-24 about">
+        <div class="mx-auto px-4 max-w-5xl container">
+
+            <!-- Titre de la section -->
+            <div class="mb-12 text-center">
+                <h2 class="font-extrabold text-gray-900 text-3xl sm:text-4xl">
+                    Ma Vocation : Vous Éclairer sur Votre Chemin de Vie
+                </h2>
+                <p class="mx-auto mt-4 max-w-2xl text-gray-600 text-lg">
+                    Découvrez une approche de la voyance fondée sur l'écoute, le respect et la bienveillance.
+                </p>
+            </div>
+
+            <div class="items-center gap-12 grid grid-cols-1 lg:grid-cols-5">
+
+                <!-- Colonne Image (Très important pour la confiance) -->
+                <div class="lg:col-span-2">
+                    <div class="shadow-2xl rounded-xl aspect-[4/5] overflow-hidden">
+                        <!-- Remplacez par une photo professionnelle de vous-même -->
+                        <img class="w-full h-full object-center object-cover"
+                            src="{{asset('assets/images/bougie.jpg')}}"
+                            alt="Portrait de votre nom, voyant et guide spirituel">
+                    </div>
+                </div>
+
+                <!-- Colonne Contenu -->
+                <div class="lg:col-span-3">
+                    <div class="space-y-8">
+                        <div>
+                            <h3 class="mb-3 font-bold text-indigo-700 text-2xl">Qui suis-je ?</h3>
+                            <p class="text-gray-700 leading-relaxed">
+                                Passionné par les arts divinatoires et le développement personnel, j'ai consacré ma vie
+                                à affiner mon don de clairvoyance pour offrir des guidances claires et utiles. Mon
+                                objectif n'est pas de prédire un futur immuable, mais de vous donner les clés pour
+                                comprendre votre présent et construire l'avenir qui vous correspond.
+                            </p>
+                        </div>
+
+                        <!-- Ma Mission -->
+                        <div class="flex items-start">
+                            <div class="flex-shrink-0">
+                                <span
+                                    class="flex justify-center items-center bg-indigo-100 rounded-full w-12 h-12 text-indigo-600">
+                                    <!-- Icône pour la mission/vision -->
+                                    <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                        viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="M2.036 12.322a1.012 1.012 0 010-.639l7.5-10.5a.5.5 0 01.832.664l-6.5 9.152 6.5 9.152a.5.5 0 01-.832.664l-7.5-10.5z" />
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="M12.036 12.322a1.012 1.012 0 010-.639l7.5-10.5a.5.5 0 01.832.664l-6.5 9.152 6.5 9.152a.5.5 0 01-.832.664l-7.5-10.5z" />
+                                    </svg>
+                                </span>
+                            </div>
+                            <div class="ml-4">
+                                <h4 class="font-semibold text-gray-800 text-lg">Ma Mission</h4>
+                                <p class="mt-1 text-gray-600">Vous accompagner dans la clarté et la confiance, en
+                                    illuminant les zones d'ombre et en révélant votre potentiel pour vous aider à
+                                    prendre des décisions éclairées.</p>
+                            </div>
+                        </div>
+
+                        <!-- Mon Éthique -->
+                        <div class="flex items-start">
+                            <div class="flex-shrink-0">
+                                <span
+                                    class="flex justify-center items-center bg-indigo-100 rounded-full w-12 h-12 text-indigo-600">
+                                    <!-- Icône pour l'éthique/confiance -->
+                                    <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                        viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.286zm0 13.036h.008v.008h-.008v-.008z" />
+                                    </svg>
+                                </span>
+                            </div>
+                            <div class="ml-4">
+                                <h4 class="font-semibold text-gray-800 text-lg">Mon Éthique</h4>
+                                <p class="mt-1 text-gray-600">Chaque consultation est un échange confidentiel, mené
+                                    sans jugement. Je m'engage à une totale honnêteté, y compris sur les limites de ma
+                                    pratique, et je ne pratique aucune forme de complaisance.</p>
+                            </div>
                         </div>
                     </div>
-                    <p class="text-gray-600 mb-4">"Les oracles de bienveillance et d'amour m'accompagnent chaque jour.
+
+                    <!-- Citation inspirante -->
+                    <div class="mt-10 pl-4 border-indigo-500 border-l-4">
+                        <p class="text-gray-600 italic">
+                            "Mon plus grand souhait est que vous repartiez de notre séance avec plus de sérénité et de
+                            force pour avancer."
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="bg-gray-100 py-16 testimonies">
+        <div class="mx-auto container">
+            <h2 class="mb-12 font-semibold text-gray-800 text-4xl text-center">Ce que disent nos clients</h2>
+            <div class="gap-8 grid md:grid-cols-2 lg:grid-cols-4">
+                {{-- Témoignage de Marie --}}
+                <div class="bg-white shadow-lg p-6 rounded-lg hover:scale-105 transition duration-300 transform">
+                    <div class="flex justify-center mb-4">
+                        <div class="flex justify-center items-center bg-indigo-500 rounded-full w-12 h-12">
+                            <span class="font-bold text-white text-xl">M</span>
+                        </div>
+                    </div>
+                    <p class="mb-4 text-gray-600">"Les oracles de bienveillance et d'amour m'accompagnent chaque jour.
                         Ils m'aident à trouver de la clarté"</p>
-                    <div class="flex items-center justify-center">
-                        <span class="text-purple-500 font-medium">Marie</span>
+                    <div class="flex justify-center items-center">
+                        <span class="font-medium text-indigo-500">Marie</span>
                     </div>
                 </div>
 
                 {{-- Témoignage de Christelle --}}
-                <div class="bg-white rounded-lg shadow-lg p-6 transform hover:scale-105 transition duration-300">
+                <div class="bg-white shadow-lg p-6 rounded-lg hover:scale-105 transition duration-300 transform">
                     <div class="flex justify-center mb-4">
-                        <div class="w-12 h-12 bg-purple-500 rounded-full flex items-center justify-center">
-                            <span class="text-white text-xl font-bold">C</span>
+                        <div class="flex justify-center items-center bg-indigo-500 rounded-full w-12 h-12">
+                            <span class="font-bold text-white text-xl">C</span>
                         </div>
                     </div>
-                    <p class="text-gray-600 mb-4">"Chaque tirage est une occasion d'en apprendre davantage sur moi-même
+                    <p class="mb-4 text-gray-600">"Chaque tirage est une occasion d'en apprendre davantage sur moi-même
                         et de trouver un équilibre"</p>
-                    <div class="flex items-center justify-center">
-                        <span class="text-purple-500 font-medium">Christelle</span>
+                    <div class="flex justify-center items-center">
+                        <span class="font-medium text-indigo-500">Christelle</span>
                     </div>
                 </div>
 
                 {{-- Témoignage de Franck --}}
-                <div class="bg-white rounded-lg shadow-lg p-6 transform hover:scale-105 transition duration-300">
+                <div class="bg-white shadow-lg p-6 rounded-lg hover:scale-105 transition duration-300 transform">
                     <div class="flex justify-center mb-4">
-                        <div class="w-12 h-12 bg-purple-500 rounded-full flex items-center justify-center">
-                            <span class="text-white text-xl font-bold">F</span>
+                        <div class="flex justify-center items-center bg-indigo-500 rounded-full w-12 h-12">
+                            <span class="font-bold text-white text-xl">F</span>
                         </div>
                     </div>
-                    <p class="text-gray-600 mb-4">"Franchement, tirer une carte, ça m'aide à y voir plus clair et à
+                    <p class="mb-4 text-gray-600">"Franchement, tirer une carte, ça m'aide à y voir plus clair et à
                         prendre du recul sur pas mal de choses."</p>
-                    <div class="flex items-center justify-center">
-                        <span class="text-purple-500 font-medium">Franck</span>
+                    <div class="flex justify-center items-center">
+                        <span class="font-medium text-indigo-500">Franck</span>
                     </div>
                 </div>
 
                 {{-- Témoignage de Mélissa --}}
-                <div class="bg-white rounded-lg shadow-lg p-6 transform hover:scale-105 transition duration-300">
+                <div class="bg-white shadow-lg p-6 rounded-lg hover:scale-105 transition duration-300 transform">
                     <div class="flex justify-center mb-4">
-                        <div class="w-12 h-12 bg-purple-500 rounded-full flex items-center justify-center">
-                            <span class="text-white text-xl font-bold">M</span>
+                        <div class="flex justify-center items-center bg-indigo-500 rounded-full w-12 h-12">
+                            <span class="font-bold text-white text-xl">M</span>
                         </div>
                     </div>
-                    <p class="text-gray-600 mb-4">"Génial ! Livraison rapide !"</p>
-                    <div class="flex items-center justify-center">
-                        <span class="text-purple-500 font-medium">Mélissa</span>
+                    <p class="mb-4 text-gray-600">"Génial ! Livraison rapide !"</p>
+                    <div class="flex justify-center items-center">
+                        <span class="font-medium text-indigo-500">Mélissa</span>
                     </div>
                 </div>
             </div>
         </div>
     </section>
-    <section class="about mb-5 bg-white">
-        <div class="container max-w-4xl mx-auto py-12 px-4">
-            <div class="text-center mb-8">
-                <h2 class="text-4xl font-semibold text-gray-800">Qui suis-je?</h2>
-                <div class="w-24 h-1 bg-purple-500 mx-auto mt-4"></div>
-            </div>
 
-            <div class="grid gap-8 md:grid-cols-2">
-                <div class="bg-gray-50 rounded-lg p-6">
-                    <h3 class="text-xl font-medium text-gray-800 mb-4">Mon Don</h3>
-                    <p class="text-gray-600 leading-relaxed">
-                        Grâce à ma clairvoyance, je peux identifier les bons numéros du loto ainsi que le site où vous
-                        aurez le plus de chances de gagner. La voyance est un atout précieux pour prédire les tirages.
-                    </p>
-                </div>
-
-                <div class="bg-gray-50 rounded-lg p-6">
-                    <h3 class="text-xl font-medium text-gray-800 mb-4">Mon Éthique</h3>
-                    <p class="text-gray-600 leading-relaxed">
-                        La datation précise d'un événement reste un défi pour tout voyant. Si un clairvoyant est en
-                        mesure de le faire, il agit selon son éthique. Lors de la consultation, je vous révélerai les
-                        numéros gagnants ainsi que la plateforme idéale pour jouer.
-                    </p>
-                </div>
-            </div>
-
-            <div class="text-center mt-8">
-                <p class="text-gray-500 italic">
-                    "En retour, après votre gain, vous respecterez votre engagement."
-                </p>
-            </div>
-        </div>
-    </section>
 
 
 </div>

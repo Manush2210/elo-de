@@ -4,11 +4,13 @@ namespace App\Livewire\Pages;
 
 use Livewire\Component;
 use App\Models\Product;
+use App\Models\ConsultationType;
 
 class Home extends Component
 {
 
     public $products;
+    public $consultationTypes;
 
     public function mount()
     {
@@ -16,6 +18,9 @@ class Home extends Component
             ->orderBy('created_at', 'desc')
             ->take(4)
             ->get();
+
+    // Charger les types de consultation actifs pour les afficher sur la page d'accueil
+    $this->consultationTypes = ConsultationType::active()->get();
     }
     public function render()
     {
