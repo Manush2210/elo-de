@@ -36,7 +36,7 @@ class ContactMailable extends Mailable
     {
         return new Headers(
             text: [
-                'List-Unsubscribe' => 'mailto:contact@voyance-spirituelle-expert.com',
+                'List-Unsubscribe' => 'mailto:contact@coaching-voyance.com',
             ],
         );
     }
@@ -47,9 +47,9 @@ class ContactMailable extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            from: 'noreply@voyance-spirituelle-expert.com',
+            from: 'noreply@coaching-voyance.com',
             replyTo: $this->email,
-            // to: ['contact@voyance-spirituelle-expert.com', 'emmanueladenidji@gmail.com'],
+            // to: ['contact@coaching-voyance.com', 'emmanueladenidji@gmail.com'],
             subject: 'Formulaire de contact - Voyance Spirituelle Expert',
         );
     }

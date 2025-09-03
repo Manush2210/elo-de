@@ -103,7 +103,7 @@
             @endif
 
             <p>Pour toute question: <a
-                    href="mailto:contact@voyance-spirituelle-expert.com">contact@voyance-spirituelle-expert.com</a></p>
+                    href="mailto:contact@coaching-voyance.com">contact@coaching-voyance.com</a></p>
 
             <p>Merci de votre confiance!</p>
         </div>

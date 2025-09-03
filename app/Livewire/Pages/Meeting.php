@@ -8,10 +8,13 @@ use Livewire\Component;
 use App\Models\TimeSlot;
 use App\Models\Appointment;
 use Livewire\WithFileUploads;
-use Livewire\Attributes\Computed;
 use App\Models\ConsultationType;
+use Livewire\Attributes\Computed;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Log;
 use App\Mail\AppointmentConfirmation;
 use App\Mail\AdminAppointmentNotification;
 
@@ -123,7 +126,8 @@ class Meeting extends Component
 
     public function selectDate($date)
     {
-        if (!$date) return;
+        if (!$date)
+            return;
         $this->selectedDate = $date;
         $this->selectedTimeSlot = null; // Réinitialiser le créneau si la date change
         $this->loadAvailableTimeSlots();
@@ -143,7 +147,7 @@ class Meeting extends Component
             'clientEmail' => 'required|email',
             'clientPhone' => 'required',
             'contactMethod' => 'required|in:email,whatsapp,telephone',
-            'paymentProof' => 'nullable|file|max:10240', // 10MB - optional now
+            'paymentProof' => 'nullable|file|max:10240', // 10MB - optional
             'turnstileToken' => 'required',
         ]);
 
@@ -152,51 +156,124 @@ class Meeting extends Component
             return;
         }
 
-        // Logique de réservation existante...
+        // Vérifier que l'utilisateur a sélectionné un créneau et une date
         $slot = $this->selectedSlotDetails();
-        // Stocker la preuve de paiement uniquement si fournie
-        $paymentProofPath = null;
-        if ($this->paymentProof) {
-            $paymentProofPath = $this->paymentProof->store('payment_proofs', 'public');
+        if (!$slot || !$this->selectedDate) {
+            session()->flash('error', 'Veuillez sélectionner une date et un créneau valides.');
+            return;
         }
 
-        $appointment = Appointment::create([
-            'client_name' => $this->clientName,
-            'client_email' => $this->clientEmail,
-            'client_phone' => $this->clientPhone,
-            'appointment_date' => $this->selectedDate,
-            'start_time' => Carbon::parse($this->selectedDate . ' ' . $slot->start_time),
-            'end_time' => Carbon::parse($this->selectedDate . ' ' . $slot->end_time),
-            'notes' => $this->notes,
-            'payment_proof' => $paymentProofPath,
-            'payment_method' => 'virement_bancaire',
-            'status' => 'booked',
-            'contact_method' => $this->contactMethod,
-            'consultation_type_id' => $this->selectedConsultationType,
-        ]);
+        // Stocker la preuve de paiement si fournie (avant la transaction). En cas d'échec de la transaction
+        // on tentera de supprimer le fichier pour éviter des fichiers orphelins.
+        $paymentProofPath = null;
+        if ($this->paymentProof) {
+            try {
+                $paymentProofPath = $this->paymentProof->store('payment_proofs', 'public');
+            } catch (\Throwable $e) {
+                Log::error('Payment proof upload failed: ' . $e->getMessage());
+                session()->flash('error', 'Impossible d\'uploader la preuve de paiement. Veuillez réessayer.');
+                return;
+            }
+        }
 
-        // Envoi des emails...
-        Mail::to($this->clientEmail)->send(new AppointmentConfirmation($appointment, $slot, $this->account));
-        Mail::to(['contact@voyance-spirituelle-expert.com', 'emmanueladenidji@gmail.com'])->send(new AdminAppointmentNotification($appointment, $slot, $this->account));
+        // Construire les bornes du créneau en Carbon pour vérifications
+        $slotStart = Carbon::parse($this->selectedDate . ' ' . $slot->start_time);
+        $slotEnd = Carbon::parse($this->selectedDate . ' ' . $slot->end_time);
 
-        // Afficher une page de succès
-        session()->flash('success_message', 'Votre rendez-vous a été confirmé !');
-        $this->currentStep = 4; // Aller à l'étape de confirmation
+        try {
+            DB::beginTransaction();
+
+            // Re-vérifier qu'aucun rendez-vous ne chevauche ce créneau (concurrence possible)
+            $conflict = Appointment::where('appointment_date', $this->selectedDate)
+                ->where(function ($q) use ($slotStart, $slotEnd) {
+                    $q->where(function ($qq) use ($slotStart, $slotEnd) {
+                        $qq->where('start_time', '<', $slotEnd)
+                           ->where('end_time', '>', $slotStart);
+                    });
+                })
+                ->exists();
+
+            if ($conflict) {
+                DB::rollBack();
+                // supprimer la preuve si on l'avait uploadée
+                if ($paymentProofPath && Storage::disk('public')->exists($paymentProofPath)) {
+                    Storage::disk('public')->delete($paymentProofPath);
+                }
+                session()->flash('error', 'Désolé, ce créneau vient d\'être réservé. Veuillez choisir un autre créneau.');
+                return;
+            }
+
+            // Créer le rendez-vous
+            $appointment = Appointment::create([
+                'client_name' => $this->clientName,
+                'client_email' => $this->clientEmail,
+                'client_phone' => $this->clientPhone,
+                'appointment_date' => $this->selectedDate,
+                'start_time' => $slotStart,
+                'end_time' => $slotEnd,
+                'notes' => $this->notes,
+                'payment_proof' => $paymentProofPath,
+                'payment_method' => 'virement_bancaire',
+                'status' => 'booked',
+                'contact_method' => $this->contactMethod,
+                'consultation_type_id' => $this->selectedConsultationType,
+            ]);
+
+            if (!$appointment) {
+                DB::rollBack();
+                if ($paymentProofPath && Storage::disk('public')->exists($paymentProofPath)) {
+                    Storage::disk('public')->delete($paymentProofPath);
+                }
+                session()->flash('error', 'Une erreur est survenue lors de la réservation. Veuillez réessayer.');
+                return;
+            }
+
+            DB::commit();
+
+            // Envoyer les emails après commit pour éviter d'envoyer des mails pour une transaction rollbackée
+            try {
+                Mail::mailer('meeting')->to($this->clientEmail)->send(new AppointmentConfirmation($appointment, $slot, $this->account));
+            } catch (\Throwable $e) {
+                Log::error('Failed to send confirmation email to client: ' . $e->getMessage());
+                session()->flash('warning', 'Votre rendez-vous est confirmé mais la confirmation par e-mail n\'a pas pu être envoyée.');
+            }
+
+            try {
+                Mail::mailer('meeting')->to(['contact@coaching-voyance.com', 'emmanueladenidji@gmail.com'])->send(new AdminAppointmentNotification($appointment, $slot, $this->account));
+            } catch (\Throwable $e) {
+                Log::error('Failed to send admin notification email: ' . $e->getMessage());
+            }
+
+            // Afficher une page de succès
+            session()->flash('success_message', 'Votre rendez-vous a été confirmé !');
+            $this->currentStep = 4; // Aller à l'étape de confirmation
+
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            Log::error('Error booking appointment: ' . $th->getMessage());
+            // supprimer la preuve si on l'avait uploadée
+            if ($paymentProofPath && Storage::disk('public')->exists($paymentProofPath)) {
+                Storage::disk('public')->delete($paymentProofPath);
+            }
+            session()->flash('error', 'Une erreur serveur est survenue lors de la réservation. Veuillez réessayer plus tard.');
+            return;
+        }
+
     }
 
 
     // --- Fonctions utilitaires du calendrier (inchangées) ---
 
-      public function generateCalendar()
+    public function generateCalendar()
     {
         $this->calendarDays = [];
         $date = Carbon::createFromDate($this->currentYear, $this->currentMonth, 1);
         $daysInMonth = $date->daysInMonth;
 
-    // Ajouter des jours vides pour aligner correctement le premier jour du mois
-    // Utiliser isoWeekday pour démarrer la grille sur Lundi = 1
-    $firstDayIso = $date->isoWeekday();
-    for ($i = 1; $i < $firstDayIso; $i++) {
+        // Ajouter des jours vides pour aligner correctement le premier jour du mois
+        // Utiliser isoWeekday pour démarrer la grille sur Lundi = 1
+        $firstDayIso = $date->isoWeekday();
+        for ($i = 1; $i < $firstDayIso; $i++) {
             $this->calendarDays[] = [
                 'day' => null,
                 'date' => null,
@@ -224,11 +301,12 @@ class Meeting extends Component
 
     public function loadAvailableTimeSlots()
     {
-        if (!$this->selectedDate) return;
-    $selectedCarbDate = Carbon::parse($this->selectedDate);
-    // Utiliser isoWeekday: 1 (lundi) .. 7 (dimanche) pour correspondre au seeder
-    $dayOfWeek = $selectedCarbDate->isoWeekday();
-    $timeSlots = TimeSlot::where('day_of_week', $dayOfWeek)->where('is_available', true)->get();
+        if (!$this->selectedDate)
+            return;
+        $selectedCarbDate = Carbon::parse($this->selectedDate);
+        // Utiliser isoWeekday: 1 (lundi) .. 7 (dimanche) pour correspondre au seeder
+        $dayOfWeek = $selectedCarbDate->isoWeekday();
+        $timeSlots = TimeSlot::where('day_of_week', $dayOfWeek)->where('is_available', true)->get();
         $bookedAppointments = Appointment::where('appointment_date', $this->selectedDate)->get();
         $this->availableTimeSlots = $timeSlots->filter(function ($slot) use ($bookedAppointments) {
             foreach ($bookedAppointments as $appointment) {
@@ -244,7 +322,7 @@ class Meeting extends Component
         })->toArray();
     }
 
-      public function loadBookedDates()
+    public function loadBookedDates()
     {
         $startDate = Carbon::createFromDate($this->currentYear, $this->currentMonth, 1);
         $endDate = Carbon::createFromDate($this->currentYear, $this->currentMonth, $startDate->daysInMonth);
@@ -315,7 +393,7 @@ class Meeting extends Component
         $this->currentYear = $date->year;
         $this->loadBookedDates();
     }
-  protected function verifyTurnstile()
+    protected function verifyTurnstile()
     {
         $response = Http::asForm()->post('https://challenges.cloudflare.com/turnstile/v0/siteverify', [
             'secret' => config('services.cloudflare.secret_key'),

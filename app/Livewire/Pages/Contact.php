@@ -75,7 +75,7 @@ class Contact extends Component
 
         try {
             // Envoi du mail directement sans utiliser de Mailable
-            Mail::to(['contact@voyance-spirituelle-expert.com', 'emmanueladenidji@gmail.com'])
+            Mail::to(['contact@coaching-voyance.com', 'emmanueladenidji@gmail.com'])
                 ->send(new ContactMailable($this->name, $this->email, $this->message));
 
             // Mail::send('emails.contact-form', [
@@ -84,7 +84,7 @@ class Contact extends Component
             //     'messageContent' => $this->message
             // ], function ($m) {
             //     $m->from(config('mail.from.address'), config('mail.from.name'));
-            //     $m->to(['contact@voyance-spirituelle-expert.com', 'emmanueladenidji@gmail.com'], 'Contact Form');
+            //     $m->to(['contact@coaching-voyance.com', 'emmanueladenidji@gmail.com'], 'Contact Form');
             //     $m->subject('Nouveau message de contact');
             // });
 

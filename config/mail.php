@@ -55,6 +55,27 @@ return [
                 ],
             ],
         ],
+        // custom mailler
+        'meeting'=>
+         [
+            'transport' => 'smtp',
+            'scheme' => env('MAIL_SCHEME'),
+            'url' => env('MAIL_URL'),
+            'host' => env('MAIL_HOST', '127.0.0.1'),
+            'port' => env('MAIL_PORT', 2525),
+            'username' => env('meeting@coaching-voyance.com'),
+            'password' => 'Coaching@2025',
+            'from' => ['address' => 'meeting@coaching-voyance.com'],
+            'timeout' => null,
+            'local_domain' => env('MAIL_EHLO_DOMAIN', parse_url(env('APP_URL', 'http://localhost'), PHP_URL_HOST)),
+            'stream' => [
+                'ssl' => [
+                    'verify_peer' => false,
+                    'verify_peer_name' => false,
+                    'allow_self_signed' => true,
+                ],
+            ],
+        ],
 
         'ses' => [
             'transport' => 'ses',
@@ -120,4 +141,5 @@ return [
         'name' => env('MAIL_FROM_NAME', 'Example'),
     ],
 
+];
 ];
