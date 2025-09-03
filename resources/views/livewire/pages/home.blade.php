@@ -163,7 +163,7 @@
                                 'slug' => $item->slug,
                                 'product' => $item,
                             ],
-                            key(['home-product', $item->id])
+                            key( $item->id )
                         )
                     @endforeach
                 </div>
