@@ -26,7 +26,8 @@ class AppointmentConfirmation extends Mailable
 
     public function build()
     {
-        return $this->markdown('emails.appointment-confirmation')
+        return $this->view('emails.appointment-confirmation-html')
+            ->text('emails.text.appointment-confirmation')
             ->subject('Confirmation de votre rendez-vous - Voyance Spirituelle Expert');
     }
 }

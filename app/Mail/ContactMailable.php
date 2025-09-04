@@ -7,6 +7,8 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
+use Illuminate\Mail\Mailables\Headers;
+use Illuminate\Mail\Mailables\Address;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Mail\Mailables\Headers;
 
@@ -47,9 +49,8 @@ class ContactMailable extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            from: 'noreply@coaching-voyance.com',
-            replyTo: $this->email,
-            // to: ['contact@coaching-voyance.com', 'emmanueladenidji@gmail.com'],
+            from: new Address(env('MAIL_FROM_ADDRESS', 'contact@coaching-voyance.com'), env('MAIL_FROM_NAME', 'Contact')),
+            replyTo: [new Address($this->email)],
             subject: 'Formulaire de contact - Voyance Spirituelle Expert',
         );
     }

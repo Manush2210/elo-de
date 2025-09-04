@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Pages;
 
+use App\Models\Setting;
 use Carbon\Carbon;
 use App\Models\Account;
 use Livewire\Component;
@@ -239,7 +240,7 @@ class Meeting extends Component
             }
 
             try {
-                Mail::mailer('meeting')->to(['contact@coaching-voyance.com', 'emmanueladenidji@gmail.com'])->send(new AdminAppointmentNotification($appointment, $slot, $this->account));
+                Mail::mailer('meeting')->to(['contact@coaching-voyance.com', Setting::get('email') ?? ''])->send(new AdminAppointmentNotification($appointment, $slot, $this->account));
             } catch (\Throwable $e) {
                 Log::error('Failed to send admin notification email: ' . $e->getMessage());
             }

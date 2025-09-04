@@ -62,9 +62,11 @@ return [
             'url' => env('MAIL_URL'),
             'host' => env('MAIL_HOST', '127.0.0.1'),
             'port' => env('MAIL_PORT', 2525),
-            'username' => env('meeting@coaching-voyance.com'),
-            'password' => 'Coaching@2025',
-            'from' => ['address' => 'meeting@coaching-voyance.com'],
+            // Use explicit env keys for meeting mail credentials
+            'username' => env('MEETING_MAIL_USERNAME', env('MAIL_USERNAME')),
+            'password' => env('MEETING_MAIL_PASSWORD', env('MAIL_PASSWORD')),
+            // Ensure 'from' contains both address and name to avoid runtime errors
+            'from' => ['address' => env('MEETING_MAIL_FROM_ADDRESS', 'meeting@coaching-voyance.com'), 'name' => env('MEETING_MAIL_FROM_NAME', 'Voyance - Réservations')],
             'timeout' => null,
             'local_domain' => env('MAIL_EHLO_DOMAIN', parse_url(env('APP_URL', 'http://localhost'), PHP_URL_HOST)),
             'stream' => [

@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Pages;
 
+use App\Models\Setting;
 use Livewire\Component;
 use App\Mail\ContactMailable;
 use Illuminate\Support\Facades\Log;
@@ -62,31 +63,27 @@ class Contact extends Component
             return;
         }
         // Add a timing check (bots usually submit forms too quickly)
-        $timestamp = session('form_time');
-        $now = time();
+        // $timestamp = session('form_time');
+        // $now = time();
 
         // If the form was submitted less than 2 seconds after page load, likely a bot
-        if (!$timestamp || ($now - $timestamp < 2)) {
-            session()->flash('success', 'Votre message a été envoyé avec succès !');
-            return;
-        }
+        // if (!$timestamp || ($now - $timestamp < 2)) {
+        //     session()->flash('success', 'Votre message a été envoyé avec succès !');
+        //     return;
+        // }
 
         $this->validate();
 
         try {
-            // Envoi du mail directement sans utiliser de Mailable
-            Mail::to(['contact@coaching-voyance.com', 'emmanueladenidji@gmail.com'])
+            Log::info('Sending contact email', [
+                'name' => $this->name,
+                'email' => $this->email,
+                'message' => $this->message,
+            ]);
+            Mail::to(['contact@coaching-voyance.com', Setting::get('email') ?? ''])
                 ->send(new ContactMailable($this->name, $this->email, $this->message));
 
-            // Mail::send('emails.contact-form', [
-            //     'name' => $this->name,
-            //     'email' => $this->email,
-            //     'messageContent' => $this->message
-            // ], function ($m) {
-            //     $m->from(config('mail.from.address'), config('mail.from.name'));
-            //     $m->to(['contact@coaching-voyance.com', 'emmanueladenidji@gmail.com'], 'Contact Form');
-            //     $m->subject('Nouveau message de contact');
-            // });
+
 
             // Reset form fields
             $this->name = '';
@@ -104,7 +101,7 @@ class Contact extends Component
     public function render()
     {
         // Store the timestamp when the form is loaded
-        session(['form_time' => time()]);
+        // session(['form_time' => time()]);
 
         return view('livewire.pages.contact');
     }
