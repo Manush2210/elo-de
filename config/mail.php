@@ -56,17 +56,56 @@ return [
             ],
         ],
 
-        'meeting'=> [
+        'contact' => [
             'transport' => 'smtp',
             'scheme' => env('MAIL_SCHEME'),
             'url' => env('MAIL_URL'),
             'host' => env('MAIL_HOST', '127.0.0.1'),
             'port' => env('MAIL_PORT', 2525),
             // Use explicit env keys for meeting mail credentials
-            'username' => env('MEETING_MAIL_USERNAME', env('MAIL_USERNAME')),
-            'password' => env('MEETING_MAIL_PASSWORD', env('MAIL_PASSWORD')),
+            'username' => env('MEETING_MAIL_USERNAME', 'contact@monde-de-elodie.com'),
+            'password' => env('MEETING_MAIL_PASSWORD', 'Monsite@2025'),
             // Ensure 'from' contains both address and name to avoid runtime errors
-            'from' => ['address' => env('MEETING_MAIL_FROM_ADDRESS', 'meeting@coaching-voyance.com'), 'name' => env('MEETING_MAIL_FROM_NAME', 'Voyance - Réservations')],
+            'from' => ['address' => env('MEETING_MAIL_FROM_ADDRESS', 'contact@monde-de-elodie.com'), 'name' => 'Le Monde d\'Élodie  - Réservations'],
+            'timeout' => null,
+            'local_domain' => env('MAIL_EHLO_DOMAIN', parse_url(env('APP_URL', 'http://localhost'), PHP_URL_HOST)),
+            'stream' => [
+                'ssl' => [
+                    'verify_peer' => false,
+                    'verify_peer_name' => false,
+                    'allow_self_signed' => true,
+                ],
+            ],
+        ],
+        'support' => [
+            'transport' => 'smtp',
+            'scheme' => env('MAIL_SCHEME'),
+            'url' => env('MAIL_URL'),
+            'host' => env('MAIL_HOST', '127.0.0.1'),
+            'port' => env('MAIL_PORT', 2525),
+            'username' => env('SUPPORT_MAIL_USERNAME', 'support@monde-de-elodie.com'),
+            'password' => env('SUPPORT_MAIL_PASSWORD', 'Monsite@2025'),
+            'from' => ['address' => env('SUPPORT_MAIL_FROM_ADDRESS', 'support@monde-de-elodie.com'), 'name' => 'Le Monde d\'Élodie  - Support'],
+            'timeout' => null,
+            'local_domain' => env('MAIL_EHLO_DOMAIN', parse_url(env('APP_URL', 'http://localhost'), PHP_URL_HOST)),
+            'stream' => [
+                'ssl' => [
+                    'verify_peer' => false,
+                    'verify_peer_name' => false,
+                    'allow_self_signed' => true,
+                ],
+            ],
+        ],
+
+        'order' => [
+            'transport' => 'smtp',
+            'scheme' => env('MAIL_SCHEME'),
+            'url' => env('MAIL_URL'),
+            'host' => env('MAIL_HOST', '127.0.0.1'),
+            'port' => env('MAIL_PORT', 2525),
+            'username' => env('ORDER_MAIL_USERNAME', 'order@monde-de-elodie.com'),
+            'password' => env('ORDER_MAIL_PASSWORD', 'Monsite@2025'),
+            'from' => ['address' => env('ORDER_MAIL_FROM_ADDRESS', 'order@monde-de-elodie.com'), 'name' => 'Le Monde d\'Élodie  - Commandes'],
             'timeout' => null,
             'local_domain' => env('MAIL_EHLO_DOMAIN', parse_url(env('APP_URL', 'http://localhost'), PHP_URL_HOST)),
             'stream' => [

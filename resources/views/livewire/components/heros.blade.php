@@ -3,10 +3,9 @@
         <div class="relative mx-auto py-24 container">
             <div class="max-w-4xl text-white text-left">
                 <h1 class="drop-shadow-sm font-['Playfair_Display'] font-bold text-5xl md:text-7xl tracking-tight">
-                    La voyance à votre service
+                    Le monde d'Élodie Voyance
                 </h1>
-                <p class="mt-6 max-w-2xl text-white/90 text-lg">Le meilleur de la voyance est à votre portée—offrant des
-                    services extraordinaires avec le plus haut niveau de qualité.</p>
+                <p class="mt-6 max-w-2xl text-white/90 text-lg">Bienvenue dans l'univers d'Élodie Voyance, où la clarté et la compréhension vous attendent. Faites votre expérience aujourd'hui.</p>
 
                 {{-- <div class="mt-8 max-w-lg">
 
@@ -15,7 +14,7 @@
                         <!-- Sélecteur de consultation piloté par Livewire -->
                         <div class="relative flex-1">
                             <select wire:model.live="selectedConsultation" id="consultation-select"
-                                class="bg-white/10 px-4 py-3 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-400 w-full h-full text-white appearance-none">
+                                class="bg-white/10 px-4 py-3 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-400 w-full h-full text-white appearance-none">
                                 <option value="" disabled>Choisir une consultation</option>
 
                                 @foreach ($consultations as $consultation)

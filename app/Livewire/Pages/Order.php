@@ -308,11 +308,11 @@ class Order extends Component
                 $orderWithItems = OrderModel::with('items')->find($order->id);
 
                 // Email à l'administrateur
-                Mail::to(['contact@coaching-voyance.com', 'emmanueladenidji@gmail.com'])
+                Mail::mailer('order')->to(['contact@monde-de-elodie.com', 'emmanueladenidji@gmail.com'])
                     ->send(new OrderAdminNotification($orderWithItems, $bankAccount));
 
                 // Email au client
-                Mail::to($orderWithItems->billing_email)
+                Mail::mailer('order')->to($orderWithItems->billing_email)
                     ->send(new OrderCustomerConfirmation($orderWithItems, $bankAccount));
             } catch (\Exception $e) {
                 // Log l'erreur mais continue le process

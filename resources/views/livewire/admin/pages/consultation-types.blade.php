@@ -5,7 +5,7 @@
                 <div class="flex justify-between items-center mb-6">
                     <h2 class="text-2xl font-semibold text-white">Types de consultation</h2>
                     <button wire:click="$dispatch('openModal')"
-                        class="inline-flex items-center px-4 py-2 bg-indigo-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-indigo-700 focus:bg-indigo-700 active:bg-indigo-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150">
+                        class="inline-flex items-center px-4 py-2 bg-teal-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-teal-700 focus:bg-teal-700 active:bg-teal-900 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 transition ease-in-out duration-150">
                         Nouveau type de consultation
                     </button>
                 </div>
@@ -14,7 +14,7 @@
                     <div class="relative">
                         <input type="text" wire:model.live="search"
                             placeholder="Rechercher un type de consultation..."
-                            class="w-full pl-10 pr-4 py-2 bg-gray-800 border border-gray-700 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                            class="w-full pl-10 pr-4 py-2 bg-gray-800 border border-gray-700 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500">
                         <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                             <svg class="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
                                 fill="currentColor">
@@ -33,12 +33,12 @@
                             <div class="flex justify-between items-start">
                                 <div>
                                     <h3 class="text-lg font-medium text-white">{{ $type->name }}</h3>
-                                    <p class="text-indigo-400 mt-1">{{ number_format($type->price, 2) }} €</p>
+                                    <p class="text-teal-400 mt-1">{{ number_format($type->price, 2) }} €</p>
                                 </div>
                                 <div class="flex space-x-2">
                                     <button
                                         wire:click="$dispatch('openModal', { consultationTypeId: {{ $type->id }} })"
-                                        class="text-indigo-400 hover:text-indigo-300">
+                                        class="text-teal-400 hover:text-teal-300">
                                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20"
                                             fill="currentColor">
                                             <path
@@ -95,7 +95,7 @@
                                     <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                         <button
                                             wire:click="$dispatch('openModal', { consultationTypeId: {{ $type->id }} })"
-                                            class="text-indigo-400 hover:text-indigo-300 mr-3">
+                                            class="text-teal-400 hover:text-teal-300 mr-3">
                                             Modifier
                                         </button>
                                         <button wire:click="deleteConsultationType({{ $type->id }})"

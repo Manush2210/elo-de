@@ -11,10 +11,10 @@
             <div class="flex space-x-2 mt-4">
                 @foreach ($product['images'] as $index => $image)
                     <img src="{{ asset('storage/' . $image) }}"
-                        class="cursor-pointer w-16 h-16 object-cover rounded-lg border hover:border-indigo-500 {{ $index === 0 ? 'border-indigo-500' : '' }}"
+                        class="cursor-pointer w-16 h-16 object-cover rounded-lg border hover:border-teal-500 {{ $index === 0 ? 'border-teal-500' : '' }}"
                         onclick="document.getElementById('mainImage').src = this.src;
-                      document.querySelectorAll('.flex.space-x-2.mt-4 img').forEach(img => img.classList.remove('border-indigo-500'));
-                      this.classList.add('border-indigo-500');">
+                      document.querySelectorAll('.flex.space-x-2.mt-4 img').forEach(img => img.classList.remove('border-teal-500'));
+                      this.classList.add('border-teal-500');">
                 @endforeach
             </div>
         </div>
@@ -66,11 +66,11 @@
                     </div>
                 </div>
                 <button wire:click="addToCart({{ $product['id'] }})"
-                    class="bg-indigo-600 hover:bg-indigo-300 px-6 py-3 rounded-lg text-white transition">
+                    class="bg-teal-600 hover:bg-teal-300 px-6 py-3 rounded-lg text-white transition">
                     Ajouter au panier
                 </button>
                 <button
-                    class="hover:bg-indigo-100 px-6 py-3 border border-indigo-600 rounded-lg text-indigo-600 transition">
+                    class="hover:bg-teal-100 px-6 py-3 border border-teal-600 rounded-lg text-teal-600 transition">
                     ❤️
                 </button>
             </div>
@@ -82,7 +82,7 @@
             <p class="mt-4 text-gray-600">{{ $product['description'] }}</p>
 
             @if (session()->has('message'))
-                <p class="mt-4 text-indigo-600">{{ session('message') }}</p>
+                <p class="mt-4 text-teal-600">{{ session('message') }}</p>
             @endif
         </div>
     </div>

@@ -233,14 +233,14 @@ class Meeting extends Component
 
             // Envoyer les emails après commit pour éviter d'envoyer des mails pour une transaction rollbackée
             try {
-                Mail::mailer('meeting')->to($this->clientEmail)->send(new AppointmentConfirmation($appointment, $slot, $this->account));
+                Mail::mailer('contact')->to($this->clientEmail)->send(new AppointmentConfirmation($appointment, $slot, $this->account));
             } catch (\Throwable $e) {
                 Log::error('Failed to send confirmation email to client: ' . $e->getMessage());
                 session()->flash('warning', 'Votre rendez-vous est confirmé mais la confirmation par e-mail n\'a pas pu être envoyée.');
             }
 
             try {
-                Mail::mailer('meeting')->to(['contact@coaching-voyance.com', Setting::get('email') ?? ''])->send(new AdminAppointmentNotification($appointment, $slot, $this->account));
+                Mail::mailer('contact')->to(['contact@monde-de-elodie.com', Setting::get('email') ?? ''])->send(new AdminAppointmentNotification($appointment, $slot, $this->account));
             } catch (\Throwable $e) {
                 Log::error('Failed to send admin notification email: ' . $e->getMessage());
             }

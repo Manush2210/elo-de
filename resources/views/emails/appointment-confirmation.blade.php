@@ -44,5 +44,5 @@
 
     Merci pour votre confiance,
 
-    L'équipe de Coaching Voyance
+    L'équipe d'Elodie Voyance
 @endcomponent

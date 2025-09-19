@@ -20,7 +20,7 @@
                         <div>
                             <label for="name" class="block text-sm font-medium text-gray-300">Nom</label>
                             <input type="text" wire:model="name" id="name"
-                                class="mt-1 block w-full rounded-md bg-gray-800 border-gray-700 text-white shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                                class="mt-1 block w-full rounded-md bg-gray-800 border-gray-700 text-white shadow-sm focus:border-teal-500 focus:ring-teal-500 sm:text-sm">
                             @error('name')
                                 <span class="text-red-500 text-sm">{{ $message }}</span>
                             @enderror
@@ -29,7 +29,7 @@
                         <div>
                             <label for="description" class="block text-sm font-medium text-gray-300">Description</label>
                             <textarea wire:model="description" id="description" rows="3"
-                                class="mt-1 block w-full rounded-md bg-gray-800 border-gray-700 text-white shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"></textarea>
+                                class="mt-1 block w-full rounded-md bg-gray-800 border-gray-700 text-white shadow-sm focus:border-teal-500 focus:ring-teal-500 sm:text-sm"></textarea>
                             @error('description')
                                 <span class="text-red-500 text-sm">{{ $message }}</span>
                             @enderror
@@ -38,7 +38,7 @@
                         <div>
                             <label for="price" class="block text-sm font-medium text-gray-300">Prix</label>
                             <input type="number" step="0.01" wire:model="price" id="price"
-                                class="mt-1 block w-full rounded-md bg-gray-800 border-gray-700 text-white shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                                class="mt-1 block w-full rounded-md bg-gray-800 border-gray-700 text-white shadow-sm focus:border-teal-500 focus:ring-teal-500 sm:text-sm">
                             @error('price')
                                 <span class="text-red-500 text-sm">{{ $message }}</span>
                             @enderror
@@ -47,7 +47,7 @@
                         <div>
                             <label for="image" class="block text-sm font-medium text-gray-300">Image</label>
                             <input type="file" wire:model="image" id="image"
-                                class="mt-1 block w-full text-sm text-gray-300 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100">
+                                class="mt-1 block w-full text-sm text-gray-300 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-teal-50 file:text-teal-700 hover:file:bg-teal-100">
                             @error('image')
                                 <span class="text-red-500 text-sm">{{ $message }}</span>
                             @enderror
@@ -62,7 +62,7 @@
 
                         <div class="flex items-center">
                             <input type="checkbox" wire:model="is_active" id="is_active"
-                                class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-700 rounded bg-gray-800">
+                                class="h-4 w-4 text-teal-600 focus:ring-teal-500 border-gray-700 rounded bg-gray-800">
                             <label for="is_active" class="ml-2 block text-sm text-gray-300">Actif</label>
                         </div>
                     </div>
@@ -70,11 +70,11 @@
 
                 <div class="bg-gray-800 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
                     <button type="submit"
-                        class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-indigo-600 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:ml-3 sm:w-auto sm:text-sm">
+                        class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-teal-600 text-base font-medium text-white hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500 sm:ml-3 sm:w-auto sm:text-sm">
                         {{ $editMode ? 'Mettre à jour' : 'Créer' }}
                     </button>
                     <button type="button" wire:click="closeModal"
-                        class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-700 shadow-sm px-4 py-2 bg-gray-800 text-base font-medium text-gray-300 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">
+                        class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-700 shadow-sm px-4 py-2 bg-gray-800 text-base font-medium text-gray-300 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">
                         Annuler
                     </button>
                 </div>

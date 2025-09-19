@@ -29,7 +29,7 @@
                         <div class="space-y-6 mt-6">
                             <!-- Etape 1 : Consultation -->
                             <div class="flex items-start gap-4">
-                                <div @class(['flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full', 'bg-indigo-600' => $currentStep >= 1, 'bg-gray-200' => $currentStep < 1])>
+                                <div @class(['flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full', 'bg-teal-600' => $currentStep >= 1, 'bg-gray-200' => $currentStep < 1])>
                                     @if($this->selectedConsultationDetails)
                                         <svg class="w-6 h-6 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>
                                     @else
@@ -40,8 +40,8 @@
                                     <h3 class="font-semibold text-gray-800">Type de consultation</h3>
                                     @if($this->selectedConsultationDetails)
                                         <p class="text-gray-600 text-sm">{{ $this->selectedConsultationDetails->name }}</p>
-                                        <p class="font-bold text-indigo-600 text-sm">{{ number_format($this->selectedConsultationDetails->price, 2) }} €</p>
-                                        <button wire:click="goToStep(1)" class="text-indigo-500 text-xs hover:underline">Modifier</button>
+                                        <p class="font-bold text-teal-600 text-sm">{{ number_format($this->selectedConsultationDetails->price, 2) }} €</p>
+                                        <button wire:click="goToStep(1)" class="text-teal-500 text-xs hover:underline">Modifier</button>
                                     @else
                                         <p class="text-gray-400 text-sm">À sélectionner</p>
                                     @endif
@@ -50,7 +50,7 @@
 
                              <!-- Etape 2 : Date & Heure -->
                             <div class="flex items-start gap-4">
-                               <div @class(['flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full', 'bg-indigo-600' => $currentStep >= 2, 'bg-gray-200' => $currentStep < 2])>
+                               <div @class(['flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full', 'bg-teal-600' => $currentStep >= 2, 'bg-gray-200' => $currentStep < 2])>
                                     @if($selectedDate && $this->selectedSlotDetails)
                                         <svg class="w-6 h-6 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>
                                     @else
@@ -64,7 +64,7 @@
                                             {{ \Carbon\Carbon::parse($selectedDate)->translatedFormat('d F Y') }}
                                             à {{ \Carbon\Carbon::parse($this->selectedSlotDetails->start_time)->format('H:i') }}
                                         </p>
-                                        <button wire:click="goToStep(2)" class="text-indigo-500 text-xs hover:underline">Modifier</button>
+                                        <button wire:click="goToStep(2)" class="text-teal-500 text-xs hover:underline">Modifier</button>
                                     @else
                                         <p class="text-gray-400 text-sm">À sélectionner</p>
                                     @endif
@@ -73,7 +73,7 @@
 
                              <!-- Etape 3 : Informations -->
                             <div class="flex items-start gap-4">
-                                <div @class(['flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full', 'bg-indigo-600' => $currentStep >= 3, 'bg-gray-200' => $currentStep < 3])>
+                                <div @class(['flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full', 'bg-teal-600' => $currentStep >= 3, 'bg-gray-200' => $currentStep < 3])>
                                     <span @class(['font-bold', 'text-white' => $currentStep >= 3, 'text-gray-500' => $currentStep < 3])>3</span>
                                 </div>
                                 <div>
@@ -107,10 +107,10 @@
                            <h2 class="font-bold text-gray-900 text-2xl">1. Choisissez votre consultation</h2>
                             <div class="space-y-4 mt-6">
                                 @forelse ($consultationTypes as $type)
-                                    <button wire:click="selectConsultationType({{ $type->id }})" class="hover:bg-indigo-50 p-4 border hover:border-indigo-500 rounded-lg w-full text-left transition-all">
+                                    <button wire:click="selectConsultationType({{ $type->id }})" class="hover:bg-teal-50 p-4 border hover:border-teal-500 rounded-lg w-full text-left transition-all">
                                         <div class="flex justify-between items-center">
                                             <h3 class="font-semibold text-gray-800">{{ $type->name }}</h3>
-                                            <span class="font-bold text-indigo-600">{{ number_format($type->price, 2) }} €</span>
+                                            <span class="font-bold text-teal-600">{{ number_format($type->price, 2) }} €</span>
                                         </div>
                                         <p class="mt-1 text-gray-500 text-sm">{{ $type->description }}</p>
                                     </button>
@@ -138,7 +138,7 @@
                                         {{-- @dump($calendarDays) --}}
                                         @foreach ($calendarDays as $day)
                                             <div wire:click="{{ $day['date'] && !$day['isPast'] && !$day['isBooked'] ? 'selectDate(\'' . $day['date'] . '\')' : '' }}"
-                                                class="aspect-square flex items-center justify-center border rounded-lg {{ $day['isToday'] ? 'bg-indigo-100 border-indigo-400' : '' }} {{ $selectedDate === $day['date'] ? 'bg-indigo-500 text-white' : '' }} {{ $day['isPast'] || $day['isBooked'] ? 'bg-gray-100 text-gray-400 cursor-not-allowed' : 'hover:bg-indigo-100 cursor-pointer' }} {{ !$day['date'] ? 'border-transparent' : '' }}">
+                                                class="aspect-square flex items-center justify-center border rounded-lg {{ $day['isToday'] ? 'bg-teal-100 border-teal-400' : '' }} {{ $selectedDate === $day['date'] ? 'bg-teal-500 text-white' : '' }} {{ $day['isPast'] || $day['isBooked'] ? 'bg-gray-100 text-gray-400 cursor-not-allowed' : 'hover:bg-teal-100 cursor-pointer' }} {{ !$day['date'] ? 'border-transparent' : '' }}">
                                                 @if ($day['day'])
                                                     <span>{{ $day['day'] }}</span>
                                                 @endif
@@ -153,7 +153,7 @@
                                         @if(count($availableTimeSlots) > 0)
                                         <div class="space-y-2">
                                             @foreach($availableTimeSlots as $slot)
-                                                <button wire:click="selectTimeSlot({{ $slot['id'] }})" type="button" class="hover:bg-indigo-50 p-3 border hover:border-indigo-500 rounded-lg w-full font-semibold text-indigo-600 text-center transition-all">
+                                                <button wire:click="selectTimeSlot({{ $slot['id'] }})" type="button" class="hover:bg-teal-50 p-3 border hover:border-teal-500 rounded-lg w-full font-semibold text-teal-600 text-center transition-all">
                                                     {{ \Carbon\Carbon::parse($slot['start_time'])->format('H:i') }}
                                                 </button>
                                             @endforeach
@@ -186,7 +186,7 @@
 
                                  <div>
                                      <label class="block font-medium text-gray-700 text-sm">Preuve de paiement <span class="text-gray-500 text-sm">(optionnel)</span></label>
-                                     <input type="file" wire:model="paymentProof" class="block hover:file:bg-indigo-100 file:bg-indigo-50 mt-1 file:mr-4 file:px-4 file:py-2 file:border-0 file:rounded-full w-full file:font-semibold text-gray-500 file:text-indigo-700 text-sm file:text-sm">
+                                     <input type="file" wire:model="paymentProof" class="block hover:file:bg-teal-100 file:bg-teal-50 mt-1 file:mr-4 file:px-4 file:py-2 file:border-0 file:rounded-full w-full file:font-semibold text-gray-500 file:text-teal-700 text-sm file:text-sm">
                                      <p class="mt-1 text-gray-500 text-sm">Le paiement peut être effectué lors du contact ; si vous préférez payer plus tard, laissez ce champ vide et indiquez votre préférence dans la méthode de contact.</p>
                                      @error('paymentProof') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
                                  </div>
@@ -200,7 +200,7 @@
                                     <button type="button" wire:click="goToStep(2)" class="font-semibold text-gray-600 hover:text-gray-800 text-sm">
                                         &larr; Retour
                                     </button>
-                                     <button type="submit" class="inline-flex justify-center bg-indigo-600 hover:bg-indigo-700 shadow-sm px-6 py-3 rounded-lg font-semibold text-white text-base" wire:loading.attr="disabled">
+                                     <button type="submit" class="inline-flex justify-center bg-teal-600 hover:bg-teal-700 shadow-sm px-6 py-3 rounded-lg font-semibold text-white text-base" wire:loading.attr="disabled">
                                          <span wire:loading.remove>Confirmer le rendez-vous</span>
                                          <span wire:loading>Confirmation...</span>
                                      </button>
@@ -218,7 +218,7 @@
                                  Merci, {{ $clientName }}. Votre rendez-vous a été réservé avec succès.
                                  Un e-mail de confirmation contenant tous les détails vous a été envoyé.
                              </p>
-                             <a href="/" class="inline-block bg-indigo-600 hover:bg-indigo-700 mt-8 px-5 py-3 rounded-md font-medium text-white text-base">
+                             <a href="/" class="inline-block bg-teal-600 hover:bg-teal-700 mt-8 px-5 py-3 rounded-md font-medium text-white text-base">
                                  Retour à l'accueil
                              </a>
                         </div>

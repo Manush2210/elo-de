@@ -15,11 +15,11 @@
 
     <div class="flex justify-center items-center gap-2 mt-auto pt-2 sm:pt-4">
         <button wire:click="addToCart({{ $product->id }})"
-            class="bg-indigo-600 hover:bg-indigo-500 active:bg-indigo-700 px-3 sm:px-6 py-1.5 sm:py-3 rounded-lg text-white text-sm sm:text-base transition">
+            class="bg-teal-600 hover:bg-teal-500 active:bg-teal-700 px-3 sm:px-6 py-1.5 sm:py-3 rounded-lg text-white text-sm sm:text-base transition">
             Ajouter au panier
         </button>
         {{-- <button
-            class="hover:bg-indigo-50 active:bg-indigo-100 px-2 sm:px-4 py-1.5 sm:py-3 border border-indigo-600 rounded-lg text-indigo-600 transition">
+            class="hover:bg-teal-50 active:bg-teal-100 px-2 sm:px-4 py-1.5 sm:py-3 border border-teal-600 rounded-lg text-teal-600 transition">
             ❤️
         </button> --}}
     </div>

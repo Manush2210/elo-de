@@ -80,7 +80,7 @@ class Contact extends Component
                 'email' => $this->email,
                 'message' => $this->message,
             ]);
-            Mail::to(['contact@coaching-voyance.com', Setting::get('email') ?? ''])
+            Mail::mailer('contact')->to(['contact@monde-de-elodie.com', Setting::get('email') ?? ''])
                 ->send(new ContactMailable($this->name, $this->email, $this->message));
 
 
