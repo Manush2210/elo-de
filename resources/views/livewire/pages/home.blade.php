@@ -313,7 +313,7 @@
 
                             {{-- Date du témoignage --}}
                             <div class="flex justify-center items-center mt-2">
-                                <span class="text-gray-400 text-sm">{{ $testimonial->formatted_date }}</span>
+                                <span class="text-gray-400 text-sm">{{ $testimonial->formatted_date_fr }}</span>
                             </div>
                         </div>
                     @endforeach

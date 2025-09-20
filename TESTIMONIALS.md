@@ -15,7 +15,9 @@ Le système de témoignages dynamiques permet d'afficher les avis clients direct
 ### Affichage automatique
 - **Photo** : Si une photo est disponible, elle s'affiche; sinon l'initiale du nom est utilisée
 - **Rating** : Affichage des étoiles (★★★★★ ou ★★★★☆)
-- **Date** : Affichage relatif (il y a 2 jours, il y a 1 mois...)
+- **Date** : 
+  - **Frontend** : Format français (ex: "12 sept. 2024")
+  - **Admin** : Format relatif (ex: "il y a 2 jours")
 - **Fallback** : Si aucun témoignage en base, affichage des témoignages statiques
 
 ## Interface d'Administration
@@ -99,9 +101,10 @@ $recent = App\Models\Testimonial::active()
   - Effacer (utiliser date actuelle)
 
 ### Affichage
-- **Format relatif** : "il y a 2 jours", "il y a 1 mois"
-- **Date exacte** : Visible au survol (tooltip)
-- **Format français** : dd/mm/yyyy à hh:mm
+- **Format Frontend** : Date française (ex: "12 sept. 2024")
+- **Format Admin** : Date relative (ex: "il y a 2 jours", "il y a 1 mois")
+- **Date exacte** : Visible au survol dans l'admin (tooltip)
+- **Format français** : dd/mm/yyyy à hh:mm (admin tooltip)
 
 ### Modification
 - Possibilité de modifier la date d'un témoignage existant

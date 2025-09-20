@@ -69,10 +69,28 @@ class Testimonial extends Model
     }
 
     /**
-     * Accessor pour la date formatée
+     * Accessor pour la date formatée (relatif pour l'admin)
      */
     public function getFormattedDateAttribute()
     {
         return $this->created_at->diffForHumans();
+    }
+
+    /**
+     * Accessor pour la date formatée en français (frontend)
+     */
+    public function getFormattedDateFrAttribute()
+    {
+        $months = [
+            1 => 'janv.', 2 => 'févr.', 3 => 'mars', 4 => 'avr.',
+            5 => 'mai', 6 => 'juin', 7 => 'juil.', 8 => 'août',
+            9 => 'sept.', 10 => 'oct.', 11 => 'nov.', 12 => 'déc.'
+        ];
+        
+        $day = $this->created_at->day;
+        $month = $months[$this->created_at->month];
+        $year = $this->created_at->year;
+        
+        return "{$day} {$month} {$year}";
     }
 }
