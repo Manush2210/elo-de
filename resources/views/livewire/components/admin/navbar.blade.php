@@ -75,6 +75,16 @@
                 <span class="ml-3">Témoignages</span>
             </a>
 
+            <a class="text-white/50 p-4 inline-flex items-center rounded-md hover:bg-gray-800 hover:text-white smooth-hover w-full {{ request()->routeIs('admin.testimonial-approvals') ? 'bg-gray-800 text-white' : '' }}"
+                href="{{ route('admin.testimonial-approvals') }}">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 sm:w-6 h-5 sm:h-6" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <span class="ml-3">Approbations</span>
+            </a>
+
             <a class="text-white/50 p-4 inline-flex items-center rounded-md hover:bg-gray-800 hover:text-white smooth-hover w-full {{ request()->routeIs('admin.accounts.add') ? 'bg-gray-800 text-white' : '' }}"
                 href="{{ route('admin.accounts.add') }}">
                 <svg xmlns="http://www.w3.org/2000/svg" class="w-5 sm:w-6 h-5 sm:h-6" viewBox="0 0 20 20"

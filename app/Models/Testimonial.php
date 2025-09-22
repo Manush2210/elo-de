@@ -12,10 +12,12 @@ class Testimonial extends Model
 
     protected $fillable = [
         'name',
+        'email',
         'message',
         'rating',
         'photo',
         'is_active',
+        'status',
         'created_at'
     ];
 
@@ -31,6 +33,30 @@ class Testimonial extends Model
     public function scopeActive($query)
     {
         return $query->where('is_active', true);
+    }
+
+    /**
+     * Scope pour récupérer uniquement les témoignages approuvés
+     */
+    public function scopeApproved($query)
+    {
+        return $query->where('status', 'approved');
+    }
+
+    /**
+     * Scope pour récupérer uniquement les témoignages en attente
+     */
+    public function scopePending($query)
+    {
+        return $query->where('status', 'pending');
+    }
+
+    /**
+     * Scope pour récupérer uniquement les témoignages rejetés
+     */
+    public function scopeRejected($query)
+    {
+        return $query->where('status', 'rejected');
     }
 
     /**

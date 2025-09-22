@@ -391,4 +391,137 @@
             @endif
         </div>
     </section>
+
+    <!-- Section Formulaire de témoignage -->
+    <section class="bg-white py-16">
+        <div class="mx-auto container">
+            <div class="mb-12 text-center">
+                <h2 class="font-semibold text-gray-800 text-4xl">Partagez votre expérience</h2>
+                <p class="mx-auto mt-4 max-w-2xl text-gray-600 text-lg">
+                    Votre avis nous est précieux. Laissez-nous un témoignage et aidez d'autres personnes à découvrir nos services.
+                </p>
+            </div>
+
+            @if (session()->has('testimonial_success'))
+                <div class="bg-green-100 mb-6 px-4 py-3 border border-green-400 rounded text-green-700 text-center">
+                    {{ session('testimonial_success') }}
+                </div>
+            @endif
+
+            @if (session()->has('testimonial_error'))
+                <div class="bg-red-100 mb-6 px-4 py-3 border border-red-400 rounded text-red-700 text-center">
+                    {{ session('testimonial_error') }}
+                </div>
+            @endif
+
+            <div class="mx-auto max-w-2xl">
+                <form wire:submit.prevent="submitTestimonial" class="bg-gray-50 shadow-lg p-8 rounded-lg">
+                    <div class="gap-6 grid grid-cols-1 md:grid-cols-2 mb-6">
+                        <div>
+                            <label for="testimonial_name" class="block mb-2 font-medium text-gray-700 text-sm">
+                                Votre nom <span class="text-red-500">*</span>
+                            </label>
+                            <input type="text" id="testimonial_name" wire:model="testimonial_name"
+                                class="bg-white px-4 py-3 border border-gray-300 focus:border-transparent rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500 w-full"
+                                placeholder="Votre prénom">
+                            @error('testimonial_name')
+                                <span class="text-red-500 text-sm">{{ $message }}</span>
+                            @enderror
+                        </div>
+
+                        <div>
+                            <label for="testimonial_rating" class="block mb-2 font-medium text-gray-700 text-sm">
+                                Votre note <span class="text-red-500">*</span>
+                            </label>
+                            <select id="testimonial_rating" wire:model="testimonial_rating"
+                                class="bg-white px-4 py-3 border border-gray-300 focus:border-transparent rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500 w-full">
+                                <option value="">Choisissez une note</option>
+                                @for ($i = 5; $i >= 1; $i--)
+                                    <option value="{{ $i }}">
+                                        {{ $i }} étoile{{ $i > 1 ? 's' : '' }}
+                                        @for ($j = 1; $j <= $i; $j++) ★ @endfor
+                                    </option>
+                                @endfor
+                            </select>
+                            @error('testimonial_rating')
+                                <span class="text-red-500 text-sm">{{ $message }}</span>
+                            @enderror
+                        </div>
+                    </div>
+
+                    <div class="mb-6">
+                        <label for="testimonial_message" class="block mb-2 font-medium text-gray-700 text-sm">
+                            Votre témoignage <span class="text-red-500">*</span>
+                        </label>
+                        <textarea id="testimonial_message" wire:model="testimonial_message" rows="5"
+                            class="bg-white px-4 py-3 border border-gray-300 focus:border-transparent rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500 w-full"
+                            placeholder="Partagez votre expérience avec nous..."></textarea>
+                        @error('testimonial_message')
+                            <span class="text-red-500 text-sm">{{ $message }}</span>
+                        @enderror
+                    </div>
+
+                    <div class="mb-6">
+                        <label for="testimonial_email" class="block mb-2 font-medium text-gray-700 text-sm">
+                            Email (optionnel)
+                        </label>
+                        <input type="email" id="testimonial_email" wire:model="testimonial_email"
+                            class="bg-white px-4 py-3 border border-gray-300 focus:border-transparent rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500 w-full"
+                            placeholder="votre@email.com">
+                        @error('testimonial_email')
+                            <span class="text-red-500 text-sm">{{ $message }}</span>
+                        @enderror
+                        <small class="text-gray-500">Votre email ne sera pas publié</small>
+                    </div>
+
+                    <!-- Vérification anti-spam par calcul mathématique -->
+                    <div class="mb-6">
+                        <label for="math_user_answer" class="block mb-2 font-medium text-gray-700 text-sm">
+                            Vérification anti-spam <span class="text-red-500">*</span>
+                        </label>
+                        <div class="bg-gray-50 mb-3 p-4 border border-gray-300 rounded-md">
+                            <div class="flex justify-center items-center gap-3">
+                                <span class="font-bold text-gray-800 text-2xl">{{ $this->mathQuestion }}</span>
+                                <button type="button" wire:click="refreshMathChallenge"
+                                    class="ml-3 text-teal-600 hover:text-teal-800" title="Générer un nouveau calcul">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                        <input type="text" id="math_user_answer" wire:model="math_user_answer"
+                            class="bg-white px-4 py-3 border border-gray-300 focus:border-transparent rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500 w-full"
+                            placeholder="Votre réponse..." autocomplete="off">
+                        @error('math_user_answer')
+                            <span class="text-red-500 text-sm">{{ $message }}</span>
+                        @enderror
+                        <small class="text-gray-500">Résolvez cette opération pour prouver que vous n'êtes pas un robot</small>
+                    </div>
+
+                    <!-- Protection anti-spam -->
+                    <div class="hidden">
+                        <input type="text" wire:model="testimonial_honeypot" tabindex="-1">
+                    </div>
+
+                    <div class="text-center">
+                        <button type="submit"
+                            class="bg-teal-600 hover:bg-teal-700 px-8 py-3 rounded-lg font-bold text-white hover:scale-105 transition duration-300 transform">
+                            <svg class="inline mr-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+                            </svg>
+                            Envoyer mon témoignage
+                        </button>
+                    </div>
+
+                    <div class="mt-4 text-center">
+                        <small class="text-gray-500">
+                            Votre témoignage sera examiné avant publication pour s'assurer de sa pertinence.
+                        </small>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
 </div>

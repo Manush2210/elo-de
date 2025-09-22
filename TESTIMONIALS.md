@@ -1,4 +1,4 @@
-# Système de Témoignages Dynamiques
+# Système de Témoignages Dynamiques avec Approbation
 
 ## Fonctionnalités
 
@@ -6,11 +6,18 @@ Le système de témoignages dynamiques permet d'afficher les avis clients direct
 
 ### Champs disponibles
 - **name** : Nom du client
+- **email** : Email du soumissionnaire (non public, optionnel)
 - **message** : Contenu du témoignage
 - **rating** : Note de 1 à 5 étoiles
 - **photo** : Photo du client (optionnelle)
 - **is_active** : Statut actif/inactif
+- **status** : Statut d'approbation (pending, approved, rejected)
 - **created_at** : Date de création
+
+### Statuts d'approbation
+- **pending** : En attente d'approbation (nouvelles soumissions)
+- **approved** : Approuvé et visible sur le site public
+- **rejected** : Rejeté et non visible sur le site public
 
 ### Affichage automatique
 - **Photo** : Si une photo est disponible, elle s'affiche; sinon l'initiale du nom est utilisée
@@ -18,32 +25,56 @@ Le système de témoignages dynamiques permet d'afficher les avis clients direct
 - **Date** : 
   - **Frontend** : Format français (ex: "12 sept. 2024")
   - **Admin** : Format relatif (ex: "il y a 2 jours")
+- **Filtrage** : Seuls les témoignages approuvés et actifs sont affichés publiquement
 - **Fallback** : Si aucun témoignage en base, affichage des témoignages statiques
+
+## Formulaire de Soumission Public
+
+### Accès
+- **URL** : Page d'accueil (section après les témoignages)
+- **Champs** : Nom, Note, Message, Email (optionnel)
+- **Protection** : Calcul mathématique anti-spam + Honeypot
+
+### Système Anti-Spam
+- **Calcul mathématique** : Opération avec nombres de 1 à 5 (addition ou soustraction)
+- **Validation stricte** : Réponse exacte obligatoire pour soumettre
+- **Génération aléatoire** : Nouveau calcul à chaque chargement/soumission
+- **Bouton actualiser** : Permet de générer un nouveau calcul
+- **Protection honeypot** : Champ caché supplémentaire
+
+### Fonctionnalités
+- **Validation** : Temps réel côté client et serveur
+- **Anti-spam** : Double protection (calcul + honeypot)
+- **Feedback** : Messages de succès/erreur
+- **Statut** : Témoignages soumis en "pending" par défaut
+- **Sécurité** : Impossible de soumettre sans résoudre le calcul
 
 ## Interface d'Administration
 
-### Accès
+### Gestion des Témoignages
 - **URL** : `/admin/testimonials`
-- **Route** : `admin.testimonials`
-- **Navigation** : Sidebar admin → "Témoignages"
+- **Fonctionnalités** : CRUD complet (existant)
 
-### Fonctionnalités CRUD
-- ✅ **Créer** un nouveau témoignage
-- ✅ **Lire/Afficher** tous les témoignages avec pagination
-- ✅ **Modifier** un témoignage existant
-- ✅ **Supprimer** un témoignage
-- ✅ **Activer/Désactiver** un témoignage
-- ✅ **Recherche** par nom ou message
-- ✅ **Upload** de photos
-- ✅ **Gestion de la date** de création (personnalisable)
+### Approbations
+- **URL** : `/admin/testimonial-approvals`
+- **Route** : `admin.testimonial-approvals`
+- **Navigation** : Sidebar admin → "Approbations"
+
+### Fonctionnalités d'Approbation
+- ✅ **Filtrage** par statut (pending, approved, rejected)
+- ✅ **Recherche** par nom, message ou email
+- ✅ **Compteurs** en temps réel pour chaque statut
+- ✅ **Actions rapides** : Approuver, Rejeter, Restaurer
+- ✅ **Vue détaillée** : Modal avec toutes les informations
+- ✅ **Suppression** définitive
+- ✅ **Pagination** : 10 témoignages par page
 
 ### Interface
 - **Responsive** : Desktop et mobile
-- **Pagination** : 10 témoignages par page
-- **Modal** : Formulaire d'ajout/modification
-- **Validation** : Temps réel avec messages d'erreur
-- **Upload** : Gestion des images avec aperçu
-- **Date personnalisée** : Champ datetime-local avec boutons prédéfinis
+- **Filtres** : Boutons de filtre par statut avec compteurs
+- **Actions** : Boutons contextuels selon le statut
+- **Modal** : Vue détaillée avec toutes les informations
+- **Validation** : Confirmation avant suppression définitive
 
 ## Utilisation
 
@@ -156,6 +187,40 @@ $recent = App\Models\Testimonial::active()
 - **rating** : Obligatoire, entier entre 1 et 5
 - **photo** : Optionnelle, image, max 2MB
 - **is_active** : Booléen
+- **math_user_answer** : Obligatoire, entier, doit correspondre au calcul
 
 ### Messages personnalisés
 Tous les messages d'erreur sont en français et adaptés au contexte.
+
+## Protection Anti-Spam Mathématique
+
+### Stratégie Anti-Bot
+- **Champ libre** : Accepte toutes les entrées côté frontend (texte, nombres, symboles)
+- **Validation stricte** : Seuls les nombres corrects passent côté serveur
+- **Piège pour bots** : Les robots tentent souvent des caractères non numériques
+- **Simplicité utilisateur** : Les humains entrent naturellement le bon nombre
+
+### Fonctionnement
+- **Calcul aléatoire** : Génération automatique avec nombres 1-5
+- **Opérations** : Addition (+) et soustraction (-)
+- **Validation côté serveur** : `is_numeric()` puis comparaison exacte
+- **Sécurité** : Empêche efficacement les soumissions automatisées
+
+### Exemples de validation
+**✅ Entrées acceptées :**
+- `5` (réponse correcte)
+- ` 5 ` (avec espaces)
+- `05` (zéro devant)
+
+**❌ Entrées rejetées :**
+- `abc` (texte)
+- `5.0` (décimal)
+- `5a` (nombre + texte)
+- `5+0` (expression)
+- `*5` (caractères spéciaux)
+
+### Interface
+- **Champ texte libre** : `type="text"` sans restrictions
+- **Autocomplete off** : Évite la complétion automatique
+- **Validation temps réel** : Feedback immédiat côté serveur
+- **Messages clairs** : Erreurs explicites pour guider l'utilisateur
