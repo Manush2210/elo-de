@@ -3,21 +3,21 @@
         <div class="relative mx-auto py-24 container">
             <div class="max-w-4xl text-white text-left">
                 <h1 class="drop-shadow-sm font-['Playfair_Display'] font-bold text-5xl md:text-7xl tracking-tight">
-                    Le monde d'Élodie Voyance
+                    Die Welt von Élodie Voyance
                 </h1>
-                <p class="mt-6 max-w-2xl text-white/90 text-lg">Bienvenue dans l'univers d'Élodie Voyance, où la clarté et la compréhension vous attendent. Faites votre expérience aujourd'hui.</p>
+                <p class="mt-6 max-w-2xl text-white/90 text-lg">Willkommen in Elodies Wahrsagungswelt, wo Klarheit und Verständnis auf Sie warten. Machen Sie heute Ihre Erfahrung.</p>
 
                 <div class="flex flex-wrap gap-4 mt-8">
-                    <!-- Bouton Email -->
+                    <!-- E-Mail-Schaltfläche -->
                     <a href="mailto:{{ App\Models\Setting::get('email') ?? 'contact@votresite.com' }}"
-                       class="inline-flex justify-center items-center bg-teal-600 hover:bg-teal-700 shadow-lg backdrop-blur-sm px-6 py-3 border border-white/20 rounded-lg font-semibold text-white transition">
+                       class="inline-flex justify-center items-center bg-cyan-600 hover:bg-cyan-700 shadow-lg backdrop-blur-sm px-6 py-3 border border-white/20 rounded-lg font-semibold text-white transition">
                         <svg xmlns="http://www.w3.org/2000/svg" class="mr-2 w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
                         </svg>
-                        Email
+                        E-Mail
                     </a>
 
-                    <!-- Bouton WhatsApp -->
+                    <!-- WhatsApp-Schaltfläche -->
                     <a href="https://wa.me/{{ App\Models\Setting::get('contact_phone') ?? '33612345678' }}"
                        target="_blank" rel="noopener"
                        class="inline-flex justify-center items-center bg-green-500 hover:bg-green-600 shadow-lg backdrop-blur-sm px-6 py-3 border border-white/20 rounded-lg font-semibold text-white transition">
@@ -27,7 +27,7 @@
                         WhatsApp
                     </a>
 
-                    <!-- Bouton Instagram -->
+                    <!-- Instagram-Schaltfläche -->
                     <a href="{{ App\Models\Setting::get('insta_link') ?? '#' }}"
                        target="_blank" rel="noopener"
                        class="inline-flex justify-center items-center bg-gradient-to-r from-pink-500 hover:from-pink-600 via-red-500 hover:via-red-600 to-yellow-500 hover:to-yellow-600 shadow-lg backdrop-blur-sm px-6 py-3 border border-white/20 rounded-lg font-semibold text-white transition">

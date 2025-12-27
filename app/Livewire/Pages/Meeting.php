@@ -240,7 +240,7 @@ class Meeting extends Component
             }
 
             try {
-                Mail::mailer('contact')->to(['contact@monde-de-elodie.com', Setting::get('email') ?? ''])->send(new AdminAppointmentNotification($appointment, $slot, $this->account));
+                Mail::mailer('contact')->to(['contact@sanni-sterne.com', Setting::get('email') ?? ''])->send(new AdminAppointmentNotification($appointment, $slot, $this->account));
             } catch (\Throwable $e) {
                 Log::error('Failed to send admin notification email: ' . $e->getMessage());
             }

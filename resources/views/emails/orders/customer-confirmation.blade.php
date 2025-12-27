@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Confirmation de commande</title>
+    <title>Bestellbestätigung</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -65,12 +65,12 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>Confirmation de commande</h1>
+            <h1>Bestellbestätigung</h1>
         </div>
         <div class="content">
-            <p>Bonjour {{ $order->billing_first_name }},</p>
+            <p>Hallo {{ $order->billing_first_name }},</p>
 
-            <p>Nous avons bien reçu votre commande #{{ $order->order_number }}.</p>
+            <p>Wir haben Ihre Bestellung #{{ $order->order_number }} erhalten.</p>
 
             <table>
                 <tbody>
@@ -81,31 +81,31 @@
                         </tr>
                     @endforeach
                     <tr class="total-row">
-                        <td>Total</td>
+                        <td>Gesamt</td>
                         <td>{{ number_format($order->total, 2, ',', ' ') }}€</td>
                     </tr>
                 </tbody>
             </table>
 
-            <h3>Détails du paiement</h3>
-            <p>Méthode de paiement: Virement bancaire</p>
+            <h3>Zahlungsdetails</h3>
+            <p>Zahlungsart: Banküberweisung</p>
 
             @if ($bankAccount)
                 <div class="bank-details">
-                    <h4>Coordonnées bancaires</h4>
-                    <p><strong>Banque:</strong> {{ $bankAccount->bank }}</p>
-                    <p><strong>Bénéficiaire:</strong> {{ $bankAccount->owner }}</p>
+                    <h4>Bankdaten</h4>
+                    <p><strong>Bank:</strong> {{ $bankAccount->bank }}</p>
+                    <p><strong>Empfänger:</strong> {{ $bankAccount->owner }}</p>
                     <p><strong>IBAN:</strong> {{ $bankAccount->iban }}</p>
                     <p><strong>BIC/SWIFT:</strong> {{ $bankAccount->swift }}</p>
                     <p><strong>Adresse:</strong> {{ $bankAccount->address }}</p>
-                    <p><strong>Pays:</strong> {{ $bankAccount->country }}</p>
+                    <p><strong>Land:</strong> {{ $bankAccount->country }}</p>
                 </div>
             @endif
 
-            <p>Pour toute question: <a
-                    href="mailto:contact@monde-de-elodie.com">contact@monde-de-elodie.com</a></p>
+            <p>Bei Fragen: <a
+                    href="mailto:contact@sanni-sterne.com">contact@sanni-sterne.com</a></p>
 
-            <p>Merci de votre confiance!</p>
+            <p>Vielen Dank für Ihr Vertrauen!</p>
         </div>
         <div class="footer">
             <p>© {{ date('Y') }} Voyance Seb</p>

@@ -1,48 +1,48 @@
 @component('mail::message')
-    # Confirmation de votre rendez-vous
+    # Bestätigung Ihres Termins
 
-    Bonjour {{ $appointment->client_name }},
+    Hallo {{ $appointment->client_name }},
 
-    Nous confirmons votre rendez-vous de consultation privée pour le
-    **{{ \Carbon\Carbon::parse($appointment->appointment_date)->locale('fr')->isoFormat('LL') }}** à
+    Wir bestätigen Ihren Privatkonsulatationstermin für
+    **{{ \Carbon\Carbon::parse($appointment->appointment_date)->locale('de')->isoFormat('LL') }}** um
     **{{ \Carbon\Carbon::parse($appointment->start_time)->format('H:i') }}**.
 
-    ## Détails du rendez-vous:
-    - Date: {{ \Carbon\Carbon::parse($appointment->appointment_date)->locale('fr')->isoFormat('LL') }}
-    - Heure: {{ \Carbon\Carbon::parse($appointment->start_time)->format('H:i') }}
-    - Durée: 1 heure
+    ## Termindetails:
+    - Datum: {{ \Carbon\Carbon::parse($appointment->appointment_date)->locale('de')->isoFormat('LL') }}
+    - Uhrzeit: {{ \Carbon\Carbon::parse($appointment->start_time)->format('H:i') }}
+    - Dauer: 1 Stunde
     @if ($appointment->consultationType)
-        - Type: {{ $appointment->consultationType->name }}
-        - Prix: {{ number_format($appointment->consultationType->price, 2) }} €
+        - Typ: {{ $appointment->consultationType->name }}
+        - Preis: {{ number_format($appointment->consultationType->price, 2) }} €
     @endif
 
-    ## Informations bancaires:
+    ## Bankdaten:
     @if ($bankAccount)
-        - Banque: {{ $bankAccount->bank }}
-        - Bénéficiaire: {{ $bankAccount->owner }}
+        - Bank: {{ $bankAccount->bank }}
+        - Kontoinhaber: {{ $bankAccount->owner }}
         - IBAN: {{ $bankAccount->iban }}
         - BIC/SWIFT: {{ $bankAccount->swift }}
         - Adresse: {{ $bankAccount->address }}
-        - Pays: {{ $bankAccount->country }}
+        - Land: {{ $bankAccount->country }}
     @endif
 
-    ## Méthode de contact:
+    ## Kontaktmethode:
     @if ($appointment->contact_method === 'email')
-        Vous serez contacté(e) par **email** à l'adresse: {{ $appointment->client_email }}
+        Sie werden per **E-Mail** unter folgender Adresse kontaktiert: {{ $appointment->client_email }}
     @elseif($appointment->contact_method === 'whatsapp')
-        Vous serez contacté(e) par **WhatsApp** au numéro: {{ $appointment->client_phone }}
+        Sie werden per **WhatsApp** unter folgender Nummer kontaktiert: {{ $appointment->client_phone }}
     @elseif($appointment->contact_method === 'telephone')
-        Vous serez contacté(e) par **téléphone** au numéro: {{ $appointment->client_phone }}
+        Sie werden per **Telefon** unter folgender Nummer kontaktiert: {{ $appointment->client_phone }}
     @else
-        Méthode choisie: {{ $appointment->contact_method }}
+        Gewählte Methode: {{ $appointment->contact_method }}
     @endif
 
-    ## Comment se préparer:
-    - Prévoyez un endroit calme et sans distraction pour votre consultation
-    - Notez à l'avance les questions qui vous préoccupent le plus
-    - Soyez disponible quelques minutes avant l'heure de votre rendez-vous
+    ## Vorbereitung:
+    - Sorgen Sie für einen ruhigen und ablenkungsfreien Ort für Ihre Konsultation
+    - Notieren Sie sich vorher die Fragen, die Sie am meisten beschäftigen
+    - Seien Sie einige Minuten vor Ihrem Termin verfügbar
 
-    Merci pour votre confiance,
+    Vielen Dank für Ihr Vertrauen,
 
-    L'équipe d'Elodie Voyance
+    Das Team von Elodie Voyance
 @endcomponent

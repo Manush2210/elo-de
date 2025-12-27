@@ -5,33 +5,33 @@
             class="rounded-lg w-full h-full object-cover">
     </div>
 
-    <!-- Informations produit -->
+    <!-- Produktinformationen -->
     <div class="flex-1">
-        <h2 class="font-bold text-teal-700 text-base sm:text-lg">
+        <h2 class="font-bold text-cyan-700 text-base sm:text-lg">
             <a href="{{ route('single-product', ['slug' => $slug]) }}" class="hover:underline">{{ $title }}</a>
         </h2>
         <p class="font-semibold text-gray-700 sm:text-md text-sm">{{ number_format($price, 2, ',', ' ') }} €</p>
         <p class="mt-1 sm:mt-2 text-gray-600 text-xs sm:text-sm line-clamp-2 sm:line-clamp-3">{{ $description }}</p>
 
-        <!-- Lien voir détails -->
+        <!-- Details anzeigen Link -->
         <a href="{{ route('single-product', ['slug' => $slug]) }}"
-            class="block mt-1 sm:mt-2 font-semibold text-teal-500 text-xs sm:text-sm underline">+ Voir les détails</a>
+            class="block mt-1 sm:mt-2 font-semibold text-cyan-500 text-xs sm:text-sm underline">+ Details anzeigen</a>
 
-        <!-- Boutons -->
+        <!-- Buttons -->
         <div class="flex space-x-1 sm:space-x-2 mt-2 sm:mt-3">
             <button wire:click="addToCart({{ $product->id }})"
-                class="bg-teal-600 hover:bg-teal-300 px-2 sm:px-4 py-1 sm:py-2 rounded-lg text-white text-xs sm:text-sm">
-                Ajouter au panier
+                class="bg-cyan-600 hover:bg-cyan-300 px-2 sm:px-4 py-1 sm:py-2 rounded-lg text-white text-xs sm:text-sm">
+                In den Warenkorb
             </button>
             <button
-                class="hover:bg-teal-100 px-2 sm:px-4 py-1 sm:py-2 border border-teal-600 rounded-lg text-teal-600 text-xs sm:text-sm">
+                class="hover:bg-cyan-100 px-2 sm:px-4 py-1 sm:py-2 border border-cyan-600 rounded-lg text-cyan-600 text-xs sm:text-sm">
                 ❤️
             </button>
         </div>
 
-        <!-- Message de succès -->
+        <!-- Erfolgsmeldung -->
         @if (session()->has('message'))
-            <p class="mt-1 sm:mt-2 text-teal-600 text-xs sm:text-sm">{{ session('message') }}</p>
+            <p class="mt-1 sm:mt-2 text-cyan-600 text-xs sm:text-sm">{{ session('message') }}</p>
         @endif
     </div>
 </div>

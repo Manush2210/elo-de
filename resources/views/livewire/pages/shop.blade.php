@@ -1,15 +1,15 @@
 <div>
     <section class="bg-gray-50 py-8">
         <div class="mx-auto px-4 container">
-            <!-- En-tête avec barre de recherche -->
+            <!-- Header mit Suchleiste -->
             <div class="flex md:flex-row flex-col justify-between items-center gap-4 mb-8">
-                <h2 class="font-['Dancing_Script'] text-gray-600 text-4xl">Boutique</h2>
+                <h2 class="font-['Dancing_Script'] text-gray-600 text-4xl">Shop</h2>
 
                 <div class="flex items-center gap-4 w-full md:w-auto">
-                    <!-- Barre de recherche -->
+                    <!-- Suchleiste -->
                     <div class="relative flex-1 md:w-96">
-                        <input type="text" wire:model.live="search" placeholder="Rechercher un produit..."
-                            class="px-4 py-2 border border-gray-200 focus:border-teal-500 rounded-lg outline-none focus:ring-1 focus:ring-teal-500 w-full transition">
+                        <input type="text" wire:model.live="search" placeholder="Ein Produkt suchen..."
+                            class="px-4 py-2 border border-gray-200 focus:border-cyan-500 rounded-lg outline-none focus:ring-1 focus:ring-cyan-500 w-full transition">
                         <div class="top-1/2 right-3 absolute text-gray-400 -translate-y-1/2">
                             <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24"
                                 stroke="currentColor">
@@ -19,7 +19,7 @@
                         </div>
                     </div>
 
-                    <!-- Boutons de vue -->
+                    <!-- Ansichtsmodi -->
                     <div class="flex items-center gap-2">
                         <button wire:click="toggleViewMode"
                             class="p-2 rounded-lg hover:bg-gray-100 transition {{ $viewMode === 'grid' ? 'bg-gray-100' : '' }}">
@@ -41,7 +41,7 @@
                 </div>
             </div>
 
-            <!-- Grille de produits -->
+            <!-- Produktgitter -->
             <div x-data="{ viewMode: @entangle('viewMode') }" x-cloak>
                 <div id="grid-view" x-show="viewMode === 'grid'"
                     class="gap-4 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
@@ -59,14 +59,13 @@
                         )
                     @empty
                         <div class="col-span-full py-8 text-center">
-                            <h3 class="text-gray-600 text-xl">Aucun produit trouvé</h3>
-                            <p class="mt-2 text-gray-500">Nous n'avons pas trouvé de produits correspondant à votre
-                                recherche.</p>
+                            <h3 class="text-gray-600 text-xl">Keine Produkte gefunden</h3>
+                            <p class="mt-2 text-gray-500">Wir haben keine Produkte gefunden, die Ihrer Suche entsprechen.</p>
                         </div>
                     @endforelse
                 </div>
 
-                <!-- Vue liste -->
+                <!-- Listenansicht -->
                 <div id="list-view" x-show="viewMode === 'list'" class="flex flex-col gap-4">
                     @forelse ($products as $item)
                         @livewire(
@@ -83,9 +82,8 @@
                         )
                     @empty
                         <div class="py-8 text-center">
-                            <h3 class="text-gray-600 text-xl">Aucun produit trouvé</h3>
-                            <p class="mt-2 text-gray-500">Nous n'avons pas trouvé de produits correspondant à votre
-                                recherche.</p>
+                            <h3 class="text-gray-600 text-xl">Keine Produkte gefunden</h3>
+                            <p class="mt-2 text-gray-500">Wir haben keine Produkte gefunden, die Ihrer Suche entsprechen.</p>
                         </div>
                     @endforelse
                 </div>

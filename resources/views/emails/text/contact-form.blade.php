@@ -1,4 +1,4 @@
-<p>Nouveau message de contact</p>
-<p>Nom: {{ $name }}</p>
+<p>Neue Kontaktnachricht</p>
+<p>Name: {{ $name }}</p>
 <p>Email: {{ $email }}</p>
-<p>Message: {{ $messageContent }}</p>
+<p>Nachricht: {{ $messageContent }}</p>

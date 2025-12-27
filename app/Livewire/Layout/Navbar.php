@@ -17,9 +17,9 @@ class Navbar extends Component
     ];
 
     public $topBarItems = [
-        'Cartes et Jeux Divinatoires',
-        'Service client personnalisé',
-        'Produits authentiques'
+        'Karten und Orakelspiele',
+        'Personalisierter Kundenservice',
+        'Authentische Produkte'
     ];
 
     public $currentTopBarItemIndex = 0;

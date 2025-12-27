@@ -1,9 +1,9 @@
 <!doctype html>
-<html lang="fr">
+<html lang="de">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Confirmation de votre rendez-vous</title>
+    <title>Bestätigung Ihres Termins</title>
     <style>
         body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; background:#f7fafc; color:#374151; margin:0; padding:0 }
         .container { max-width:680px; margin:24px auto; background:white; border-radius:8px; overflow:hidden; box-shadow:0 8px 30px rgba(16,24,40,.08) }
@@ -23,43 +23,43 @@
             <div class="logo">Voyance Spirituelle Expert</div>
         </div>
         <div class="content">
-            <h1>Votre rendez-vous est confirmé</h1>
+            <h1>Ihr Termin ist bestätigt</h1>
 
-            <p>Bonjour <strong>{{ $appointment->client_name }}</strong>,</p>
+            <p>Hallo <strong>{{ $appointment->client_name }}</strong>,</p>
 
-            <p>Merci pour votre réservation. Voici le récapitulatif de votre rendez-vous :</p>
+            <p>Vielen Dank für Ihre Reservierung. Hier ist eine Zusammenfassung Ihres Termins:</p>
 
             <div class="meta">
-                <p><strong>Date :</strong> {{ \Carbon\Carbon::parse($appointment->appointment_date)->locale('fr')->isoFormat('LL') }}</p>
-                <p><strong>Heure :</strong> {{ \Carbon\Carbon::parse($appointment->start_time)->format('H:i') }} - {{ \Carbon\Carbon::parse($appointment->end_time)->format('H:i') }}</p>
+                <p><strong>Datum:</strong> {{ \Carbon\Carbon::parse($appointment->appointment_date)->locale('de')->isoFormat('LL') }}</p>
+                <p><strong>Uhrzeit:</strong> {{ \Carbon\Carbon::parse($appointment->start_time)->format('H:i') }} - {{ \Carbon\Carbon::parse($appointment->end_time)->format('H:i') }}</p>
                 @if ($appointment->consultationType)
-                    <p><strong>Type :</strong> {{ $appointment->consultationType->name }} — {{ number_format($appointment->consultationType->price, 2) }} €</p>
+                    <p><strong>Typ:</strong> {{ $appointment->consultationType->name }} — {{ number_format($appointment->consultationType->price, 2) }} €</p>
                 @endif
-                <p><strong>Méthode de contact :</strong>
+                <p><strong>Kontaktmethode:</strong>
                     @if ($appointment->contact_method === 'email')
                         Email ({{ $appointment->client_email }})
                     @elseif($appointment->contact_method === 'whatsapp')
                         WhatsApp ({{ $appointment->client_phone }})
                     @else
-                        Téléphone ({{ $appointment->client_phone }})
+                        Telefon ({{ $appointment->client_phone }})
                     @endif
                 </p>
             </div>
 
             @if ($appointment->notes)
-                <p><strong>Notes envoyées :</strong></p>
+                <p><strong>Gesendete Notizen:</strong></p>
                 <p>{{ $appointment->notes }}</p>
             @endif
 
-            <p>Si vous avez des questions ou souhaitez modifier votre rendez-vous, vous pouvez répondre directement à ce message.</p>
+            <p>Wenn Sie Fragen haben oder Ihren Termin ändern möchten, können Sie direkt auf diese Nachricht antworten.</p>
 
             <p style="margin-top:18px">
-                <a class="btn" href="{{ url('/') }}">Visiter le site</a>
+                <a class="btn" href="{{ url('/') }}">Website besuchen</a>
             </p>
 
-            <p style="margin-top:18px; color:#6b7280; font-size:13px">Merci pour votre confiance,<br>Voyance Spirituelle Expert</p>
+            <p style="margin-top:18px; color:#6b7280; font-size:13px">Vielen Dank für Ihr Vertrauen,<br>Voyance Spirituelle Expert</p>
         </div>
-        <div class="footer">Si vous n'êtes pas à l'origine de cette réservation, contactez-nous immédiatement à contact@monde-de-elodie.com</div>
+        <div class="footer">Wenn Sie diese Reservierung nicht vorgenommen haben, kontaktieren Sie uns sofort unter contact@sanni-sterne.com</div>
     </div>
 </body>
 </html>
