@@ -1,4 +1,4 @@
-<div class="relative bg-cover bg-center" style="background-image: url({{ asset('assets/images/19487.jpg') }});">
+<div class="relative bg-cover bg-center" style="background-image: url({{ asset('assets/images/232.jpg') }});">
     <div class="bg-black/60">
         <div class="relative mx-auto py-24 container">
             <div class="max-w-4xl text-white text-left">
