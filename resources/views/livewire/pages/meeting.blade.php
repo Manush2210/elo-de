@@ -289,14 +289,3 @@
     </section>
 </div>
 
-@push('scripts')
-    <!-- Script pour Cloudflare Turnstile -->
-    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
-    <script>
-        function onTurnstileSuccess(token) {
-            if (token) {
-                @this.set('turnstileToken', token);
-            }
-        }
-    </script>
-@endpush

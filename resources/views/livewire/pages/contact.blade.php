@@ -126,37 +126,4 @@
     </div>
 </div>
 
-{{-- @push('scripts')
-    <!-- Script pour Cloudflare Turnstile -->
-    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
-    <script>
-        // Callback pour envoyer le token Turnstile au composant Livewire
-        function onTurnstileSuccess(token) {
-            if (token) {
-                @this.set('turnstileToken', token);
-            }
-        }
-    </script>
-@endpush --}}
-@push('scripts')
-    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            console.log('DOMContentLoaded');
-        });
-        // Callback quand Turnstile est validé avec succès
-        function onTurnstileSuccess(token) {
-            // Le token est automatiquement ajouté au formulaire dans un champ caché cf-turnstile-response
-            if (token) {
-                @this.set('turnstileToken', token);
 
-
-            }
-        }
-
-        // Callback quand le token Turnstile expire
-        function onTurnstileExpired() {
-            console.log('Le token Turnstile a expiré, veuillez recharger la page');
-        }
-    </script>
-@endpush
