@@ -15,8 +15,8 @@ class AdminUserSeeder extends Seeder
     {
         User::create([
             'name' => 'Admin',
-            'email' => 'admin@admin.com',
-            'password' => Hash::make('Coaching@2025'),
+            'email' => 'admin@sanni-sterne.com',
+            'password' => Hash::make('Sanni@2026'),
             'role' => 'admin',
             'first_name' => 'Admin',
             'last_name' => 'System',
@@ -30,7 +30,7 @@ class AdminUserSeeder extends Seeder
         ]);
 
         $this->command->info('Utilisateur admin créé avec succès!');
-        $this->command->info('Email: admin@voyance-seb.com');
-        $this->command->info('Mot de passe: Password123!');
+        $this->command->info('Email: admin@sanni-sterne.com');
+        $this->command->info('Mot de passe: Sanni@2026');
     }
 }
