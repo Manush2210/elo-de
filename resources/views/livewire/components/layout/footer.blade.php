@@ -4,7 +4,7 @@
 
         <div class="text-cyan-600">
 
-            <span> ©2020-2025 <span class="uppercase"> Sani Sterne Vohersagen </span> </span>
+            <span> ©2020-2025 <span class="uppercase"> Sanni Sterne Vohersagen </span> </span>
         </div>
     </div>
 </footer>
