@@ -20,7 +20,7 @@
             <div class="items-center gap-12 grid grid-cols-1 md:grid-cols-2">
                 <!-- Colonne de l'image -->
                 <div class="shadow-2xl rounded-lg overflow-hidden">
-                    <img src="{{ asset('assets/images/digi-v.jpg') }}" alt="Sanni Sterne Vohersagen"
+                    <img src="{{ asset('assets/images/digi-v.jpg') }}" alt="Sanni Sterne Vorhersagen"
                         class="w-full h-auto object-center object-cover hover:scale-105 transition-transform duration-500 ease-in-out transform">
                 </div>
 

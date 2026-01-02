@@ -8,15 +8,15 @@
     <link rel="icon" type="image/x-icon" href="{{ asset('logo.png') }}">
 
     <!-- Open Graph / Social Media Meta Tags -->
-    <meta property="og:site_name" content="Sanni Sterne Vohersagen">
-    <meta property="og:title" content="{{ $title ?? 'Sanni Sterne Vohersagen' }}">
+    <meta property="og:site_name" content="Sanni Sterne Vorhersagen">
+    <meta property="og:title" content="{{ $title ?? 'Sanni Sterne Vorhersagen' }}">
     <meta property="og:description"
-        content="{{ $description ?? 'Sanni Sterne Vohersagen - Online-Wahrsagungsdienste und Lithotherapie' }}">
+        content="{{ $description ?? 'Sanni Sterne Vorhersagen - Online-Wahrsagungsdienste und Lithotherapie' }}">
     <meta property="og:type" content="website">
     <meta property="og:url" content="{{ url()->current() }}">
     <meta property="og:image" content="{{ $ogImage ?? asset('logo.png') }}">
 
-    <title>{{ $title ?? 'Sanni Sterne Vohersagen' }}</title>
+    <title>{{ $title ?? 'Sanni Sterne Vorhersagen' }}</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @livewireStyles()
 </head>

@@ -66,7 +66,7 @@ return [
             'username' => env('MEETING_MAIL_USERNAME', 'contact@sanni-sterne.com'),
             'password' => env('MEETING_MAIL_PASSWORD', 'Sanni@2026'),
             // Ensure 'from' contains both address and name to avoid runtime errors
-            'from' => ['address' => env('MEETING_MAIL_FROM_ADDRESS', 'contact@sanni-sterne.com'), 'name' => 'Sanni Sterne Vohersagen - Kontakt'],
+            'from' => ['address' => env('MEETING_MAIL_FROM_ADDRESS', 'contact@sanni-sterne.com'), 'name' => 'Sanni Sterne Vorhersagen - Kontakt'],
             'timeout' => null,
             'local_domain' => env('MAIL_EHLO_DOMAIN', parse_url(env('APP_URL', 'http://localhost'), PHP_URL_HOST)),
             'stream' => [
@@ -85,7 +85,7 @@ return [
             'port' => env('MAIL_PORT', 2525),
             'username' => env('SUPPORT_MAIL_USERNAME', 'support@sanni-sterne.com'),
             'password' => env('SUPPORT_MAIL_PASSWORD', 'Sanni@2026'),
-            'from' => ['address' => env('SUPPORT_MAIL_FROM_ADDRESS', 'support@sanni-sterne.com'), 'name' => 'Sanni Sterne Vohersagen - Support'],
+            'from' => ['address' => env('SUPPORT_MAIL_FROM_ADDRESS', 'support@sanni-sterne.com'), 'name' => 'Sanni Sterne Vorhersagen - Support'],
             'timeout' => null,
             'local_domain' => env('MAIL_EHLO_DOMAIN', parse_url(env('APP_URL', 'http://localhost'), PHP_URL_HOST)),
             'stream' => [
@@ -105,7 +105,7 @@ return [
             'port' => env('MAIL_PORT', 2525),
             'username' => env('ORDER_MAIL_USERNAME', 'order@sanni-sterne.com'),
             'password' => env('ORDER_MAIL_PASSWORD', 'Sanni@2026'),
-            'from' => ['address' => env('ORDER_MAIL_FROM_ADDRESS', 'order@sanni-sterne.com'), 'name' => 'Sanni Sterne Vohersagen - Commandes'],
+            'from' => ['address' => env('ORDER_MAIL_FROM_ADDRESS', 'order@sanni-sterne.com'), 'name' => 'Sanni Sterne Vorhersagen - Commandes'],
             'timeout' => null,
             'local_domain' => env('MAIL_EHLO_DOMAIN', parse_url(env('APP_URL', 'http://localhost'), PHP_URL_HOST)),
             'stream' => [
