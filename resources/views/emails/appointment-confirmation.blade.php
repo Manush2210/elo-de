@@ -44,5 +44,5 @@
 
     Vielen Dank für Ihr Vertrauen,
 
-    Das Team von Elodie Voyance
+    Das Team von Sanni
 @endcomponent

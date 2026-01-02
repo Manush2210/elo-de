@@ -3,9 +3,9 @@
         <div class="relative mx-auto py-24 container">
             <div class="max-w-4xl text-white text-left">
                 <h1 class="drop-shadow-sm font-['Playfair_Display'] font-bold text-5xl md:text-7xl tracking-tight">
-                    Die Welt von Sanni Sterne Vohersagen
+                    Die Welt von Sanni Sterne Vorhersagen
                 </h1>
-                <p class="mt-6 max-w-2xl text-white/90 text-lg">Willkommen in Elodies Wahrsagungswelt, wo Klarheit und Verständnis auf Sie warten. Machen Sie heute Ihre Erfahrung.</p>
+                <p class="mt-6 max-w-2xl text-white/90 text-lg">Willkommen in Sanni Wahrsagungswelt, wo Klarheit und Verständnis auf Sie warten. Machen Sie heute Ihre Erfahrung.</p>
 
                 <div class="flex flex-wrap gap-4 mt-8">
                     <!-- E-Mail-Schaltfläche -->
